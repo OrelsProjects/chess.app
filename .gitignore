@@ -1,0 +1,65 @@
+# Ignored directories
+node_modules/
+android/build/
+android/app/build/
+ios/build/
+.idea/
+.DS_Store
+
+# Build artifacts
+*.apk
+*.aab
+*.xcarchive
+*.ipa
+*.aab.zip
+*.ipa.zip
+*.aab.sha256
+*.ipa.sha256
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+
+# React Native generated files
+**/ios/Pods/
+**/ios/Podfile.lock
+**/ios/build/
+**/ios/*.xcworkspace
+**/ios/*.xcuserstate
+**/ios/Build/
+**/ios/DerivedData/
+**/ios/.generated/
+**/android/local.properties
+**/android/.gradle/
+**/android/app/google-services.json
+**/android/captures/
+**/android/gradle.properties
+**/android/gradlew
+**/android/gradlew.bat
+**/android/gradle/
+**/android/app/build/
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Ignored by Visual Studio Code
+.vscode/*
+
+# macOS
+.DS_Store
+
+# Ignored by Xcode
+*.xcuserstate
+
+# Ignore sensitive or environment-specific files
+.env*
+.env.local*
+.env.development*
+.env.test*
+.env.staging*
+.env.production*
