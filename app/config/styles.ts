@@ -4,7 +4,7 @@
  */
 const AppStyles = {
   color: {
-    COLOR_PRIMARY: '#2ec7ab',
+    COLOR_PRIMARY: '#007AFF',
     COLOR_SECONDARY: '#111',
     COLOR_WHITE: '#FFFFFF',
     COLOR_BLACK: '#000000',
@@ -15,6 +15,15 @@ const AppStyles = {
     COLOR_DARK_SEPERATOR: '#d4d4d4',
     COLOR_BLACK_TRANSP: 'rgba(0, 0, 0, 0.7)',
     COLOR_GREY_TRANSP: 'rgba(67, 85, 85, 0.7)',
+    DIM_GRAY: '#696969',
+    ANTI_FLASH_WHITE: '#F1F6F7',
+    FLASH_WHITE: '#EFEFF4',
+    RAISIN_BLACK: '#212121',
+    GRANITE_GRAY: '#666666',
+    SONIC_SILVER: '#757575',
+    SPANISH_GRAY: '#969696',
+    NORTH_TEXAS_GREEN: '#08993194',
+    BABY_PINK: '#F2D0C2',
   },
   fonts: {
     // FONT_REGULAR: 'Roboto-Regular',

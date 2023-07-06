@@ -5,6 +5,14 @@ const images = {
     chessLogo: require('../images/chessLogo.png'),
     googleLogo: require('../images/googleLogo.svg'),
     handWaveIcon: require('../images/handWaveIcon.svg'),
+    neilPlayer: require('../images/neilPlayer.png'),
+    players: require('../images/players.png'),
+    wgm: require('../images/wgm.png'),
+    addIcon: require('../images/addIcon.png'),
+    middleLine: require('../images/middleLine.png'),
+    undo: require('../images/undo.png'),
+    reset: require('../images/reset.png'),
+    star: require('../images/star.png'),
   },
 };
 

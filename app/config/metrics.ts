@@ -9,6 +9,8 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
+export const normalized = {wp, hp};
+
 export const metrics = {
   screenWidth: width < height ? width : height,
   screenHeight: width < height ? height : width,
@@ -22,4 +24,15 @@ export const fontSizes = {
   medium: wp(4.3),
   large: wp(5),
   xlarge: wp(5.3),
+  xxlarge: wp(10),
+};
+
+export const radius = {
+  xsmallRadius: wp(2.8),
+  smallRadius: wp(3),
+  regularRadius: wp(3.7),
+  mediumRadius: wp(4.3),
+  largeRadius: wp(5),
+  xlargeRadius: wp(5.3),
+  xxlargeRadius: wp(10),
 };

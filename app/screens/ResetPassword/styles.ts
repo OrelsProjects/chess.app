@@ -8,20 +8,15 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
   },
   childContainer: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     width: wp(90),
-  },
-  chesslogo: {
-    width: wp(14),
-    height: wp(18),
   },
   headerContainer: {
     justifyContent: 'center',
@@ -31,48 +26,15 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
     marginBottom: hp(4),
   },
-  welcomeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  welcome: {
+  heading: {
     fontSize: fontSizes.xxlarge,
     fontWeight: '700',
-    color: AppStyles.color.RAISIN_BLACK
+    color: AppStyles.color.RAISIN_BLACK,
   },
-  loginToContinue: {
-    fontSize: fontSizes.medium,
+  subHeading: {
+    marginTop: hp(1),
+    fontSize: fontSizes.regular,
     color: AppStyles.color.GRANITE_GRAY,
-  },
-  labelStyle: {
-    color: AppStyles.color.COLOR_PRIMARY,
-    fontWeight: '500',
-    fontSize: 12,
-  },
-  forgotPass: {
-    alignSelf: 'flex-end',
-    marginBottom: hp(4),
-  },
-  orText: {
-    alignSelf: 'center',
-    marginVertical: hp(2),
-  },
-  googleSignInContainer: {
-    backgroundColor: AppStyles.color.ANTI_FLASH_WHITE,
-    borderRadius: 10,
-    borderColor: 'black',
-    height: hp(7),
-    width: wp(90),
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    
-  },
-  googleText: {
-    textAlign: 'center',
-    fontSize: 17,
-    color: AppStyles.color.DIM_GRAY,
   },
   secondaryButtonContainer: {
     flexDirection: 'row',
@@ -83,13 +45,13 @@ const styles = StyleSheet.create({
   noAccount: {
     fontSize: fontSizes.medium,
     color: '#666666',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
-  signUp: {
+  login: {
     color: AppStyles.color.COLOR_PRIMARY,
     fontWeight: '500',
     fontSize: fontSizes.medium,
-  }
+  },
 });
 
 export default styles;
