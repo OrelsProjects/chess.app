@@ -63,7 +63,7 @@ padding:3
     padding: normalized.wp(2.5),
   },
   wgmText: {
-    fontSize: fontSizes.large,
+    fontSize: fontSizes.small,
     color: AppStyles.color.COLOR_WHITE,
   },
   // starImage: {
