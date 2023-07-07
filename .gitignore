@@ -29,14 +29,9 @@ yarn.lock
 **/ios/Build/
 **/ios/DerivedData/
 **/ios/.generated/
-**/android/local.properties
 **/android/.gradle/
 **/android/app/google-services.json
 **/android/captures/
-**/android/gradle.properties
-**/android/gradlew
-**/android/gradlew.bat
-**/android/gradle/
 **/android/app/build/
 
 # IDEs
