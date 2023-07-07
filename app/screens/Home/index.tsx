@@ -20,6 +20,11 @@ import { SvgXml } from 'react-native-svg';
 import { normalized } from 'app/config/metrics';
 import NavigationService from 'app/navigation/NavigationService';
 import { useNavigation } from '@react-navigation/native';
+import ButtonCTA from 'app/components/ButtonCTA';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const Home: React.FC = () => {
   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
   const { isLoading, isFetching, data = { results: [] } } = GetUserDetails();
@@ -72,10 +77,20 @@ const Home: React.FC = () => {
         alignItems: 'center',
       }}>
       <CustomHeader leftIcon={drawerIcon} onBackButtonPress={openDrawer} />
+
+      <View style={styles.ratingDirection}>
+        <View style={styles.ratingView}>
+          <Text style={styles.ratingText}>Current Rating (224)</Text>
+        </View>
+        <View style={styles.ratingView}>
+          <Text style={styles.ratingText}>Expected Rating (1854)</Text>
+        </View>
+      </View>
+
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}>
-        {Array.from({ length: 8 }, (_, index) => (
+        {Array.from({ length: 3 }, (_, index) => (
           <React.Fragment key={index}>
             {content.map((item, itemIndex) => (
               <View key={itemIndex} style={styles.firstView}>
@@ -106,14 +121,12 @@ const Home: React.FC = () => {
           </React.Fragment>
         ))}
       </ScrollView>
-
+      <TouchableOpacity
+        style={styles.fifthView}
+        onPress={navigateToAddOpponent}>
+        <Image source={images.icons.addIcon} style={styles.addIcon} />
+      </TouchableOpacity>
       <View style={styles.lastView}>
-        <TouchableOpacity
-          style={styles.fifthView}
-          onPress={navigateToAddOpponent}>
-          <Image source={images.icons.addIcon} style={styles.addIcon} />
-        </TouchableOpacity>
-
         <View style={styles.sixView}>
           <TouchableOpacity style={styles.sevenView}>
             <SvgXml xml={undo} width={20} height={20} />
@@ -128,8 +141,15 @@ const Home: React.FC = () => {
             <Text style={styles.resetText}>reset</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.nineText}>The ratings may not be accurate</Text>
       </View>
+      <View style={styles.buttonView}>
+        <ButtonCTA
+          customStyle={{ width: wp(90) }}
+          buttonText={'Calculate Rating'}
+          // onPress={onLogin}
+        />
+      </View>
+      <Text style={styles.nineText}>The ratings may not be accurate</Text>
     </View>
   );
 };

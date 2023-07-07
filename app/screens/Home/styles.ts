@@ -10,6 +10,24 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   content: { flexDirection: 'row', justifyContent: 'space-between' },
+  ratingDirection:{
+flexDirection:'row',
+alignItems:'center',
+justifyContent:'space-between',
+width:normalized.wp(95),
+// marginVertical:normalized.hp(1)
+  },
+  ratingView:{
+width:normalized.wp(45),
+// height:normalized.hp(4),
+backgroundColor:AppStyles.color.COLOR_WHITE,
+elevation:1,
+alignItems:'center',justifyContent:'center'
+  },
+  ratingText:{
+fontSize:fontSizes.regular,
+padding:3
+  },
 
   scrollViewContent: {
     flexGrow: 1,
@@ -48,10 +66,10 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.large,
     color: AppStyles.color.COLOR_WHITE,
   },
-  starImage: {
-    width: normalized.wp(7),
-    height: normalized.hp(3),
-  },
+  // starImage: {
+  //   width: normalized.wp(7),
+  //   height: normalized.hp(3),
+  // },
   firstView: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -143,13 +161,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
     position: 'absolute',
-    // left:30,
-    right: -70,
-    bottom: normalized.hp(15),
+     right:10,
+   // right: -70,
+    bottom: normalized.hp(23),
     // backgroundColor: 'red',
   },
   addIcon: {
-    width: normalized.wp(13),
+    width: normalized.wp(12),
     height: normalized.hp(6),
     alignSelf: 'flex-end',
   },
@@ -187,7 +205,7 @@ const styles = StyleSheet.create({
   },
   undo: {
     width: normalized.wp(8),
-    height: normalized.hp(3),
+    height: normalized.hp(4),
   },
   undoText: {
     fontSize: fontSizes.small,
@@ -199,7 +217,7 @@ const styles = StyleSheet.create({
   },
   reset: {
     width: normalized.wp(8),
-    height: normalized.hp(3),
+    height: normalized.hp(4),
   },
   resetText: {
     fontSize: fontSizes.small,
@@ -228,7 +246,11 @@ const styles = StyleSheet.create({
     //marginTop: normalized.hp(77),
     //marginVertical: normalized.hp(-5),
     // top: 0,
-    bottom: normalized.hp(1),
+    bottom: normalized.hp(8),
+  },
+  buttonView:{
+bottom:normalized.hp(5),
+position:'absolute'
   },
 });
 
