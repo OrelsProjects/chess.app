@@ -9,15 +9,20 @@ interface ButtonCTAProps {
   buttonText: string;
   customStyle: any;
   onPress: () => void;
+  disabled: boolean;
 }
 
 const ButtonCTA: React.FC<ButtonCTAProps> = ({
   customStyle,
   buttonText,
   onPress,
+  disabled,
 }) => {
   return (
-    <TouchableOpacity style={[styles.container, customStyle]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.container, customStyle]}
+      onPress={onPress}
+      disabled={disabled}>
       <Text style={styles.text}>{buttonText}</Text>
     </TouchableOpacity>
   );

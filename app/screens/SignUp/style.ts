@@ -1,4 +1,4 @@
-import { fontSizes } from 'app/config/metrics';
+import { fontSizes, normalized } from 'app/config/metrics';
 import AppStyles from 'app/config/styles';
 import { StyleSheet } from 'react-native';
 import {
@@ -14,9 +14,10 @@ const styles = StyleSheet.create({
   },
   childContainer: {
     flex: 1,
-    // justifyContent: 'center',
+    //justifyContent: 'space-between',
     alignItems: 'center',
     width: wp(92),
+    //backgroundColor: 'red'
   },
   headerContainer: {
     justifyContent: 'center',
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
     height: hp(12),
     // marginTop: hp(1),
     marginBottom: hp(2),
+    //backgroundColor: 'blue'
   },
   welcome: {
     fontSize: fontSizes.xxlarge,
@@ -35,11 +37,21 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.medium,
     color: AppStyles.color.GRANITE_GRAY,
   },
+  mainSigningView: {
+    width: normalized.wp(90)
+  },
+  childSigningView: {
+    flexDirection: 'row',
+  },
+  andView: {
+    flexDirection: 'row',
+     alignSelf: 'flex-start',
+  },
   noAccount: {
-    fontSize: fontSizes.medium,
+    fontSize: fontSizes.regular,
     color: AppStyles.color.GRANITE_GRAY,
     justifyContent: 'flex-end',
-    marginBottom: hp(4),
+    // marginBottom: hp(4),
   },
   haveAccount: {
     fontSize: fontSizes.medium,
@@ -50,6 +62,41 @@ const styles = StyleSheet.create({
   signUp: {
     color: AppStyles.color.COLOR_PRIMARY,
     fontWeight: '500',
+  },
+  signUpPolicy: {
+    color: AppStyles.color.COLOR_PRIMARY,
+    fontWeight: '400',
+    alignItems:'flex-start',
+    justifyContent:'flex-start',
+    
+    // width:normalized.wp(90),
+    // alignSelf:'center'
+  },
+  buttonLoader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: normalized.hp(35),
+  },
+  secondaryButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems : 'center',
+    marginTop: hp(10),
+  },
+  noAccountTwo: {
+    fontSize: fontSizes.medium,
+    color: '#666666',
+    alignSelf: 'center'
+  },
+  label: {
+    margin: normalized.hp(8),
+    fontWeight: '400',
+    //color: Colors.white,
+  },
+  labelColored: {
+    margin: normalized.hp(8),
+    fontWeight: '400',
+    //color: Colors.baseColor,
   },
 });
 

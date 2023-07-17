@@ -53,6 +53,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginBottom: hp(4),
   },
+  buttonLoader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: hp(38),
+  },
   orText: {
     alignSelf: 'center',
     marginVertical: hp(2),

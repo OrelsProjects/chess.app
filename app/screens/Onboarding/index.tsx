@@ -7,8 +7,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
-import { Icons } from 'app/svgs';
 import Svg, { SvgUri, SvgXml } from 'react-native-svg';
 import { onboardOne, onboardTwo, sliderOne, sliderTwo } from 'app/assets/SVGs';
 
@@ -21,8 +19,8 @@ const OnBordingScreen: React.FC = () => {
     return (
       <View style={styles.container}>
         <View style={styles.imageView}>
-          {/* <Image source={images.icons.calenderImage} style={styles.image} /> */}
-          <SvgXml xml={onboardTwo}  width={wp(100)} height={wp(60)}/>
+        
+          <SvgXml xml={onboardTwo} width={wp(100)} height={wp(60)} />
         </View>
         <View style={styles.textView}>
           <View style={styles.mainView}>
@@ -36,7 +34,7 @@ const OnBordingScreen: React.FC = () => {
                 purchases. Start building your rewards now.
               </Text>
               {/* <Image source={images.icons.Slider2} style={styles.slider} /> */}
-              <SvgXml xml={sliderTwo} width={wp(8)} height={wp(12)}/> 
+              <SvgXml xml={sliderTwo} width={wp(8)} height={wp(12)} />
             </View>
             <View style={styles.buttons}>
               <View style={styles.buttonDirection}>
@@ -64,7 +62,7 @@ const OnBordingScreen: React.FC = () => {
       <View style={styles.container}>
         <View style={styles.imageView}>
           {/* <Image source={images.icons.gameImage} style={styles.image} /> */}
-          <SvgXml xml={onboardOne} width={wp(100)} height={wp(60)}/>
+          <SvgXml xml={onboardOne} width={wp(100)} height={wp(60)} />
         </View>
         <View style={styles.textView}>
           <View style={styles.mainView}>
@@ -76,8 +74,8 @@ const OnBordingScreen: React.FC = () => {
                 Take your investment knowledge to the next level with Nmo
                 academy's expert-led courses.
               </Text>
-           
-              <SvgXml xml={sliderOne} width={wp(8)} height={wp(12)}/> 
+
+              <SvgXml xml={sliderOne} width={wp(8)} height={wp(12)} />
               {/* <SvgUri
               uri={require('../../images/handWaveIcon.svg')}
               width={20}

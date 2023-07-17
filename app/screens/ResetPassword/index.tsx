@@ -41,6 +41,7 @@ const ResetPassword: React.FC = () => {
             iconName={lockIcon}
             onChangeText={e => setNewPassword(e)}
             secureTextEntry={true}
+            rightIcon={''}
           />
           <CustomInput
             placeholder="Confirm New Password"
@@ -48,6 +49,7 @@ const ResetPassword: React.FC = () => {
             iconName={lockIcon}
             onChangeText={e => setConfirmPassword(e)}
             secureTextEntry={true}
+            rightIcon={''}
           />
 
           <ButtonCTA

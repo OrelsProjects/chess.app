@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { fontSizes, normalized, radius } from 'app/config/metrics';
 import AppStyles from 'app/config/styles';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,7 +19,7 @@ flexDirection:'row',
 alignItems:'center',
 justifyContent:'space-between',
 width:normalized.wp(95),
-// marginVertical:normalized.hp(1)
+marginVertical:normalized.hp(1)
   },
   ratingView:{
 width:normalized.wp(45),
@@ -56,6 +60,22 @@ padding:3
   starText: {
     fontSize: fontSizes.small,
   },
+  xIcon: {
+    backgroundColor: AppStyles.color.COLOR_WHITE,
+    width: normalized.wp(6),
+    height: normalized.wp(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: normalized.hp(10),
+    elevation: 2.5,
+    shadowColor: AppStyles.color.COLOR_BLACK,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 22,
+    // position: 'absolute',
+    marginTop: normalized.wp(-22),
+    // marginLeft: wp(10),
+  },
   wgmContainer: {
     backgroundColor: AppStyles.color.NORTH_TEXAS_GREEN,
     borderRadius: 24,
@@ -63,7 +83,7 @@ padding:3
     padding: normalized.wp(2.5),
   },
   wgmText: {
-    fontSize: fontSizes.small,
+    fontSize: fontSizes.large,
     color: AppStyles.color.COLOR_WHITE,
   },
   // starImage: {
@@ -107,7 +127,7 @@ padding:3
     alignSelf: 'flex-start',
     marginHorizontal: normalized.wp(3),
     fontSize: fontSizes.large,
-    marginTop: normalized.hp(2),
+    // marginTop: normalized.hp(2),
   },
   // multiImages: {
   //   flexDirection: 'row',
@@ -156,20 +176,26 @@ padding:3
     width: normalized.wp(15),
     height: normalized.hp(5),
   },
-  fifthView: {
-    // justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'flex-end',
+  view2: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: normalized.wp(90),
+    alignSelf: 'center',
     position: 'absolute',
-     right:10,
-   // right: -70,
-    bottom: normalized.hp(23),
-    // backgroundColor: 'red',
+    bottom: normalized.hp(20),
   },
-  addIcon: {
-    width: normalized.wp(12),
-    height: normalized.hp(6),
-    alignSelf: 'flex-end',
+  button: {
+    width: 60,
+    height: 60,
+    borderRadius: 90,
+    backgroundColor: '#1E90FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 25,
+    fontWeight: '700', 
+    color: '#ffffff'
   },
   sixView: {
     justifyContent: 'space-evenly',
@@ -251,6 +277,38 @@ padding:3
   buttonView:{
 bottom:normalized.hp(5),
 position:'absolute'
+  },
+  userImagesView:{
+    width:normalized.wp(10),
+flexDirection:'row',
+alignItems:'center'
+  },
+  buttonLoader: {
+    flex:1,
+    zIndex:1,
+    position: 'absolute',
+    alignSelf: 'center',
+    top: hp(38),
+  },
+  userImagesWidth:{
+    width: normalized.wp(4.5),
+    marginVertical:normalized.hp(1)
+  },
+  plusUserView:{
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: normalized.wp(7),
+    height: normalized.hp(3.3),
+    borderRadius: 90,
+    position: 'absolute',
+    bottom: normalized.hp(-1.65),
+    right: normalized.wp(2),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  plusUserText:{
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 

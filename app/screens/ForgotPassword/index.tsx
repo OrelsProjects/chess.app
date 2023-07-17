@@ -18,11 +18,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState('');
   const goBack = () => NavigationService.goBack();
-  const navigateToOTP = () => NavigationService.navigate("EnterOTP")
+  const navigateToOTP = () => NavigationService.navigate('EnterOTP');
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, {paddingTop:insets.top}]} >
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <CustomHeader leftIcon={leftArrowIcon} onBackButtonPress={goBack} />
       <View style={styles.childContainer}>
         <View style={styles.headerContainer}>
@@ -39,6 +39,7 @@ const ForgotPassword: React.FC = () => {
           iconName={mailIcon}
           onChangeText={e => setEmail(e)}
           keyboardType={'email-address'}
+          rightIcon={''}
         />
 
         <ButtonCTA

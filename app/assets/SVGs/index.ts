@@ -219,4 +219,5 @@ export const undo = `<svg width="21" height="17" viewBox="0 0 21 17" fill="none"
 <rect width="20" height="16.0905" fill="white" transform="translate(0.5)"/>
 </clipPath>
 </defs>
-</svg>`;
+</svg>
+` 
