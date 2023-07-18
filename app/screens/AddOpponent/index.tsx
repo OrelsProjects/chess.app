@@ -281,21 +281,22 @@ const AddOpponent: React.FC = () => {
     } else {
       Alert.alert('Please fill all the fields');
     }
+    setSelectedBtn('')
   };
 
 
 
   const gameStatsBtn = [
     {
-      name: '0',
+      name: 'W',
       value: '0',
     },
     {
-      name: '0.5',
+      name: 'D',
       value: '0.5',
     },
     {
-      name: '1',
+      name: 'L',
       value: '1',
     },
   ];
@@ -452,11 +453,11 @@ const AddOpponent: React.FC = () => {
                     styles.statsBtnContainer,
                     {
                       backgroundColor:
-                        selectedBtn === btn.name
+                        selectedBtn === btn.value
                           ? AppStyles.color.BABY_PINK
                           : '#F3F7FF',
                       borderColor:
-                        selectedBtn === btn.name
+                        selectedBtn === btn.value
                           ? AppStyles.color.BABY_PINK
                           : AppStyles.color.COLOR_PRIMARY,
                     },

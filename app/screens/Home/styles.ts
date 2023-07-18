@@ -187,13 +187,14 @@ padding:3
   button: {
     width: 60,
     height: 60,
-    borderRadius: 90,
+    borderRadius: 60,
     backgroundColor: '#1E90FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    fontSize: 25,
+    marginTop:-2,
+    fontSize: 24,
     fontWeight: '700', 
     color: '#ffffff'
   },
