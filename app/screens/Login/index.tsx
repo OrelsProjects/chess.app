@@ -93,6 +93,7 @@ const Login: React.FC = () => {
           <CustomInput
             placeholder="Email"
             value={email}
+            placeholderTextColor="#8A8A8F" 
             iconName={mailIcon}
             onChangeText={e => setEmail(e)}
             keyboardType={'email-address'}

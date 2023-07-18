@@ -14,23 +14,24 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   content: { flexDirection: 'row', justifyContent: 'space-between' },
-  ratingDirection:{
-flexDirection:'row',
-alignItems:'center',
-justifyContent:'space-between',
-width:normalized.wp(95),
-marginVertical:normalized.hp(1)
+  ratingDirection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: normalized.wp(95),
+    marginVertical: normalized.hp(1),
   },
-  ratingView:{
-width:normalized.wp(45),
-// height:normalized.hp(4),
-backgroundColor:AppStyles.color.COLOR_WHITE,
-elevation:1,
-alignItems:'center',justifyContent:'center'
+  ratingView: {
+    width: normalized.wp(45),
+    // height:normalized.hp(4),
+    backgroundColor: AppStyles.color.COLOR_WHITE,
+    elevation: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  ratingText:{
-fontSize:fontSizes.regular,
-padding:3
+  ratingText: {
+    fontSize: fontSizes.regular,
+    padding: 3,
   },
 
   scrollViewContent: {
@@ -182,27 +183,27 @@ padding:3
     width: normalized.wp(90),
     alignSelf: 'center',
     position: 'absolute',
-    bottom: normalized.hp(20),
+    bottom: normalized.hp(25),
   },
   button: {
     width: 60,
     height: 60,
-    borderRadius: 60,
+    borderRadius: 90,
     backgroundColor: '#1E90FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    marginTop:-2,
-    fontSize: 24,
-    fontWeight: '700', 
-    color: '#ffffff'
+    fontSize: 25,
+    fontWeight: '700',
+    color: '#ffffff',
   },
   sixView: {
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
     position: 'absolute',
+    elevation: 3,
     bottom: normalized.hp(5),
     width: normalized.wp(45),
     height: normalized.hp(8),
@@ -256,14 +257,6 @@ padding:3
     //backgroundColor: 'pink',
     //marginVertical: normalized.hp(2),
   },
-  nineText: {
-    fontSize: fontSizes.medium,
-    position: 'absolute',
-    textAlign: 'center',
-    alignSelf: 'center',
-    bottom: normalized.hp(1),
-    width: normalized.wp(70),
-  },
   lastView: {
     // justifyContent: 'flex-end',
     // alignItems: 'center',
@@ -273,29 +266,29 @@ padding:3
     //marginTop: normalized.hp(77),
     //marginVertical: normalized.hp(-5),
     // top: 0,
-    bottom: normalized.hp(8),
+    bottom: normalized.hp(10),
   },
-  buttonView:{
-bottom:normalized.hp(5),
-position:'absolute'
+  buttonView: {
+    bottom: normalized.hp(6.5),
+    position: 'absolute',
   },
-  userImagesView:{
-    width:normalized.wp(10),
-flexDirection:'row',
-alignItems:'center'
+  userImagesView: {
+    width: normalized.wp(10),
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   buttonLoader: {
-    flex:1,
-    zIndex:1,
+    flex: 1,
+    zIndex: 1,
     position: 'absolute',
     alignSelf: 'center',
     top: hp(38),
   },
-  userImagesWidth:{
+  userImagesWidth: {
     width: normalized.wp(4.5),
-    marginVertical:normalized.hp(1)
+    marginVertical: normalized.hp(1),
   },
-  plusUserView:{
+  plusUserView: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     width: normalized.wp(7),
     height: normalized.hp(3.3),
@@ -306,10 +299,18 @@ alignItems:'center'
     justifyContent: 'center',
     alignItems: 'center',
   },
-  plusUserText:{
+  plusUserText: {
     color: 'white',
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  nineText: {
+    fontSize: fontSizes.medium,
+    position: 'absolute',
+    textAlign: 'center',
+    alignSelf: 'center',
+    bottom: normalized.hp(3),
+    width: normalized.wp(70),
   },
 });
 

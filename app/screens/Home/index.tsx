@@ -191,7 +191,7 @@ const Home: React.FC = () => {
         </View>
         <View style={styles.ratingView}>
           <Text style={styles.ratingText}>
-            Expected Rating ({expectRating})
+            Expected Rating ({expectRating ? expectRating : calRating})
           </Text>
         </View>
       </View>
