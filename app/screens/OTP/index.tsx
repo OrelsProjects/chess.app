@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { Text, View,ActivityIndicator } from 'react-native';
 import NavigationService from 'app/navigation/NavigationService';
 import styles from './styles';
 import ButtonCTA from 'app/components/ButtonCTA';
 import CustomHeader from 'app/components/CustomHeader';
-import CustomInput from 'app/components/CustomInput';
 import { leftArrowIcon, mailIcon } from 'app/assets/SVGs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Auth } from 'aws-amplify';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -19,13 +18,79 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import { useDispatch, useSelector } from 'react-redux';
+import { setHeader, Signup } from 'app/redux/actions/action';
+import { store } from 'app/redux/store/store';
+import { useStore } from 'app/store';
 
-const EnterOTP: React.FC = () => {
+interface OtpProps {
+  username: String;
+}
+
+const EnterOTP: React.FC<OtpProps> = ({ route }) => {
+  const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
+  const signupUserInfo = useSelector((state: any) => state.auth.signupInfo);
+  const userId = useSelector((state: any) => state.auth.user);
+  const userName = route.params.username;
+  const userEmail = route.params.email;
+  const israel_rt = route.params.israel_rt;
+
   const insets = useSafeAreaInsets();
   const goBack = () => NavigationService.goBack();
-  const navigateToResetPass = () => NavigationService.navigate("ResetPassword")
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
-  const CELL_COUNT = 4;
+  
+
+  const navigateToResetPass = async () => {
+    if (route.params.username && route.params.password) {
+      try {
+        await Auth.confirmSignUp(route.params.username, value);
+        console.log('Sign-up confirmed successfully.');
+        // NavigationService.navigate('Login');
+        const user = await Auth.signIn(
+          route.params.username,
+          route.params.password,
+        );
+        //sign up here and navigate to home.
+        dispatch(setHeader(user.attributes.sub));
+        setLoading(true)
+        setTimeout(() => {
+       
+          verifyOTP();
+        }, 3000);
+        // Continue with the confirmed user flow
+      } catch (error) {
+        console.error('Error confirming sign-up:', error);
+        // Display an appropriate error message to the user
+      }
+    } else {
+      NavigationService.navigate('ResetPassword');
+    }
+  };
+
+  const verifyOTP = async () => {
+
+    try {
+      let objParam={
+        first_name: userName,
+        last_name: 'testing',
+        gender: 'male',
+        email: userEmail,
+        phone_number: '0543442286',
+        player_number: Number(israel_rt),
+        date_of_birth: '12-12-2020',
+      }
+      dispatch(Signup(objParam));
+      setLoading(false)
+     
+    } catch (error) {
+      console.error('Signup error:', error);
+     
+    }
+  };
+
+  const CELL_COUNT = 6;
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -41,7 +106,7 @@ const EnterOTP: React.FC = () => {
           <Text style={styles.heading}>Enter OTP</Text>
           <Text style={styles.subHeading}>
             A 4 digits code has been sent to your email{' '}
-            <Text style={{ color: '#383838' }}>email@gmail.com</Text>
+            <Text style={{ color: '#383838' }}>{userEmail}</Text>
           </Text>
         </View>
 
@@ -68,11 +133,18 @@ const EnterOTP: React.FC = () => {
             </Text>
           )}
         />
-
+  {loading && (
+              <View style={styles.buttonLoader}>
+                <ActivityIndicator size="large" color="silver" />
+              </View>
+            )}
         <ButtonCTA
           customStyle={{ width: wp(90) }}
           buttonText={'Verify'}
-          onPress={navigateToResetPass}
+          onPress={() => {
+            navigateToResetPass();
+            // verifyOTP();
+          }}
         />
       </View>
     </View>

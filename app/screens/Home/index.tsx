@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   FlatList,
@@ -7,14 +7,21 @@ import {
   Text,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { useStore } from 'app/store';
-
+import { store } from 'app/redux/store/store';
 import styles from './styles';
 import { GetUserDetails } from 'app/services/react-query/queries/user';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CustomHeader from 'app/components/CustomHeader';
-import { drawerIcon, neilPlayer, starGoldIcon, undo } from 'app/assets/SVGs';
+import {
+  drawerIcon,
+  neilPlayer,
+  starGoldIcon,
+  undo,
+  xIcon,
+} from 'app/assets/SVGs';
 import images from 'app/config/images';
 import { SvgXml } from 'react-native-svg';
 import { normalized } from 'app/config/metrics';
@@ -25,9 +32,23 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  expectedRating,
+  removeSearchResult,
+  searchUser,
+} from 'app/redux/actions/action';
+import axios from 'axios';
+import { BaseURL, endPoints } from 'app/constants';
+
+
 const Home: React.FC = () => {
   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
   const { isLoading, isFetching, data = { results: [] } } = GetUserDetails();
+  const [calRating, setCalRating] = useState(0);
+  const [itemListArray, setItemListArray] = useState([]);
+  const [resetResponse, setResetResponse] = useState('');
+  const [loading,setLoading]=useState(false)
   const insets = useSafeAreaInsets();
 
   const onLogOut = () => {
@@ -41,31 +62,112 @@ const Home: React.FC = () => {
     navigation.openDrawer();
   };
 
-  const content = [
-    {
-      svg: neilPlayer,
-      text: 'Neil',
-      starText: '1200',
-      image: images.icons.players,
-      starImage: images.icons.star,
-      wgmImage: images.icons.wgm,
-    },
-    // Add more objects for additional items
-  ];
+  const dispatch = useDispatch();
 
-  // const renderItem = ({ item }) => (
-  //   <Card style={styles.card} mode="elevated">
-  //     <Card.Cover source={{ uri: item.image }} />
-  //     <Card.Title title={item.name} />
-  //     <Card.Content>
-  //       <View style={styles.content}>
-  //         <Paragraph>Status: {item.status}</Paragraph>
-  //         <Paragraph>Species: {item.species}</Paragraph>
-  //         <Paragraph>Gender: {item.gender}</Paragraph>
-  //       </View>
-  //     </Card.Content>
-  //   </Card>
-  // );
+  const handleRemoveResult = (index: number) => {
+    dispatch(removeSearchResult(index));
+  };
+
+  const { searchResults, expectRating } = useSelector(
+    (state: any) => state.auth,
+  );
+
+  const content =
+    searchResults?.length > 0
+      ? searchResults.map((result: any) => ({
+          svg: neilPlayer,
+          text: result?.opponentName,
+          starText: result?.opponentRating,
+          image: images.icons.players,
+          starImage: images.icons.star,
+          wgmImage: images.icons.wgm,
+        }))
+      : null;
+
+  
+
+  const getCurrentRatingApi = async () => {
+    try {
+      const response = await BaseURL.get(endPoints.getUserApi);
+      setCalRating(response.data.rating_israel);
+      return response.data;
+    } catch (error) {
+      console.error('Search error:', error);
+      throw error;
+    }
+  };
+
+  const sendDataToAPI = async () => {
+    setLoading(true)
+    console.log('itemlist', itemListArray);
+    const payload = {
+      games: itemListArray,
+    };
+
+    try {
+      const response = await BaseURL.post(endPoints.calculateRating, payload);
+
+      dispatch(expectedRating(response.data));
+      setLoading(false)
+      console.log(response.data);
+    } catch (error) {
+      setLoading(false)
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    getListObjects();
+  }, [searchResults]);
+
+  const getListObjects = () => {
+    let tempArray: any = [];
+    searchResults?.map((item: any) => {
+      let obj = {
+        opponentRating: item.opponentRating,
+        opponentPoints: item.opponentPoints,
+      };
+
+      tempArray.push(obj);
+    });
+   
+    setItemListArray(tempArray);
+  };
+
+  useEffect(() => {
+    getCurrentRatingApi();
+  }, []);
+
+  const calRatingButton = () => {
+    sendDataToAPI();
+  };
+
+  const handleReset = async () => {
+    setLoading(true)
+    try {
+      const resetRating = await BaseURL.put(endPoints.reset, {
+        // Request payload
+      });
+      const response = resetRating?.data;
+      dispatch(expectedRating(response));
+      setLoading(false)
+    } catch (error) {
+      console.log('API error:', error);
+      setLoading(false)
+    }
+  };
+
+  const handleUndo = async () => {
+    setLoading(true)
+    try {
+      const resetUndo = await BaseURL.put(endPoints.undo);
+      dispatch(expectedRating(resetUndo.data));
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      console.log('API error:', error);
+    }
+  };
 
   return (
     <View
@@ -76,59 +178,74 @@ const Home: React.FC = () => {
         justifyContent: 'space-evenly',
         alignItems: 'center',
       }}>
+        {loading && (
+            <View style={styles.buttonLoader}>
+              <ActivityIndicator size="large" color="silver" />
+            </View>
+           )} 
       <CustomHeader leftIcon={drawerIcon} onBackButtonPress={openDrawer} />
 
       <View style={styles.ratingDirection}>
         <View style={styles.ratingView}>
-          <Text style={styles.ratingText}>Current Rating (224)</Text>
+          <Text style={styles.ratingText}>Current Rating ({calRating})</Text>
         </View>
         <View style={styles.ratingView}>
-          <Text style={styles.ratingText}>Expected Rating (1854)</Text>
+          <Text style={styles.ratingText}>
+            Expected Rating ({expectRating})
+          </Text>
         </View>
       </View>
 
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}>
-        {Array.from({ length: 3 }, (_, index) => (
+        {Array.from({ length: 1 }, (_, index) => (
           <React.Fragment key={index}>
-            {content.map((item, itemIndex) => (
-              <View key={itemIndex} style={styles.firstView}>
-                <TouchableOpacity style={styles.secondView}>
-                  <View style={styles.thirdView}>
-                    <SvgXml xml={item.svg} style={styles.neil} />
-                    <View style={styles.fourthView}>
-                      <Text style={styles.neilText}>{item.text}</Text>
-                      <Image source={item.image} style={styles.players} />
-                    </View>
-                    <View style={styles.middleView}>
-                      {/* <Image source={item.starImage} style={styles.starImage} /> */}
-                      <SvgXml
-                        xml={starGoldIcon}
-                        width={normalized.wp(5)}
-                        height={normalized.hp(5)}
-                      />
-                      <Text style={styles.starText}>{item.starText}</Text>
-                    </View>
+            {content
+              ? content.map((item: any, index: any) => (
+                  <View key={index} style={styles.firstView}>
+                    <TouchableOpacity style={styles.secondView}>
+                      <View style={styles.thirdView}>
+                        <SvgXml xml={item.svg} style={styles.neil} />
+                        <View style={styles.fourthView}>
+                          <Text style={styles.neilText}>{item.text}</Text>
+                        
+                        </View>
+                        <View style={styles.middleView}>
+                          <SvgXml
+                            xml={starGoldIcon}
+                            width={normalized.wp(5)}
+                            height={normalized.hp(5)}
+                          />
+                          <Text style={styles.starText}>
+                            {resetResponse || item.starText}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={styles.wgmContainer}>
+                        <Text style={styles.wgmText}>WGM</Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => handleRemoveResult(index)}
+                        style={styles.xIcon}>
+                        <SvgXml xml={xIcon} width={wp(4)} height={wp(4)} />
+                      </TouchableOpacity>
+                    </TouchableOpacity>
                   </View>
-                  <View style={styles.wgmContainer}>
-                    <Text style={styles.wgmText}>WGM</Text>
-                  </View>
-                  {/* <Image source={item.wgmImage} style={styles.wgm} /> */}
-                </TouchableOpacity>
-              </View>
-            ))}
+                ))
+              : null}
           </React.Fragment>
         ))}
       </ScrollView>
-      <TouchableOpacity
-        style={styles.fifthView}
-        onPress={navigateToAddOpponent}>
-        <Image source={images.icons.addIcon} style={styles.addIcon} />
+
+      <TouchableOpacity style={styles.view2} onPress={navigateToAddOpponent}>
+        <View style={styles.button}>
+          <Text style={styles.text}>+</Text>
+        </View>
       </TouchableOpacity>
       <View style={styles.lastView}>
         <View style={styles.sixView}>
-          <TouchableOpacity style={styles.sevenView}>
+          <TouchableOpacity onPress={handleUndo} style={styles.sevenView}>
             <SvgXml xml={undo} width={20} height={20} />
 
             <Text style={styles.undoText}>Undo</Text>
@@ -136,7 +253,7 @@ const Home: React.FC = () => {
 
           <View style={styles.seperator} />
 
-          <TouchableOpacity style={styles.eightView}>
+          <TouchableOpacity onPress={handleReset} style={styles.eightView}>
             <Image source={images.icons.reset} style={styles.reset} />
             <Text style={styles.resetText}>reset</Text>
           </TouchableOpacity>
@@ -146,7 +263,7 @@ const Home: React.FC = () => {
         <ButtonCTA
           customStyle={{ width: wp(90) }}
           buttonText={'Calculate Rating'}
-          // onPress={onLogin}
+          onPress={calRatingButton}
         />
       </View>
       <Text style={styles.nineText}>The ratings may not be accurate</Text>
@@ -155,107 +272,3 @@ const Home: React.FC = () => {
 };
 
 export default Home;
-
-// import React from 'react';
-// import {
-//   View,
-//   FlatList,
-//   RefreshControl,
-//   TouchableOpacity,
-//   Text,
-//   Image,
-//   ScrollView,
-// } from 'react-native';
-// import { useStore } from 'app/store';
-
-// import styles from './styles';
-// import { GetUserDetails } from 'app/services/react-query/queries/user';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
-// import CustomHeader from 'app/components/CustomHeader';
-// import { drawerIcon, neilPlayer, reset, undo } from 'app/assets/SVGs';
-// import images from 'app/config/images';
-// import { SvgXml } from 'react-native-svg';
-// import { normalized } from 'app/config/metrics';
-// const Home: React.FC = () => {
-//   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
-//   const { isLoading, isFetching, data = { results: [] } } = GetUserDetails();
-//   const insets = useSafeAreaInsets();
-
-//   const onLogOut = () => {
-//     setIsLoggedIn(false);
-//   };
-
-//   const content = [
-//     {
-//       svg: neilPlayer,
-//       text: 'Neil',
-//       starText: '1200',
-//       image: images.icons.players,
-//       starImage: images.icons.star,
-//       wgmImage: images.icons.wgm,
-//     },
-//   ];
-
-//   return (
-//     <View
-//       style={{
-//         flexGrow: 1,
-//         backgroundColor: '#fff',
-//         paddingTop: insets.top,
-//         justifyContent: 'space-evenly',
-//         alignItems: 'center',
-//       }}>
-//       <CustomHeader leftIcon={drawerIcon} />
-//       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-//         {Array.from({ length: 8 }, (_, index) => (
-//           <React.Fragment key={index}>
-//             {content.map((item, itemIndex) => (
-//               <View key={itemIndex} style={styles.firstView}>
-//                 <TouchableOpacity style={styles.secondView}>
-//                   <View style={styles.thirdView}>
-//                     <SvgXml xml={item.svg} style={styles.neil} />
-//                     <View style={styles.fourthView}>
-//                       <Text style={styles.neilText}>{item.text}</Text>
-//                       <Image source={item.image} style={styles.players} />
-//                     </View>
-//                     <View style={styles.middleView}>
-//                       <Image source={item.starImage} style={styles.starImage} />
-//                       <Text style={styles.neilText}>{item.starText}</Text>
-//                     </View>
-//                   </View>
-//                   <Image source={item.wgmImage} style={styles.wgm} />
-//                 </TouchableOpacity>
-//               </View>
-//             ))}
-//           </React.Fragment>
-//         ))}
-//       </ScrollView>
-
-//       <View style={styles.lastView}>
-//         <TouchableOpacity style={styles.fifthView}>
-//           <Image source={images.icons.addIcon} style={styles.addIcon} />
-//         </TouchableOpacity>
-
-//         <View style={styles.sixView}>
-//           <TouchableOpacity style={styles.sevenView}>
-//             <SvgXml xml={undo} width={normalized.wp(6)} height={normalized.hp(2)} />
-//             {/* <Image source={images.icons.undo} style={styles.undo} /> */}
-//             <Text style={styles.undoText}>Undo</Text>
-//           </TouchableOpacity>
-
-//           <View style={styles.seperator}></View>
-
-//           <TouchableOpacity style={styles.eightView}>
-//            {/* <SvgXml xml={reset} width={normalized.wp(8)} height={normalized.hp(3)} /> */}
-//             <Image source={images.icons.reset} style={styles.reset} />
-//             <Text style={styles.resetText}>reset</Text>
-//           </TouchableOpacity>
-//         </View>
-//         <Text style={styles.nineText}>The ratings may not be accurate</Text>
-
-//       </View>
-//     </View>
-//   );
-// };
-
-// export default Home;

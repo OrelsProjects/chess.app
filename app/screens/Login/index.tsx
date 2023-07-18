@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 
 import styles from './styles';
@@ -22,19 +30,48 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { Auth } from 'aws-amplify';
+import { setHeader } from 'app/redux/actions/action';
+import { store } from 'app/redux/store/store';
 
 const Login: React.FC = () => {
   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+  const [userPassword, setUserPassword] = useState('');
+  const [signUpUserpassword, setSignUpUserpassword] = useState('');
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
   const onLogin = () => {
     setIsLoggedIn(true);
   };
 
+
+
   const onForgot = () => NavigationService.navigate('ForgotPassword');
-  const navigateToSignUp = () => NavigationService.navigate('SignUpScreen')
+  const navigateToSignUp = () => NavigationService.navigate('SignUpScreen');
+  const navigateToHome = () => NavigationService.navigate('Home');
+  const dispatch = useDispatch();
+
+
+
+  let auth = async () => {
+    try {
+      setLoading(true);
+      const username = email;
+      const password = userPassword;
+      const user = await Auth.signIn(username, password);
+      dispatch(setHeader(user.attributes.sub));
+      onLogin();
+   
+    } catch (error) {
+      console.error('Error occurred:', error);
+      Alert.alert('Incorrect username or password');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View
@@ -44,10 +81,10 @@ const Login: React.FC = () => {
         keyboardShouldPersistTaps="handled">
         <CustomHeader />
         <View style={styles.childContainer}>
-          {/* <Image source={images.icons.chessLogo} style={styles.chesslogo} /> */}
+       
           <View style={styles.headerContainer}>
             <View style={styles.welcomeContainer}>
-              <Text style={styles.welcome}>Welcome </Text>
+              <Text style={styles.welcome}>Welcome</Text>
               <SvgXml xml={handWave} width={'28'} height={'28'} />
             </View>
             <Text style={styles.loginToContinue}>Login to continue</Text>
@@ -59,13 +96,15 @@ const Login: React.FC = () => {
             iconName={mailIcon}
             onChangeText={e => setEmail(e)}
             keyboardType={'email-address'}
+            rightIcon={''}
           />
           <CustomInput
             placeholder="Password"
-            value={password}
+            value={userPassword}
             iconName={lockIcon}
-            onChangeText={e => setPassword(e)}
+            onChangeText={e => setUserPassword(e)}
             secureTextEntry={true}
+            rightIcon={''}
           />
 
           <TouchableOpacity style={styles.forgotPass} onPress={onForgot}>
@@ -75,8 +114,14 @@ const Login: React.FC = () => {
           <ButtonCTA
             customStyle={{ width: wp(90) }}
             buttonText={'Login'}
-            onPress={onLogin}
+            onPress={auth}
+            disabled={loading}
           />
+          {loading && (
+            <View style={styles.buttonLoader}>
+              <ActivityIndicator size="large" color="silver" />
+            </View>
+          )}
           <Text style={styles.orText}>Or</Text>
 
           <TouchableOpacity
@@ -95,7 +140,6 @@ const Login: React.FC = () => {
           <Text style={styles.signUp}>Sign Up</Text>
         </TouchableOpacity>
       </View>
-
     </View>
   );
 };

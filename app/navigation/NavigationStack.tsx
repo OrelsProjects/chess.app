@@ -18,14 +18,6 @@ import OnBordingScreen from 'app/screens/Onboarding';
 import SignUpScreen from 'app/screens/SignUp';
 import AddOpponent from 'app/screens/AddOpponent';
 import CustomDrawer from 'app/components/CustomDrawer';
-import { SvgXml } from 'react-native-svg';
-import {
-  calculatorIcon,
-  homeIcon,
-  infoIcon,
-  settingsIcon,
-} from 'app/assets/SVGs';
-import { fontSizes, normalized } from 'app/config/metrics';
 import AppStyles from 'app/config/styles';
 
 const Stack = createStackNavigator();

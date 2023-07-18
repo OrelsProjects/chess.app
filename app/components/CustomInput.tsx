@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
+import { View, TextInput, StyleSheet, KeyboardTypeOptions, TouchableOpacity } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import {
   widthPercentageToDP as wp,
@@ -14,6 +14,8 @@ interface CustomInputProps {
   keyboardType?: KeyboardTypeOptions | undefined;
   onChangeText: (text: string) => void;
   rightIcon: string;
+  onRightIconPress?:any;
+  maxLength:any
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -24,6 +26,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
   keyboardType,
   iconName,
   rightIcon,
+  onRightIconPress,
+  maxLength=500
 }) => {
   return (
     <View style={styles.container}>
@@ -35,8 +39,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
         onChangeText={onChangeText}
         style={styles.input}
         value={value}
+        maxLength={maxLength}
       />
-      {rightIcon ? <SvgXml xml={rightIcon} height={'24'} width={'24'} /> : null}
+      {rightIcon ? <TouchableOpacity onPress={onRightIconPress}><SvgXml xml={rightIcon} height={'24'} width={'24'} /></TouchableOpacity> : null}
     </View>
   );
 };

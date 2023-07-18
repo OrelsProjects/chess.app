@@ -1,4 +1,4 @@
-import { fontSizes, radius } from 'app/config/metrics';
+import { fontSizes, radius,normalized} from 'app/config/metrics';
 import AppStyles from 'app/config/styles';
 import { StyleSheet } from 'react-native';
 import {
@@ -44,9 +44,15 @@ const styles = StyleSheet.create({
   codeFieldRoot: {
     marginVertical: hp(4),
   },
+  buttonLoader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: normalized.hp(35),
+    zIndex:10
+  },
   cell: {
-    width: wp(16),
-    height: hp(8),
+    width: wp(12),
+    height: hp(6),
     // backgroundColor: theme.color.backgroundColor,
     // backgroundColor: "red",
     lineHeight: hp(5),
