@@ -40,6 +40,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         style={styles.input}
         value={value}
         maxLength={maxLength}
+        placeholderTextColor={"#8A8A8F"}
       />
       {rightIcon ? <TouchableOpacity onPress={onRightIconPress}><SvgXml xml={rightIcon} height={'24'} width={'24'} /></TouchableOpacity> : null}
     </View>

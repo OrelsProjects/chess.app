@@ -281,7 +281,7 @@ const AddOpponent: React.FC = () => {
     } else {
       Alert.alert('Please fill all the fields');
     }
-    setSelectedBtn('')
+    setSelectedBtn('');
   };
 
 
