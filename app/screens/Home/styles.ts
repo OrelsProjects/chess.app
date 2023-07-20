@@ -30,7 +30,8 @@ alignItems:'center',justifyContent:'center'
   },
   ratingText:{
 fontSize:fontSizes.regular,
-padding:3
+padding:3,
+color: '#222222',
   },
 
   scrollViewContent: {

@@ -42,6 +42,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       editable={editable}
         keyboardType={keyboardType}
         placeholder={placeholder}
+        placeholderTextColor={'#8A8A8F'}
         secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}

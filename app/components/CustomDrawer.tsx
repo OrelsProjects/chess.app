@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     marginLeft: 12,
+    color: '#222222'
   },
   footerText: {
     color: AppStyles.color.SONIC_SILVER,
