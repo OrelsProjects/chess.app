@@ -14,8 +14,10 @@ import CustomHeader from 'app/components/CustomHeader';
 import CustomInput from 'app/components/CustomInput';
 import { leftArrowIcon, mailIcon } from 'app/assets/SVGs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 const ForgotPassword: React.FC = () => {
+  const {t} = useTranslation()
   const [email, setEmail] = useState('');
   const goBack = () => NavigationService.goBack();
   const navigateToOTP = () => NavigationService.navigate('EnterOTP');
@@ -26,15 +28,14 @@ const ForgotPassword: React.FC = () => {
       <CustomHeader leftIcon={leftArrowIcon} onBackButtonPress={goBack} />
       <View style={styles.childContainer}>
         <View style={styles.headerContainer}>
-          <Text style={styles.heading}>Forgot Password</Text>
+          <Text style={styles.heading}>{t('forgotPassword')}</Text>
           <Text style={styles.subHeading}>
-            Don't worry it happens. Please enter your the email address with
-            associated with your account
+            {t('dontWorryItHappensPleaseEnterYourTheEmailAddressWithAssociatedWithYourAccount')}
           </Text>
         </View>
 
         <CustomInput
-          placeholder="Email"
+          placeholder={t('email')}
           value={email}
           iconName={mailIcon}
           onChangeText={e => setEmail(e)}
@@ -44,7 +45,7 @@ const ForgotPassword: React.FC = () => {
 
         <ButtonCTA
           customStyle={{ width: wp(90) }}
-          buttonText={'Submit'}
+          buttonText={t('submit')}
           onPress={navigateToOTP}
         />
       </View>

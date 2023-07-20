@@ -21,19 +21,24 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeader, Signup } from 'app/redux/actions/action';
 import { store } from 'app/redux/store/store';
-import { useStore } from 'app/store';
+import { useTranslation } from 'react-i18next';
+import { useStore } from 'app/store/index';
 
 interface OtpProps {
   username: String;
 }
 
 const EnterOTP: React.FC<OtpProps> = ({ route }) => {
+  const {t} = useTranslation()
+  const dispath = useDispatch()
+  const {name, email} = useSelector((state: any)=> state
+  )
   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
   const signupUserInfo = useSelector((state: any) => state.auth.signupInfo);
   const userId = useSelector((state: any) => state.auth.user);
-  const userName = route.params.username;
-  const userEmail = route.params.email;
-  const israel_rt = route.params.israel_rt;
+  const userName = route.params.username || 'test';
+  const userEmail = route.params.email|| 'test@gmail.com';
+  // const israel_rt = route.params.israel_rt;
 
   const insets = useSafeAreaInsets();
   const goBack = () => NavigationService.goBack();
@@ -43,50 +48,22 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
   
 
   const navigateToResetPass = async () => {
-    if (route.params.username && route.params.password) {
+    if (userName) {
+      setLoading(true)
       try {
-        await Auth.confirmSignUp(route.params.username, value);
+        await Auth.confirmSignUp(userName, value);
         console.log('Sign-up confirmed successfully.');
-        // NavigationService.navigate('Login');
-        const user = await Auth.signIn(
-          route.params.username,
-          route.params.password,
-        );
-        //sign up here and navigate to home.
-        dispatch(setHeader(user.attributes.sub));
-        setLoading(true)
-        setTimeout(() => {
-       
-          verifyOTP();
-        }, 3000);
+        setLoading(false)
+        // NavigationService.resetStack('Home','hello')
+         useStore.getState().setIsLoggedIn(true)
         // Continue with the confirmed user flow
       } catch (error) {
         console.error('Error confirming sign-up:', error);
+        setLoading(false)
         // Display an appropriate error message to the user
       }
     } else {
       NavigationService.navigate('ResetPassword');
-    }
-  };
-
-  const verifyOTP = async () => {
-
-    try {
-      let objParam={
-        first_name: userName,
-        last_name: 'testing',
-        gender: 'male',
-        email: userEmail,
-        phone_number: '0543442286',
-        player_number: Number(israel_rt),
-        date_of_birth: '12-12-2020',
-      }
-      dispatch(Signup(objParam));
-      setLoading(false)
-     
-    } catch (error) {
-      console.error('Signup error:', error);
-     
     }
   };
 
@@ -103,9 +80,9 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
       <CustomHeader leftIcon={leftArrowIcon} onBackButtonPress={goBack} />
       <View style={styles.childContainer}>
         <View style={styles.headerContainer}>
-          <Text style={styles.heading}>Enter OTP</Text>
+          <Text style={styles.heading}>{t('enter')} OTP</Text>
           <Text style={styles.subHeading}>
-            A 4 digits code has been sent to your email{' '}
+            {t('a4DigitsCodeHasBeenSentToYourEmail')}{' '}
             <Text style={{ color: '#383838' }}>{userEmail}</Text>
           </Text>
         </View>
@@ -125,26 +102,26 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={({ index, symbol, isFocused }) => (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Text
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}
               onLayout={getCellOnLayoutHandler(index)}>
               {symbol || (isFocused ? <Cursor /> : null)}
             </Text>
+            </View>
           )}
         />
-  {loading && (
-              <View style={styles.buttonLoader}>
-                <ActivityIndicator size="large" color="silver" />
-              </View>
-            )}
+  
         <ButtonCTA
           customStyle={{ width: wp(90) }}
-          buttonText={'Verify'}
+          buttonText={t('verify')}
           onPress={() => {
             navigateToResetPass();
             // verifyOTP();
           }}
+          disabled = {loading}
+          loading = {loading}
         />
       </View>
     </View>

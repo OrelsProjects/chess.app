@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './style';
 import images from 'app/config/images';
 import NavigationService from 'app/navigation/NavigationService';
@@ -9,12 +9,23 @@ import {
 } from 'react-native-responsive-screen';
 import Svg, { SvgUri, SvgXml } from 'react-native-svg';
 import { onboardOne, onboardTwo, sliderOne, sliderTwo } from 'app/assets/SVGs';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { setOnBoarding } from 'app/redux/actions/action';
 
 const OnBordingScreen: React.FC = () => {
+  const {t} = useTranslation()
+  const dispatch = useDispatch()
   const [showComponent, setShowComponent] = useState(false);
 
+  useEffect(()=>{
+    console.log("on boarding screen opened!")
+  })
   const _renderCalender = () => {
-    const navigation = () => NavigationService.navigate('Login');
+    const navigation = () => {
+      NavigationService.navigate('Login');
+      dispatch(setOnBoarding(false));
+    }
 
     return (
       <View style={styles.container}>
@@ -25,13 +36,11 @@ const OnBordingScreen: React.FC = () => {
         <View style={styles.textView}>
           <View style={styles.mainView}>
             <View style={styles.heading}>
-              <Text style={styles.headingText}>Text here</Text>
+              <Text style={styles.headingText}>{t('textHere')}</Text>
             </View>
             <View style={styles.textDetail}>
               <Text style={styles.text}>
-                Interact and earn rewards with our points program! Help
-                classmates and earn points redeemable for cash or future course
-                purchases. Start building your rewards now.
+                {t('interactAndEarnRewardsWithOurPointsProgramHelpClassmatesAndEarnPointsRedeemableForCashOrFutureCoursePurchasesStartBuildingYourRewardsNow')}
               </Text>
               {/* <Image source={images.icons.Slider2} style={styles.slider} /> */}
               <SvgXml xml={sliderTwo} width={wp(8)} height={wp(12)} />
@@ -39,12 +48,12 @@ const OnBordingScreen: React.FC = () => {
             <View style={styles.buttons}>
               <View style={styles.buttonDirection}>
                 <TouchableOpacity onPress={navigation}>
-                  <Text style={styles.skipText}>Skip</Text>
+                  <Text style={styles.skipText}>{t('skip')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={navigation}
                   style={styles.nextButtonView}>
-                  <Text style={styles.nextButtonText}>Next</Text>
+                  <Text style={styles.nextButtonText}>{t('next')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -56,7 +65,10 @@ const OnBordingScreen: React.FC = () => {
 
   const _renderGame = () => {
     const navigation = () => setShowComponent(true);
-    const skipNavigation = () => NavigationService.navigate('Login');
+    const skipNavigation = () => {
+      NavigationService.navigate('Login');
+      dispatch(setOnBoarding(false));
+    }
 
     return (
       <View style={styles.container}>
@@ -67,12 +79,11 @@ const OnBordingScreen: React.FC = () => {
         <View style={styles.textView}>
           <View style={styles.mainView}>
             <View style={styles.heading}>
-              <Text style={styles.headingText}>Text here</Text>
+              <Text style={styles.headingText}>{t('textHere')}</Text>
             </View>
             <View style={styles.textDetail}>
               <Text style={styles.text}>
-                Take your investment knowledge to the next level with Nmo
-                academy's expert-led courses.
+                {t('takeYourInvestmentKnowledgeToTheNextLevelWithNmoAcademyExpertLedCourses')}
               </Text>
 
               <SvgXml xml={sliderOne} width={wp(8)} height={wp(12)} />
@@ -85,12 +96,12 @@ const OnBordingScreen: React.FC = () => {
             <View style={styles.buttons}>
               <View style={styles.buttonDirection}>
                 <TouchableOpacity onPress={skipNavigation}>
-                  <Text style={styles.skipText}>Skip</Text>
+                  <Text style={styles.skipText}>{t('skip')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={navigation}
                   style={styles.nextButtonView}>
-                  <Text style={styles.nextButtonText}>Next</Text>
+                  <Text style={styles.nextButtonText}>{t('next')}</Text>
                 </TouchableOpacity>
               </View>
             </View>

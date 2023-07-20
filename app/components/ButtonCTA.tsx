@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -10,6 +10,7 @@ interface ButtonCTAProps {
   customStyle: any;
   onPress: () => void;
   disabled: boolean;
+  loading : boolean;
 }
 
 const ButtonCTA: React.FC<ButtonCTAProps> = ({
@@ -17,13 +18,15 @@ const ButtonCTA: React.FC<ButtonCTAProps> = ({
   buttonText,
   onPress,
   disabled,
+  loading = false,
 }) => {
   return (
     <TouchableOpacity
       style={[styles.container, customStyle]}
       onPress={onPress}
       disabled={disabled}>
-      <Text style={styles.text}>{buttonText}</Text>
+        {loading?<ActivityIndicator color={'white'} size={hp('4.5')}/>:
+      <Text style={styles.text}>{buttonText}</Text>}
     </TouchableOpacity>
   );
 };

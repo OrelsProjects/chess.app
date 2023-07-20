@@ -40,9 +40,12 @@ import {
 } from 'app/redux/actions/action';
 import axios from 'axios';
 import { BaseURL, endPoints } from 'app/constants';
+import { useTranslation } from 'react-i18next';
 
 
 const Home: React.FC = () => {
+  const {t} = useTranslation()
+  const user = useSelector((state:any)=>state.auth)
   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
   const { isLoading, isFetching, data = { results: [] } } = GetUserDetails();
   const [calRating, setCalRating] = useState(0);
@@ -50,6 +53,7 @@ const Home: React.FC = () => {
   const [resetResponse, setResetResponse] = useState('');
   const [loading,setLoading]=useState(false)
   const insets = useSafeAreaInsets();
+  console.log("User Data2:",user)
 
   const onLogOut = () => {
     setIsLoggedIn(false);
@@ -77,6 +81,8 @@ const Home: React.FC = () => {
       ? searchResults.map((result: any) => ({
           svg: neilPlayer,
           text: result?.opponentName,
+          points: result?.opponentPoints,
+          status: result?.opponentStatus,
           starText: result?.opponentRating,
           image: images.icons.players,
           starImage: images.icons.star,
@@ -93,6 +99,7 @@ const Home: React.FC = () => {
       return response.data;
     } catch (error) {
       console.error('Search error:', error);
+      console.log("error response:",error?.response?.data)
       throw error;
     }
   };
@@ -187,11 +194,11 @@ const Home: React.FC = () => {
 
       <View style={styles.ratingDirection}>
         <View style={styles.ratingView}>
-          <Text style={styles.ratingText}>Current Rating ({calRating})</Text>
+          <Text style={[styles.ratingText,{fontWeight: '600', fontSize: normalized.wp(4)}]}>{t('current')} {t('rating')} ({calRating})</Text>
         </View>
         <View style={styles.ratingView}>
           <Text style={styles.ratingText}>
-            Expected Rating ({expectRating ? expectRating : calRating})
+          {t('expected')} {t('rating')} ({expectRating?(expectRating):(calRating)})
           </Text>
         </View>
       </View>
@@ -205,6 +212,9 @@ const Home: React.FC = () => {
               ? content.map((item: any, index: any) => (
                   <View key={index} style={styles.firstView}>
                     <TouchableOpacity style={styles.secondView}>
+                    <View style={{position: 'absolute',width: '100%',justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{ fontSize: 14}}>{item?.status}</Text>
+                      </View>
                       <View style={styles.thirdView}>
                         <SvgXml xml={item.svg} style={styles.neil} />
                         <View style={styles.fourthView}>
@@ -248,25 +258,25 @@ const Home: React.FC = () => {
           <TouchableOpacity onPress={handleUndo} style={styles.sevenView}>
             <SvgXml xml={undo} width={20} height={20} />
 
-            <Text style={styles.undoText}>Undo</Text>
+            <Text style={styles.undoText}>{t('undo')}</Text>
           </TouchableOpacity>
 
           <View style={styles.seperator} />
 
           <TouchableOpacity onPress={handleReset} style={styles.eightView}>
             <Image source={images.icons.reset} style={styles.reset} />
-            <Text style={styles.resetText}>reset</Text>
+            <Text style={styles.resetText}>{t('reset')}</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.buttonView}>
         <ButtonCTA
           customStyle={{ width: wp(90) }}
-          buttonText={'Calculate Rating'}
+          buttonText={t('calculate')+' '+t('rating')}
           onPress={calRatingButton}
         />
       </View>
-      <Text style={styles.nineText}>The ratings may not be accurate</Text>
+      <Text style={styles.nineText}>{t('theRatingsMayNotBeAccurate')}</Text>
     </View>
   );
 };

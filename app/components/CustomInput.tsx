@@ -13,34 +13,41 @@ interface CustomInputProps {
   secureTextEntry?: boolean | undefined;
   keyboardType?: KeyboardTypeOptions | undefined;
   onChangeText: (text: string) => void;
+  onSubmitEditing: () => void;
   rightIcon: string;
   onRightIconPress?:any;
-  maxLength:any
+  maxLength:any;
+  containerStyle: object
+  editable: boolean
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
   placeholder,
   value,
   onChangeText,
+  onSubmitEditing,
   secureTextEntry,
   keyboardType,
   iconName,
   rightIcon,
   onRightIconPress,
-  maxLength=500
+  maxLength=500,
+  containerStyle,
+  editable,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,containerStyle]}>
       <SvgXml xml={iconName} height={'20'} width={'20'} />
       <TextInput
+      editable={editable}
         keyboardType={keyboardType}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
+        onSubmitEditing={onSubmitEditing}
         style={styles.input}
         value={value}
         maxLength={maxLength}
-        placeholderTextColor={"#8A8A8F"}
       />
       {rightIcon ? <TouchableOpacity onPress={onRightIconPress}><SvgXml xml={rightIcon} height={'24'} width={'24'} /></TouchableOpacity> : null}
     </View>

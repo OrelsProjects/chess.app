@@ -15,8 +15,10 @@ import ButtonCTA from 'app/components/ButtonCTA';
 import CustomHeader from 'app/components/CustomHeader';
 import CustomInput from 'app/components/CustomInput';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 const ResetPassword: React.FC = () => {
+  const {t} = useTranslation()
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigateToLogin = () => NavigationService.navigate('Login');
@@ -31,12 +33,12 @@ const ResetPassword: React.FC = () => {
         <CustomHeader />
         <View style={styles.childContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.heading}>Reset Password</Text>
-            <Text style={styles.subHeading}>Login in to continue</Text>
+            <Text style={styles.heading}>{t('reset')} {t('password')}</Text>
+            <Text style={styles.subHeading}>{t('loginToContinue')}</Text>
           </View>
 
           <CustomInput
-            placeholder="New Password"
+            placeholder={`${t('new')} ${t('password')}`}
             value={newPassword}
             iconName={lockIcon}
             onChangeText={e => setNewPassword(e)}
@@ -44,7 +46,7 @@ const ResetPassword: React.FC = () => {
             rightIcon={''}
           />
           <CustomInput
-            placeholder="Confirm New Password"
+            placeholder={`${t('confirm')} ${t('new')} ${t('password')}`}
             value={confirmPassword}
             iconName={lockIcon}
             onChangeText={e => setConfirmPassword(e)}
@@ -60,9 +62,9 @@ const ResetPassword: React.FC = () => {
         </View>
       </ScrollView>
       <View style={styles.secondaryButtonContainer}>
-        <Text style={styles.noAccount}>Don't need to reset? </Text>
+        <Text style={styles.noAccount}>{t('dontNeedToReset')} </Text>
         <TouchableOpacity>
-          <Text style={styles.login}>Login</Text>
+          <Text style={styles.login}>{t('login')}</Text>
         </TouchableOpacity>
       </View>
     </View>

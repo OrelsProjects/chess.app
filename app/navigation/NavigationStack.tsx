@@ -19,6 +19,9 @@ import SignUpScreen from 'app/screens/SignUp';
 import AddOpponent from 'app/screens/AddOpponent';
 import CustomDrawer from 'app/components/CustomDrawer';
 import AppStyles from 'app/config/styles';
+import ChooseLanguage from 'app/screens/ChooseLanguage';
+import { useSelector } from 'react-redux';
+import i18n from 'app/i18n';
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -32,10 +35,12 @@ interface IProps {
 
 const AuthNavigator = () => {
   const isLoggedIn = useStore(state => state.isLoggedIn);
+  const onboarding = useSelector((state:any)=>state.auth.Onboarding)
 
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
-      <Stack.Screen
+      {onboarding?
+        <Stack.Screen
         name="OnBordingScreen"
         component={OnBordingScreen}
         options={{
@@ -46,6 +51,8 @@ const AuthNavigator = () => {
           headerRight: () => <ThemeController />,
         }}
       />
+      :null}
+      
       <Stack.Screen
         name="Login"
         component={Login}
@@ -111,6 +118,7 @@ const MainStackNavigator = () => {
       screenOptions={{ headerShown: false }}
       initialRouteName="Home">
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Languages" component={ChooseLanguage} />
       <Stack.Screen name="AddOpponent" component={AddOpponent} />
     </HomeStack.Navigator>
   );
@@ -164,10 +172,11 @@ const LoggedInNavigator = () => (
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
   const isLoggedIn = useStore(state => state.isLoggedIn);
-
+  const language = useSelector((state:any)=>state.auth.lang)
+  i18n.changeLanguage(language);
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>
-      <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} backgroundColor={theme.dark ? 'black' : 'white'}/>
 
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
