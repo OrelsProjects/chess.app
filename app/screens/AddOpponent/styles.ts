@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   starText: {
     fontSize: fontSizes.small,
     marginLeft: wp(1),
+    color: '#222222',
   },
   wgmContainer: {
     backgroundColor: AppStyles.color.NORTH_TEXAS_GREEN,
