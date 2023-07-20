@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -20,17 +20,24 @@ import {
   homeIcon,
   infoIcon,
   settingsIcon,
+  languageIcon,
 } from 'app/assets/SVGs';
 import { fontSizes, normalized } from 'app/config/metrics';
 import NavigationService from 'app/navigation/NavigationService';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useStore } from '../store';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { Auth } from 'aws-amplify';
 
 const CustomDrawer = props => {
+  const {t} = useTranslation()
+  const user = useSelector((state: any)=>state.auth.userInfo)
   const navigateToHome = () => NavigationService.navigate('Home');
   const navigateToCalculator = () => NavigationService.navigate('Home');
   const navigateToSettings = () => NavigationService.navigate('Home');
   const navigateToSupport = () => NavigationService.navigate('Home');
+  const navigateToLanguages = () => NavigationService.navigate('Languages');
 
   const navigation = useNavigation();
   const closeDrawer = () => {
@@ -39,38 +46,49 @@ const CustomDrawer = props => {
 
   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
   const onLogOut = () => {
+    Auth.signOut()
     setIsLoggedIn(false);
   };
+  useEffect(()=>{
+    if(user){
+      console.log("User Data:",user)
+    }
+  },[user])
 
   const drawerItemRoutes = [
     {
       icon: homeIcon,
-      name: 'Home',
+      name: t('home'),
       route: navigateToHome,
     },
     {
       icon: calculatorIcon,
-      name: 'Calculator',
+      name: t('calculator'),
       route: navigateToCalculator,
     },
     {
       icon: settingsIcon,
-      name: 'Settings',
+      name: t('settings'),
       route: navigateToSettings,
     },
     {
+      icon: languageIcon,
+      name: t('languages'),
+      route: navigateToLanguages,
+    },
+    {
       icon: infoIcon,
-      name: 'Support',
+      name: t('support'),
       route: navigateToSupport,
     },
     {
       icon: externalLinkIcon,
-      name: 'Visit our website',
+      name: t('visitOurWebsite'),
       route: navigateToSupport,
     },
     {
       icon: externalLinkIcon,
-      name: 'Logout',
+      name: t('logout'),
       route: onLogOut,
     },
   ];
@@ -95,8 +113,8 @@ const CustomDrawer = props => {
             style={styles.userImg}
           />
           <View style={styles.userDetails}>
-            <Text style={styles.userFullName}>Oreal</Text>
-            <Text style={styles.userEmail}>Orel@gmail.com</Text>
+            <Text style={styles.userFullName}>{user?.name}</Text>
+            <Text style={[styles.userEmail,{width: '82%'}]} numberOfLines={2}>{user?.email}</Text>
           </View>
         </View>
         <View style={styles.divider} />

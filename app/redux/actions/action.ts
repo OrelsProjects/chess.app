@@ -11,7 +11,12 @@ import {
   REMOVE_SEARCH_RESULT,
   HEADER_ID,
   SIGNUP_INFO,
-  EXPECTED_RATING
+  EXPECTED_RATING,
+  SET_LANGUAGE,
+  SET_ONBOARDING,
+  SET_USERINFO,
+  REMOVE_USERINFO,
+  SET_TOKEN
 } from './actionType';
 import NavigationService from 'app/navigation/NavigationService';
 import { store } from '../store/store';
@@ -59,20 +64,24 @@ export const Signup = (data: SignupData) => {
         player_number,
         date_of_birth,
       }
-      console.log('apiParams', apiParams)
+      console.log('apiParams22', apiParams)
       const response = await BaseURL.post(endPoints.signUp, apiParams);
 
-
+console.log("testing",response)
       if (response) {
         dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
-        useStore.getState().setIsLoggedIn(true)
-        // NavigationService.navigate('Login');
+      //  useStore.getState().setIsLoggedIn(true)
+        NavigationService.navigate('EnterOTP', {
+        username: apiParams.first_name,
+        email: apiParams.email,
+      });
         // dispatch(set)
         console.log('response Sign Up Data:', response.config.data);
       }
     } catch (error) {
       dispatch({ type: SIGNUP_FAILURE, payload: error });
       console.log('error:', error);
+      console.log('Error response:',error?.response?.data)
     }
   };
 };
@@ -94,6 +103,7 @@ export const signin = (email: string, password: string) => {
       });
 
       if (response && response.data) {
+        console.log("login response:",response)
         dispatch({ type: SIGNIN_SUCCESS, payload: response });
         //Alert.alert('successfully sign in');
         console.log('response Sign In Data>>>>>>>>', response);
@@ -175,3 +185,33 @@ export const expectedRating = (expectRating: string) => {
     dispatch({ type: EXPECTED_RATING, payload: expectRating });
   };
 };
+
+export const setUserInfo = (infoData: any) => {
+  return async (dispatch: any) => {
+    dispatch({ type: SET_USERINFO, payload: infoData });
+  };
+};
+
+export const setLanguage = (lang:string) => {
+  return async (dispatch: any) => {
+    dispatch({ type: SET_LANGUAGE, payload: lang });
+  };
+};
+//on boarding set to true/false
+export const setOnBoarding = (onBoarding: boolean) => {
+  return async (dispatch: any) => {
+    dispatch({ type: SET_ONBOARDING, payload: onBoarding });
+  };
+};
+export const setToken = (token: string) => {
+  return async (dispatch: any) => {
+    dispatch({ type: SET_TOKEN, payload: token });
+  };
+};
+
+export const removeUserInfo = () => {
+  return async (dispatch: any) => {
+    dispatch({ type: REMOVE_USERINFO });
+  };
+};
+

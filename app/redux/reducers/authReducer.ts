@@ -11,6 +11,11 @@ import {
   SIGNUP_INFO,
   HEADER_ID,
   EXPECTED_RATING,
+  SET_LANGUAGE,
+  SET_ONBOARDING,
+  SET_USERINFO,
+  REMOVE_USERINFO,
+  SET_TOKEN,
 } from '../actions/actionType';
 
 interface AuthState {
@@ -20,20 +25,26 @@ interface AuthState {
   searchResults: any;
   expectRating:any
   signupInfo:any;
+  language: string;
+  Onboarding: boolean,  
+  userInfo: any
 }
 
 const initialState = {
+  token: null,
   user: null,
   loading: false,
   error: null,
   searchResults: null,
   expectRating:null,
   signupInfo: {},
-
+  language: 'en',
+  Onboarding: true,
+  userInfo: {}
 };
 
 const authReducer = (state = initialState, action: any) => {
-  console.log('action.type',action.type)
+  console.log('action.type',action?.type, action?.payload)
   switch (action.type) {
     case SIGNUP_REQUEST:
       return {
@@ -99,12 +110,51 @@ const authReducer = (state = initialState, action: any) => {
         signupInfo: action.payload,
       };
       case EXPECTED_RATING:
+        
         return {
           ...state,
           loading: false,
           error: null,
           expectRating: action.payload,
         };
+      case SET_LANGUAGE:
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          language: action.payload,
+        };
+      case SET_ONBOARDING:
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          Onboarding: action.payload,
+        };
+      case SET_USERINFO:
+        console.log("userInfo:",action.payload)
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          userInfo: action.payload,
+        };
+
+      case SET_TOKEN:
+        return {
+          ...state,
+          token: action.payload,
+          loading: false,
+          error: null,
+        };
+      case REMOVE_USERINFO:
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          userInfo: null,
+        };
+    
     default:
       return state;
   }

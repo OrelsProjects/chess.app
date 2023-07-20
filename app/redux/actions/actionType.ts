@@ -20,3 +20,18 @@ export const SIGNUP_INFO: string = 'SIGNUP_INFO';
 
 //HEADER_ID
 export const HEADER_ID: string = 'HEADER_ID';
+
+//Languages
+export const SET_LANGUAGE: string = 'SET_LANGUAGE';
+
+//onboardingAuthenticate
+export const SET_ONBOARDING: string = 'SET_ONBOARDING';
+
+//userInfo set
+export const SET_USERINFO: string = 'SET_USERINFO';
+
+//userInfo remove
+export const REMOVE_USERINFO: string = 'REMOVE_USERINFO';
+
+//token set
+export const SET_TOKEN: string = 'SET_TOKEN';

@@ -26,22 +26,28 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import NavigationService from 'app/navigation/NavigationService';
 import { useDispatch, useSelector } from 'react-redux';
-import { Signup, userSignupInfo } from 'app/redux/actions/action';
+import { Signup, setHeader, setToken, setUserInfo, userSignupInfo } from 'app/redux/actions/action';
 import { normalized } from 'app/config/metrics';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { SvgXml } from 'react-native-svg';
+import DatePicker from 'react-native-date-picker'
+import moment from 'moment';
 
 const SignUpScreen: React.FC = () => {
-  
+  const {t} = useTranslation()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [birth, setBirth] = useState('');
   const [israel, setIsrael] = useState('');
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const insets = useSafeAreaInsets();
 
   const handleLogin = () => NavigationService.navigate('Login');
-  const navigateToLogin = () =>
+  const authSignup = () =>
     fetchData(name, password, email, '+123456789',israel);
   //console.log("name, password", name, password);
   //NavigationService.navigate('Login');
@@ -57,12 +63,12 @@ const SignUpScreen: React.FC = () => {
     console.log("test",email)
     try {
       setLoading(true);
-      const { user } = await Auth.signUp({
+      const  user  = await Auth.signUp({
         username: name,
         password: password,
 
         attributes: {
-          email: email, // optional
+          email: email?.toLowerCase(), // optional
           phone_number: phoneNumber, // optional - E.164 number convention
         },
         autoSignIn: {
@@ -70,18 +76,51 @@ const SignUpScreen: React.FC = () => {
           enabled: false,
         },
       });
+  console.log("zest",JSON.stringify(user))
+      dispatch(setToken(user?.userSub))
 
-      NavigationService.navigate('EnterOTP', {
-        username: name,
-        password: password,
-        email: email,
-        israel_rt:israel
-      });
+      const interval = setInterval(()=>{
+        dispatch(setUserInfo({name, email}))
+        try {
+          let objParam={
+            first_name: name,
+            last_name: 'testing',
+            gender: 'male',
+            email: email,
+            phone_number: '0543442286',
+            player_number: Number(israel),
+            date_of_birth: '12-12-2020',
+          }
+          dispatch(Signup(objParam));
+         setLoading(false)
+         clearInterval(interval)
+        } catch (error) {
+          setLoading(false)
+          console.error('Signup error:', error);
+        }
+
+      },3000)
+     
+
+      // NavigationService.navigate('EnterOTP', {
+      //   username: name,
+      //   password: password,
+      //   email: email,
+      //   israel_rt:israel
+      // });
     } catch (error) {
+      setLoading(false)
       console.log('error signing up:', error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
+  };
+  useEffect(()=>{
+    console.log('Password:',password)
+  },[password])
+  const verifyOTP = async () => {
+
+    
   };
 
   const dispatch = useDispatch();
@@ -91,7 +130,7 @@ const SignUpScreen: React.FC = () => {
       let obj={
         first_name: name,
         gender: 'male',
-        email: email,
+        email: email.toLowerCase(),
         password: password,
         date_of_birth: birth,
       }
@@ -104,9 +143,9 @@ const SignUpScreen: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    handleLogin;
-  }, []);
+  // useEffect(() => {
+  //   handleLogin;
+  // }, []);
 
   return (
     <View
@@ -117,81 +156,96 @@ const SignUpScreen: React.FC = () => {
 
           <View style={styles.childContainer}>
             <View style={styles.headerContainer}>
-              <Text style={styles.welcome}>Sign Up </Text>
+              <Text style={styles.welcome}>{t('signUp')} </Text>
               <Text style={styles.loginToContinue}>
-                Sign up for registration
+                {t('signUpForRegistration')}
               </Text>
             </View>
             <CustomInput
-              placeholder="Name"
+              placeholder={t('name')}
               value={name}
               iconName={mailIcon}
               onChangeText={e => setName(e)}
             />
             <CustomInput
-              placeholder="Email"
+              placeholder={t('email')}
               value={email}
               iconName={mailIcon}
               onChangeText={e => setEmail(e)}
               keyboardType={'email-address'}
             />
             <CustomInput
-              placeholder="Password"
+              placeholder={t('password')}
               value={password}
               iconName={lockIcon}
               onChangeText={e => setPassword(e)}
               secureTextEntry={true}
             />
-            <CustomInput
-              placeholder="Date of birth"
+            {/* <CustomInput
+              placeholder={t('dateOfBirth')}
               value={birth}
               iconName={calenderIcon}
               onChangeText={e => setBirth(e)}
+            /> */}
+            <TouchableOpacity style={styles.datePickerContainer} onPress={()=>setOpen(true)}>
+              <SvgXml xml={calenderIcon} height={'20'} width={'20'} />
+              <Text style={[styles.datePickerText,birth?{color: '#B3B3B3'}:null]}>{birth?birth:'Date of birth'}</Text>
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              mode='date'
+              open={open}
+              date={new Date()}
+              onConfirm={(date) => {
+                setOpen(false)
+                setBirth(moment(date).format('DD-MM-YYYY'))
+              }}
+              onCancel={() => {
+                setOpen(false)
+              }}
             />
+
             <CustomInput
-              placeholder="Israel rating"
+              placeholder={`${t('israel')} ${t('rating')}`}
               value={israel}
               iconName={starIcon}
               maxLength={6}
               onChangeText={e => setIsrael(e)}
             />
+            
 
             <View style={styles.mainSigningView}>
               <View style={styles.childSigningView}>
                 <Text style={styles.noAccount}>
-                  By signing up, you're agree to our
+                  {t('bySigningUpYoureAgreeToOur')}
                 </Text>
                 <TouchableOpacity>
-                  <Text style={styles.signUp}> Term & Conditions </Text>
+                  <Text style={styles.signUp}> {t('termsAndConditions')} </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.andView}>
-                <Text style={styles.noAccount}>and</Text>
+                <Text style={styles.noAccount}>{t('and')}</Text>
                 <TouchableOpacity>
-                  <Text style={styles.signUpPolicy}> Privacy Policy</Text>
+                  <Text style={styles.signUpPolicy}> {t('privacyPolicy')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
             <ButtonCTA
               customStyle={{ width: wp(90), top: normalized.hp(3) }}
-              buttonText={'Sign Up'}
+              buttonText={t('signUp')}
               onPress={() => {
-                handleUserInfo();
-                navigateToLogin();
+              
+                authSignup();
               }}
               disabled={loading}
+              loading={loading}
             />
-            {loading && (
-              <View style={styles.buttonLoader}>
-                <ActivityIndicator size="large" color="silver" />
-              </View>
-            )}
           </View>
           <View style={styles.secondaryButtonContainer}>
-            <Text style={styles.noAccountTwo}>Don't have an account? </Text>
+            <Text style={styles.noAccountTwo}>{t('dontHaveAnAccount')} </Text>
             <TouchableOpacity onPress={handleLogin}>
-              <Text style={styles.signUp}>Log In</Text>
+              <Text style={styles.signUp}>{t('login')}</Text>
             </TouchableOpacity>
           </View>
         </View>

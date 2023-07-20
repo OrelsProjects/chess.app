@@ -51,21 +51,20 @@ const styles = StyleSheet.create({
     zIndex:10
   },
   cell: {
-    width: wp(12),
+    width: hp(6),
     height: hp(6),
     // backgroundColor: theme.color.backgroundColor,
     // backgroundColor: "red",
-    //lineHeight: hp(8),
+    // lineHeight: hp(5),
     marginHorizontal: wp(2),
-paddingTop:wp(3),
-   // fontSize: fontSizes.large,
-   // padding: 10,
+
+    fontSize: fontSizes.large,
+    padding: 10,
     borderWidth: 1,
     borderColor: AppStyles.color.FLASH_WHITE,
     // color: theme.color.textBlue,
     textAlign: 'center',
-    borderRadius: radius.xsmallRadius,
-
+    borderRadius: radius.xsmallRadius
   },
 });
 

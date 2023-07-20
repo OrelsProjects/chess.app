@@ -98,6 +98,22 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     //color: Colors.baseColor,
   },
+  datePickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: hp(7),
+    marginBottom: 16,
+  },
+  datePickerText: {
+    flex: 1,
+    fontSize: 16,
+    marginLeft: wp(2),
+    color: '#333',
+  },
 });
 
 export default styles;
