@@ -29,11 +29,13 @@ const styles = StyleSheet.create({
     //backgroundColor: 'blue'
   },
   welcome: {
+    width: '100%',
     fontSize: fontSizes.xxlarge,
     fontWeight: '700',
     color: AppStyles.color.RAISIN_BLACK,
   },
   loginToContinue: {
+    width: '100%',
     fontSize: fontSizes.medium,
     color: AppStyles.color.GRANITE_GRAY,
   },
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
     width: normalized.wp(90)
   },
   childSigningView: {
+    width: '100%',
     flexDirection: 'row',
   },
   andView: {
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     marginLeft: wp(2),
-    color: '#333',
+    color: '#222',
   },
 });
 

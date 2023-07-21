@@ -238,11 +238,13 @@ import { BaseURL, endPoints } from 'app/constants';
 import { useTranslation } from 'react-i18next';
 import images from 'app/config/images';
 import axios from 'axios';
+import PlayerCard from 'app/components/PlayerCard';
 
 const AddOpponent: React.FC = () => {
   const {t} = useTranslation()
   const [opponentName, setOpponentName] = useState('');
   const [ratingNumber, setRatingNumber] = useState(0);
+  const [badge, setBadge] = useState('');
   const [selectedBtn, setSelectedBtn] = useState({
     name: '',
     value: ''
@@ -271,6 +273,7 @@ const AddOpponent: React.FC = () => {
         image: images.icons.players,
         starImage: images.icons.star,
         wgmImage: images.icons.wgm,
+        badge: result?.badge,
       }))
     )
     console.log("serachApiData:",serachApiData)
@@ -292,6 +295,7 @@ const AddOpponent: React.FC = () => {
         opponentStatus: selectedBtn.name,
         opponentRating: ratingNumber,
         image: neilPlayer,
+        badge: badge,
         tag: 'GM',
       };
       let obj = [...selectedOptionArray, valObj];
@@ -364,89 +368,23 @@ const AddOpponent: React.FC = () => {
   };
 
   const renderUsers = () => {
-    // if (opponentName === name) {
     return (
       <>
         <View style={styles.divider} />
         <Text style={styles.optionText}>Selected Options</Text>
+        <View style={{width: normalized.wp('95%')}}>
         {selectedOptionArray.map((user: any, i) => {
           const randomIndex = Math.floor(Math.random() * colors.length);
           const randomColor = colors[randomIndex];
           // console.log('user', user);
           return (
-            <View key={i} style={[styles.firstView,{marginHorizontal: wp('6.5'),marginBottom: wp('3')}]}>
-                    <TouchableOpacity style={styles.secondView} onPress={() => null}>
-                      <View style={{position: 'absolute',width: '100%',justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{ fontSize: 14}}>{user?.opponentStatus}</Text>
-                      </View>
-                      <View style={styles.thirdView}>
-                        <SvgXml xml={user.image} style={styles.neil} />
-                        <View style={styles.fourthView}>
-                          <Text style={styles.neilText}>{user.opponentName}</Text>
-                        
-                        </View>
-                        <View style={styles.middleView}>
-                          <SvgXml
-                            xml={starGoldIcon}
-                            width={normalized.wp(5)}
-                            height={normalized.hp(5)}
-                          />
-                          <Text style={styles.starText}>
-                            {user?.opponentRating}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.wgmContainer}>
-                        <Text style={styles.wgmText}>WGM</Text>
-                      </View>
-                      <TouchableOpacity
-                        onPress={() => handleRemoveItem(i)}
-                        style={styles.xIcon}>
-                        <SvgXml xml={xIcon} width={wp(4)} height={wp(4)} />
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  </View>
-            // <View key={i} style={styles.userParentContainer}>
-            //   <View style={styles.userChildContainer}>
-            //     <View style={styles.userView}>
-            //       <SvgXml
-            //         xml={user.image}
-            //         width={normalized.wp(12)}
-            //         height={normalized.hp(12)}
-            //         style={styles.userImg}
-            //       />
-            //       <View style={styles.userDetailsView}>
-            //         <Text style={styles.userName}>{user.opponentName}</Text>
-            //         <View style={styles.ratingView}>
-            //           <SvgXml
-            //             xml={starGoldIcon}
-            //             width={normalized.wp(5)}
-            //             height={normalized.hp(5)}
-            //           />
-            //           <Text style={styles.starText}>{user.opponentRating}</Text>
-            //         </View>
-            //       </View>
-            //     </View>
-
-            //     <View
-            //       style={[
-            //         styles.wgmContainer,
-            //         { backgroundColor: randomColor },
-            //       ]}>
-            //       <Text style={styles.wgmText}>{user.tag}</Text>
-            //     </View>
-
-            //     <TouchableOpacity style={styles.xIcon}>
-            //       <SvgXml xml={xIcon} width={wp(4)} height={wp(4)} />
-            //     </TouchableOpacity>
-            //   </View>
-            // </View>
+            <PlayerCard key={i} playerImage={user?.image} playerName={user?.opponentName} rating={user?.opponentRating} centerText={user?.opponentStatus} badge={user?.badge} onCancel={()=>handleRemoveItem(i)}/>
           );
         })}
+        </View>
+        
       </>
     );
-    // }
-    // return null;
   };
 
   const onPressItem = (item: any) => {
@@ -456,8 +394,9 @@ const AddOpponent: React.FC = () => {
     setRatingNumber(item.rating_israel);
     setName(item.first_name);
     setRating(item.rating_israel);
+    setBadge(item.badge)
   };
-
+console.log("eqwe",serachApiData[0])
   return (
     <View
       style={{ flexGrow: 1, backgroundColor: '#fff', paddingTop: insets.top }}>
@@ -472,11 +411,12 @@ const AddOpponent: React.FC = () => {
 
           <View style={{ width: '100%' }}>
             <CustomInput
-              // value={opponentName}
+              value={opponentName}
               iconName={userIcon}
               onChangeText={e => getUsersFromApi(e)}
               placeholder={t('search')}
-              rightIcon={''}
+              rightIcon={opponentName? xIcon:''}
+              onRightIconPress={()=>getUsersFromApi('')}
             />
             {serachApiData.length > 0 && (
               <View
@@ -484,39 +424,16 @@ const AddOpponent: React.FC = () => {
                   position: 'absolute',
                   zIndex: 2,
                   top: 60,
-                  height: 250,
+                  maxHeight: hp('40'),
                   width: '100%',
                   borderRadius: 10,
                   alignSelf: 'center',
                   backgroundColor: 'lightgray',
                 }}>
-                <ScrollView>
-                  {searchData.map((item: any, index: any) => (
-                  <View key={index} style={styles.firstView}>
-                    <TouchableOpacity style={styles.secondView} onPress={() => onPressItem(item)}>
-                      <View style={styles.thirdView}>
-                        <SvgXml xml={item.svg} style={styles.neil} />
-                        <View style={styles.fourthView}>
-                          <Text style={styles.neilText}>{item.first_name}</Text>
-                        
-                        </View>
-                        <View style={styles.middleView}>
-                          <SvgXml
-                            xml={starGoldIcon}
-                            width={normalized.wp(5)}
-                            height={normalized.hp(5)}
-                          />
-                          <Text style={styles.starText}>
-                            {item?.rating_israel}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.wgmContainer}>
-                        <Text style={styles.wgmText}>WGM</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                ))}
+                <ScrollView style={{flex: 1}}>
+                  {searchData.map((item: any, index: any) => 
+                    <PlayerCard playerImage={item?.svg} playerName={item?.first_name} rating={item?.rating_israel} onPress={()=>onPressItem(item)} badge={item.badge}/>
+                )}
                   
                 </ScrollView>
               </View>
@@ -568,7 +485,6 @@ const AddOpponent: React.FC = () => {
             customStyle={{ width: wp(90) }}
             buttonText={t('submit')}
             onPress={() => {
-              //handleUserSearch();
               userData();
             }}
           />

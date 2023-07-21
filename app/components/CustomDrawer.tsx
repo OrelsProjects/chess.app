@@ -21,6 +21,7 @@ import {
   infoIcon,
   settingsIcon,
   languageIcon,
+  logout,
 } from 'app/assets/SVGs';
 import { fontSizes, normalized } from 'app/config/metrics';
 import NavigationService from 'app/navigation/NavigationService';
@@ -87,7 +88,7 @@ const CustomDrawer = props => {
       route: navigateToSupport,
     },
     {
-      icon: externalLinkIcon,
+      icon: logout,
       name: t('logout'),
       route: onLogOut,
     },
@@ -129,7 +130,7 @@ const CustomDrawer = props => {
               width={normalized.wp(6)}
               height={normalized.hp(6)}
             />
-            <Text style={styles.linkText}>{route.name}</Text>
+            <Text style={[styles.linkText]}>{route.name}</Text>
           </TouchableOpacity>
         ))}
       </DrawerContentScrollView>
@@ -207,6 +208,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   linkText: {
+    width: '80%',
     marginLeft: 12,
     color: '#222222'
   },

@@ -32,15 +32,18 @@ const styles = StyleSheet.create({
     marginBottom: hp(4),
   },
   welcomeContainer: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
   },
   welcome: {
+    width: '100%',
     fontSize: fontSizes.xxlarge,
     fontWeight: '700',
     color: AppStyles.color.RAISIN_BLACK
   },
   loginToContinue: {
+    width: '100%',
     fontSize: fontSizes.medium,
     color: AppStyles.color.GRANITE_GRAY,
   },

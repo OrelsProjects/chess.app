@@ -172,7 +172,8 @@ const LoggedInNavigator = () => (
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
   const isLoggedIn = useStore(state => state.isLoggedIn);
-  const language = useSelector((state:any)=>state.auth.lang)
+  const language = useSelector((state:any)=>state.auth.language)
+  console.log("Language in stack:",language)
   i18n.changeLanguage(language);
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>

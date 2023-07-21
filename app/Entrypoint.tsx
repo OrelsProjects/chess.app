@@ -89,13 +89,15 @@ import { RNQueryClient } from './services/react-query/query-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Amplify } from 'aws-amplify';
 import awsconfig from '../aws-exports';
+import i18n from './i18n';
 
 Amplify.configure(awsconfig);
 const EntryPoint: React.FC = () => {
+  
   const isDark = useStore(state => state.isDarkMode);
   const paperTheme = isDark ? PaperThemeDark : PaperThemeDefault;
   const combinedTheme = isDark ? CombinedDarkTheme : CombinedDefaultTheme;
-
+  
   return (
     <>
        <Provider store={store}>

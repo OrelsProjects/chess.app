@@ -22,22 +22,23 @@ width:normalized.wp(95),
 marginVertical:normalized.hp(1)
   },
   ratingView:{
-width:normalized.wp(45),
-// height:normalized.hp(4),
-backgroundColor:AppStyles.color.COLOR_WHITE,
-elevation:1,
-alignItems:'center',justifyContent:'center'
+    width:normalized.wp(45),
+    // height:normalized.hp(4),
+    backgroundColor:AppStyles.color.COLOR_WHITE,
+    // elevation:1,
+    alignItems:'center',justifyContent:'center'
   },
   ratingText:{
-fontSize:fontSizes.regular,
-padding:3,
-color: '#222222',
+    fontSize:fontSizes.regular,
+    padding:3,
+    color: '#222222',
   },
 
   scrollViewContent: {
     flexGrow: 1,
+    width: normalized.wp('100')
     // backgroundColor: 'red',
-    zIndex: -1,
+    // zIndex: -1,
   },
   middleView: {
     flexDirection: 'row',
@@ -59,6 +60,7 @@ color: '#222222',
     height: normalized.hp(3),
   },
   starText: {
+    color: '#222222',
     fontSize: fontSizes.small,
   },
   xIcon: {
@@ -125,6 +127,7 @@ color: '#222222',
     //backgroundColor: 'pink',
   },
   neilText: {
+    color: '#222222',
     alignSelf: 'flex-start',
     marginHorizontal: normalized.wp(3),
     fontSize: fontSizes.large,
@@ -186,15 +189,15 @@ color: '#222222',
     bottom: normalized.hp(20),
   },
   button: {
-    width: 60,
-    height: 60,
+    width: hp(8),
+    height: hp(8),
     borderRadius: 90,
     backgroundColor: '#1E90FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    fontSize: 25,
+    fontSize: hp(3.5),
     fontWeight: '700', 
     color: '#ffffff'
   },
@@ -209,13 +212,14 @@ color: '#222222',
     borderRadius: radius.xxlargeRadius,
     backgroundColor: AppStyles.color.COLOR_GREY_WHITE,
     alignSelf: 'center',
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
+    // shadowColor: '#000000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 4,
+    elevation: 4
   },
   seperator: {
     borderWidth: 0.5,
@@ -236,6 +240,7 @@ color: '#222222',
   },
   undoText: {
     fontSize: fontSizes.small,
+    color: '#222222',
   },
   eightView: {
     justifyContent: 'space-around',
@@ -248,6 +253,7 @@ color: '#222222',
   },
   resetText: {
     fontSize: fontSizes.small,
+    color: '#222222',
   },
   nineView: {
     justifyContent: 'center',
@@ -263,6 +269,7 @@ color: '#222222',
     alignSelf: 'center',
     bottom: normalized.hp(1),
     width: normalized.wp(70),
+    color: '#222222',
   },
   lastView: {
     // justifyContent: 'flex-end',

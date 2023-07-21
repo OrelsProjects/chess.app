@@ -18,6 +18,7 @@ import CustomHeader from 'app/components/CustomHeader';
 import {
   drawerIcon,
   neilPlayer,
+  plusIcon,
   starGoldIcon,
   undo,
   xIcon,
@@ -41,6 +42,7 @@ import {
 import axios from 'axios';
 import { BaseURL, endPoints } from 'app/constants';
 import { useTranslation } from 'react-i18next';
+import PlayerCard from 'app/components/PlayerCard';
 
 
 const Home: React.FC = () => {
@@ -206,51 +208,17 @@ const Home: React.FC = () => {
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}>
-        {Array.from({ length: 1 }, (_, index) => (
-          <React.Fragment key={index}>
-            {content
-              ? content.map((item: any, index: any) => (
-                  <View key={index} style={styles.firstView}>
-                    <TouchableOpacity style={styles.secondView}>
-                    <View style={{position: 'absolute',width: '100%',justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{ fontSize: 14}}>{item?.status}</Text>
-                      </View>
-                      <View style={styles.thirdView}>
-                        <SvgXml xml={item.svg} style={styles.neil} />
-                        <View style={styles.fourthView}>
-                          <Text style={styles.neilText}>{item.text}</Text>
-                        
-                        </View>
-                        <View style={styles.middleView}>
-                          <SvgXml
-                            xml={starGoldIcon}
-                            width={normalized.wp(5)}
-                            height={normalized.hp(5)}
-                          />
-                          <Text style={styles.starText}>
-                            {resetResponse || item.starText}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.wgmContainer}>
-                        <Text style={styles.wgmText}>WGM</Text>
-                      </View>
-                      <TouchableOpacity
-                        onPress={() => handleRemoveResult(index)}
-                        style={styles.xIcon}>
-                        <SvgXml xml={xIcon} width={wp(4)} height={wp(4)} />
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  </View>
-                ))
-              : null}
-          </React.Fragment>
-        ))}
+        
+              {content?.map((item: any, index: any) => (
+                  <PlayerCard playerImage={item.svg} playerName={item.text} rating={item.starText} disabled={true} onCancel={()=>handleRemoveResult(index)}/>
+                ))}
+            
       </ScrollView>
 
       <TouchableOpacity style={styles.view2} onPress={navigateToAddOpponent}>
         <View style={styles.button}>
-          <Text style={styles.text}>+</Text>
+          {/* <Text style={[styles.text,{borderWidth: 1,textAlign: 'center'}]}>+</Text> */}
+          <SvgXml xml={plusIcon} width={20} height={20} />
         </View>
       </TouchableOpacity>
       <View style={styles.lastView}>
