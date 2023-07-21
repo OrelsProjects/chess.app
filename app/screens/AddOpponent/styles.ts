@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // width: normalized.wp(95),
     marginHorizontal: normalized.wp('2'),
-    marginTop: normalized.hp(5),
+    margin: normalized.hp(2),
     //backgroundColor: 'red',
   },
   secondView: {

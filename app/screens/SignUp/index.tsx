@@ -189,7 +189,7 @@ const SignUpScreen: React.FC = () => {
             /> */}
             <TouchableOpacity style={styles.datePickerContainer} onPress={()=>setOpen(true)}>
               <SvgXml xml={calenderIcon} height={'20'} width={'20'} />
-              <Text style={[styles.datePickerText,birth?{color: '#B3B3B3'}:null]}>{birth?birth:'Date of birth'}</Text>
+              <Text style={[styles.datePickerText]}>{birth?birth:moment(new Date()).format('DD-MM-YYYY')}</Text>
             </TouchableOpacity>
             <DatePicker
               modal

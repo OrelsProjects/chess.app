@@ -39,6 +39,7 @@ import { useTranslation } from 'react-i18next';
 const Login: React.FC = () => {
   const {t} = useTranslation()
   const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
+  const lang = useSelector((state: any)=>state.auth.language)
   const [email, setEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [signUpUserpassword, setSignUpUserpassword] = useState('');
@@ -60,7 +61,9 @@ const Login: React.FC = () => {
   // NavigationService.navigate('ResetPassword')navigat
     dispatch(setOnBoarding(false));
   }, []);
-
+  useEffect(()=>{
+  console.log("Language: ",lang)
+  },[lang])
   useEffect(()=>{
     console.log('test2')
    
@@ -117,12 +120,11 @@ const Login: React.FC = () => {
         <CustomHeader />
         <View style={styles.childContainer}>
        
-          <View style={styles.headerContainer}>
-            <View style={styles.welcomeContainer}>
-              <Text style={styles.welcome}>{t('welcome')}</Text>
-              <SvgXml xml={handWave} width={'28'} height={'28'} />
+          <View style={[styles.headerContainer]}>
+            <View style={[styles.welcomeContainer]}>
+              <Text style={[styles.welcome]}>{t('welcome')}<SvgXml xml={handWave} width={'28'} height={'28'} /></Text>
             </View>
-            <Text style={styles.loginToContinue}>{t('loginToContinue')}</Text>
+            <Text style={[styles.loginToContinue]}>{t('loginToContinue')}</Text>
           </View>
 
           <CustomInput

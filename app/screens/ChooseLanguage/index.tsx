@@ -51,7 +51,7 @@ const ChooseLanguage: React.FC = () => {
         <CustomHeader />
         <View style={styles.childContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.heading}>{t('selectLanguage')}</Text>
+            <Text style={[styles.heading]}>{t('selectLanguage')}</Text>
             <Text style={styles.subHeading}>{t('chooseYourPreferredLanguage')}</Text>
           </View>
 

@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   cell: {
     width: hp(6),
     height: hp(6),
+    color: '#222222',
     // backgroundColor: theme.color.backgroundColor,
     // backgroundColor: "red",
     // lineHeight: hp(5),

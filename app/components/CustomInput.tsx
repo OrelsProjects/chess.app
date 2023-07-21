@@ -39,7 +39,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     <View style={[styles.container,containerStyle]}>
       <SvgXml xml={iconName} height={'20'} width={'20'} />
       <TextInput
-      editable={editable}
+        editable={editable}
         keyboardType={keyboardType}
         placeholder={placeholder}
         placeholderTextColor={'#8A8A8F'}
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: wp(2),
     color: '#333',
+    textAlign: 'left'
   },
 });
 
