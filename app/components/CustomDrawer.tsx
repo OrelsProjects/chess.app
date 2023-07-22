@@ -1,16 +1,16 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
 import {
   DrawerContentScrollView,
   DrawerItemList,
   DrawerContentComponentProps,
-} from '@react-navigation/drawer';
+} from "@react-navigation/drawer";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import AppStyles from 'app/config/styles';
-import { SvgXml } from 'react-native-svg';
+} from "react-native-responsive-screen";
+import AppStyles from "app/config/styles";
+import { SvgXml } from "react-native-svg";
 import {
   chessLogo,
   externalLinkIcon,
@@ -22,74 +22,75 @@ import {
   settingsIcon,
   languageIcon,
   logout,
-} from 'app/assets/SVGs';
-import { fontSizes, normalized } from 'app/config/metrics';
-import NavigationService from 'app/navigation/NavigationService';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { useStore } from '../store';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { Auth } from 'aws-amplify';
+} from "app/assets/SVGs";
+import { fontSizes, normalized } from "app/config/metrics";
+import NavigationService from "app/navigation/NavigationService";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { useStore } from "../store";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Auth } from "aws-amplify";
 
-const CustomDrawer = props => {
-  const {t} = useTranslation()
-  const user = useSelector((state: any)=>state.auth.userInfo)
-  const navigateToHome = () => NavigationService.navigate('Home');
-  const navigateToCalculator = () => NavigationService.navigate('Home');
-  const navigateToSettings = () => NavigationService.navigate('Home');
-  const navigateToSupport = () => NavigationService.navigate('Home');
-  const navigateToLanguages = () => NavigationService.navigate('Languages');
+const CustomDrawer = (props) => {
+  const { t } = useTranslation();
+  const user = useSelector((state: any) => state.auth.userInfo);
+  const navigateToHome = () => NavigationService.navigate("Home");
+  const navigateToCalculator = () => NavigationService.navigate("Home");
+  const navigateToSettings = () => NavigationService.navigate("Home");
+  const navigateToSupport = () => NavigationService.navigate("Home");
+  const navigateToLanguages = () => NavigationService.navigate("Languages");
 
   const navigation = useNavigation();
   const closeDrawer = () => {
     navigation.dispatch(DrawerActions.closeDrawer());
   };
+  const lang = useSelector((state: any) => state.auth.language);
 
-  const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
+  const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
   const onLogOut = () => {
-    Auth.signOut()
+    Auth.signOut();
     setIsLoggedIn(false);
   };
-  useEffect(()=>{
-    if(user){
-      console.log("User Data:",user)
+  useEffect(() => {
+    if (user) {
+      console.log("User Data:", user);
     }
-  },[user])
+  }, [user]);
 
   const drawerItemRoutes = [
     {
       icon: homeIcon,
-      name: t('home'),
+      name: t("home"),
       route: navigateToHome,
     },
     {
       icon: calculatorIcon,
-      name: t('calculator'),
+      name: t("calculator"),
       route: navigateToCalculator,
     },
     {
       icon: settingsIcon,
-      name: t('settings'),
+      name: t("settings"),
       route: navigateToSettings,
     },
     {
       icon: languageIcon,
-      name: t('languages'),
+      name: t("languages"),
       route: navigateToLanguages,
     },
     {
       icon: infoIcon,
-      name: t('support'),
+      name: t("support"),
       route: navigateToSupport,
     },
     {
       icon: externalLinkIcon,
-      name: t('visitOurWebsite'),
+      name: t("visitOurWebsite"),
       route: navigateToSupport,
     },
     {
       icon: logout,
-      name: t('logout'),
+      name: t("logout"),
       route: onLogOut,
     },
   ];
@@ -98,7 +99,8 @@ const CustomDrawer = props => {
     <View style={styles.container}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={styles.contentContainer}>
+        contentContainerStyle={styles.contentContainer}
+      >
         <View style={styles.drawerHeader}>
           <SvgXml xml={chessLogo} width={wp(10)} height={wp(14)} />
           <TouchableOpacity style={styles.xIcon} onPress={closeDrawer}>
@@ -115,7 +117,12 @@ const CustomDrawer = props => {
           />
           <View style={styles.userDetails}>
             <Text style={styles.userFullName}>{user?.name}</Text>
-            <Text style={[styles.userEmail,{width: '82%'}]} numberOfLines={2}>{user?.email}</Text>
+            <Text
+              style={[styles.userEmail, { width: "82%" }]}
+              numberOfLines={2}
+            >
+              {user?.email}
+            </Text>
           </View>
         </View>
         <View style={styles.divider} />
@@ -124,13 +131,27 @@ const CustomDrawer = props => {
           <TouchableOpacity
             key={i}
             style={styles.drawerItemLink}
-            onPress={route.route}>
-            <SvgXml
-              xml={route.icon}
-              width={normalized.wp(6)}
-              height={normalized.hp(6)}
-            />
-            <Text style={[styles.linkText]}>{route.name}</Text>
+            onPress={route.route}
+          >
+            {lang === "en" ? (
+              <>
+                <SvgXml
+                  xml={route.icon}
+                  width={normalized.wp(6)}
+                  height={normalized.hp(6)}
+                />
+                <Text style={[styles.linkText]}>{route.name}</Text>
+              </>
+            ) : (
+              <>
+                <Text style={[styles.linkText]}>{route.name}</Text>
+                <SvgXml
+                  xml={route.icon}
+                  width={normalized.wp(6)}
+                  height={normalized.hp(6)}
+                />
+              </>
+            )}
           </TouchableOpacity>
         ))}
       </DrawerContentScrollView>
@@ -152,15 +173,15 @@ const styles = StyleSheet.create({
     marginHorizontal: wp(4),
   },
   drawerHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   xIcon: {
     backgroundColor: AppStyles.color.COLOR_WHITE,
     width: normalized.wp(11.2),
     height: normalized.wp(11.2),
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: normalized.hp(10),
     elevation: 2.5,
     shadowColor: AppStyles.color.COLOR_BLACK,
@@ -169,8 +190,8 @@ const styles = StyleSheet.create({
     shadowRadius: 22,
   },
   userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: wp(6),
   },
   userDetails: {
@@ -185,12 +206,12 @@ const styles = StyleSheet.create({
   },
   userFullName: {
     fontSize: fontSizes.regular,
-    fontWeight: '700',
+    fontWeight: "700",
     color: AppStyles.color.RAISIN_BLACK,
   },
   userEmail: {
     fontSize: fontSizes.regular,
-    fontWeight: '500',
+    fontWeight: "500",
     color: AppStyles.color.SPANISH_GRAY,
   },
   divider: {
@@ -199,18 +220,21 @@ const styles = StyleSheet.create({
     marginBottom: wp(4),
   },
   drawerFooter: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: normalized.hp(6),
   },
   drawerItemLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: 'center',
     marginLeft: 8,
   },
   linkText: {
-    width: '80%',
-    marginLeft: 12,
-    color: '#222222'
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    width: "80%",
+    marginHorizontal: 12,
+    color: "#222222",
   },
   footerText: {
     color: AppStyles.color.SONIC_SILVER,

@@ -1,10 +1,17 @@
-import React from 'react';
-import { View, TextInput, StyleSheet, KeyboardTypeOptions, TouchableOpacity } from 'react-native';
-import { SvgXml } from 'react-native-svg';
+import React from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  KeyboardTypeOptions,
+  TouchableOpacity,
+} from "react-native";
+import { SvgXml } from "react-native-svg";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+} from "react-native-responsive-screen";
+import { useSelector } from "react-redux";
 
 interface CustomInputProps {
   placeholder: string;
@@ -15,10 +22,11 @@ interface CustomInputProps {
   onChangeText: (text: string) => void;
   onSubmitEditing: () => void;
   rightIcon: string;
-  onRightIconPress?:any;
-  maxLength:any;
-  containerStyle: object
-  editable: boolean
+  onRightIconPress?: any;
+  onLeftIconPress?: any;
+  maxLength: any;
+  containerStyle: object;
+  editable: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -31,36 +39,60 @@ const CustomInput: React.FC<CustomInputProps> = ({
   iconName,
   rightIcon,
   onRightIconPress,
-  maxLength=500,
+  onLeftIconPress,
+  maxLength = 500,
   containerStyle,
   editable,
 }) => {
+  const lang = useSelector((state: any) => state.auth.language);
+
   return (
-    <View style={[styles.container,containerStyle]}>
-      <SvgXml xml={iconName} height={'20'} width={'20'} />
+    <View style={[styles.container, containerStyle]}>
+      {lang === "en" ? (
+        iconName ? (
+          <TouchableOpacity onPress={onRightIconPress}>
+            <SvgXml xml={iconName} height={"20"} width={"20"} />
+          </TouchableOpacity>
+        ) : null
+      ) : rightIcon ? (
+        <TouchableOpacity onPress={onRightIconPress}>
+          <SvgXml xml={rightIcon} height={"24"} width={"24"} />
+        </TouchableOpacity>
+      ) : null}
+
       <TextInput
         editable={editable}
         keyboardType={keyboardType}
         placeholder={placeholder}
-        placeholderTextColor={'#8A8A8F'}
+        placeholderTextColor={"#8A8A8F"}
         secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
-        style={styles.input}
+        style={[styles.input, { textAlign: lang === "en" ? "left" : "right" }]}
         value={value}
         maxLength={maxLength}
       />
-      {rightIcon ? <TouchableOpacity onPress={onRightIconPress}><SvgXml xml={rightIcon} height={'24'} width={'24'} /></TouchableOpacity> : null}
+      {lang === "hr" ? (
+        iconName ? (
+          <TouchableOpacity onPress={onRightIconPress}>
+            <SvgXml xml={iconName} height={"20"} width={"20"} />
+          </TouchableOpacity>
+        ) : null
+      ) : rightIcon ? (
+        <TouchableOpacity onPress={onRightIconPress}>
+          <SvgXml xml={rightIcon} height={"24"} width={"24"} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 8,
     paddingHorizontal: 12,
     height: hp(7),
@@ -69,14 +101,13 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 8,
     fontSize: 20,
-    color: '#333',
+    color: "#333",
   },
   input: {
     flex: 1,
     fontSize: 16,
-    marginLeft: wp(2),
-    color: '#333',
-    textAlign: 'left'
+    marginHorizontal: wp(2),
+    color: "#333",
   },
 });
 

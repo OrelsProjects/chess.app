@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     marginTop: hp(4),
   },
   signUp: {
+    fontSize: normalized.hp(2),
     color: AppStyles.color.COLOR_PRIMARY,
     fontWeight: '500',
   },
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     alignItems:'flex-start',
     justifyContent:'flex-start',
+    fontSize: normalized.hp(2)
     
     // width:normalized.wp(90),
     // alignSelf:'center'
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   datePickerText: {
     flex: 1,
     fontSize: 16,
-    marginLeft: wp(2),
+    marginHorizontal: wp(2),
     color: '#222',
   },
 });

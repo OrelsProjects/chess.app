@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import create from 'zustand';
+import {create} from 'zustand';
 import { persist } from 'zustand/middleware';
 import { createLoginSlice, ILoginSlice } from './createLoginSlice';
 import { createThemeSlice, IThemeSlice } from './createThemeSlice';
@@ -19,6 +19,11 @@ export const useStore = create<IStore>()(
     {
       name: 'app-storage',
       getStorage: () => AsyncStorage,
+      // storage: {
+      //   getItem: (name: string) => AsyncStorage.getItem(name),
+      //   setItem: (name: string, value: any) => AsyncStorage.setItem(name, JSON.stringify(value) ),
+      //   removeItem: (name: string) => AsyncStorage.removeItem(name),
+      // },
     },
   ),
 );

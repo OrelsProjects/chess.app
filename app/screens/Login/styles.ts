@@ -1,4 +1,4 @@
-import { fontSizes } from 'app/config/metrics';
+import { fontSizes, normalized } from 'app/config/metrics';
 import AppStyles from 'app/config/styles';
 import { StyleSheet } from 'react-native';
 import {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   labelStyle: {
     color: AppStyles.color.COLOR_PRIMARY,
     fontWeight: '500',
-    fontSize: 12,
+    fontSize: normalized.hp(2),
   },
   forgotPass: {
     alignSelf: 'flex-end',
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     color: AppStyles.color.DIM_GRAY,
+    paddingHorizontal:10
   },
   secondaryButtonContainer: {
     flexDirection: 'row',

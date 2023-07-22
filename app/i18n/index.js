@@ -22,6 +22,8 @@ const resources = {
       submit: "Submit",
       add: "Add",
       opponents: "Opponents",
+      failed: "Failed",
+      dataNotFound: "Data not found",
 
       //ForgotPassword
       forgotPassword: "Forgot Password",
@@ -37,6 +39,8 @@ const resources = {
       undo: "Undo",
       reset: "Reset",
       theRatingsMayNotBeAccurate: "The ratings may not be accurate",
+      currentRating: "Current Rating",
+      expectedRating: "Expected Rating",
 
       //Login
       incorrectUsernameOrPassword: "Incorrect username or password",
@@ -108,6 +112,8 @@ const resources = {
       submit: "שלח",
       add: "הוסף",
       opponents: "יריבים",
+      failed: "נכשל",
+      dataNotFound: "נתונים לא נמצאו",
 
       //ForgotPassword
       forgotPassword: "שכחת סיסמה",
@@ -123,6 +129,8 @@ const resources = {
       undo: "בטל",
       reset: "איפוס",
       theRatingsMayNotBeAccurate: "הדירוגים עשויים לא להיות מדויקים",
+      currentRating: "דירוג נוכחי",
+      expectedRating: "דירוג צפוי",
 
       //Login
       incorrectUsernameOrPassword: "שם משתמש או סיסמה שגויים",

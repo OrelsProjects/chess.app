@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Image,
   View,
@@ -7,69 +7,69 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import { Button } from 'react-native-paper';
+} from "react-native";
+import { Button } from "react-native-paper";
 
-import styles from './styles';
-import NavigationService from 'app/navigation/NavigationService';
-import { useStore } from 'app/store';
-import images from 'app/config/images';
-import CustomInput from 'app/components/CustomInput';
+import styles from "./styles";
+import NavigationService from "app/navigation/NavigationService";
+import { useStore } from "app/store";
+import images from "app/config/images";
+import CustomInput from "app/components/CustomInput";
 import {
   googleIcon,
   handWave,
   leftArrowIcon,
   lockIcon,
   mailIcon,
-} from 'app/assets/SVGs/index';
-import { SvgXml } from 'react-native-svg';
-import CustomHeader from 'app/components/CustomHeader';
-import ButtonCTA from 'app/components/ButtonCTA';
+} from "app/assets/SVGs/index";
+import { SvgXml } from "react-native-svg";
+import CustomHeader from "app/components/CustomHeader";
+import ButtonCTA from "app/components/ButtonCTA";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
-import { Auth } from 'aws-amplify';
-import { setHeader, setOnBoarding, setToken, setUserInfo } from 'app/redux/actions/action';
-import { store } from 'app/redux/store/store';
-import { useTranslation } from 'react-i18next';
+} from "react-native-responsive-screen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
+import { Auth } from "aws-amplify";
+import {
+  setHeader,
+  setOnBoarding,
+  setToken,
+  setUserInfo,
+} from "app/redux/actions/action";
+import { store } from "app/redux/store/store";
+import { useTranslation } from "react-i18next";
 
 const Login: React.FC = () => {
-  const {t} = useTranslation()
-  const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
-  const lang = useSelector((state: any)=>state.auth.language)
-  const [email, setEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [signUpUserpassword, setSignUpUserpassword] = useState('');
-  const [name, setName] = useState('');
+  const { t } = useTranslation();
+  const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
+  const lang = useSelector((state: any) => state.auth.language);
+  const [email, setEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [signUpUserpassword, setSignUpUserpassword] = useState("");
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
   const onLogin = () => {
     setIsLoggedIn(true);
   };
 
-
-
-  const onForgot = () => NavigationService.navigate('ForgotPassword');
-  const navigateToSignUp = () => NavigationService.navigate('SignUpScreen');
-  const navigateToHome = () => NavigationService.navigate('Home');
+  const onForgot = () => NavigationService.navigate("ForgotPassword");
+  const navigateToSignUp = () => NavigationService.navigate("SignUpScreen");
+  const navigateToHome = () => NavigationService.navigate("Home");
   const dispatch = useDispatch();
 
   useEffect(() => {
-  // NavigationService.navigate('ResetPassword')navigat
+    // NavigationService.navigate('ResetPassword')navigat
     dispatch(setOnBoarding(false));
   }, []);
-  useEffect(()=>{
-  console.log("Language: ",lang)
-  },[lang])
-  useEffect(()=>{
-    console.log('test2')
-   
-  },[setIsLoggedIn])
-
-
+  useEffect(() => {
+    console.log("Language: ", lang);
+  }, [lang]);
+  useEffect(() => {
+    console.log("test2");
+  }, [setIsLoggedIn]);
 
   // let auth = async () => {
   //     setLoading(true);
@@ -93,19 +93,19 @@ const Login: React.FC = () => {
       setLoading(true);
       const username = email;
       const password = userPassword;
-      console.log("Email and password:",username,password)
+      console.log("Email and password:", username, password);
       const user = await Auth.signIn(username, password);
-      const {name}={name:user?.username}
-      dispatch(setToken(user?.attributes?.sub))
-      dispatch(setUserInfo({name, email}))
-      console.log("user",user);
- 
+      const { name } = { name: user?.username };
+      dispatch(setToken(user?.attributes?.sub));
+      dispatch(setUserInfo({ name, email }));
+      console.log("user", user);
+
       onLogin();
-    
+
       setLoading(false);
     } catch (error) {
-      console.error('Error occurred:', error);
-      Alert.alert('Incorrect username or password');
+      console.error("Error occurred:", error);
+      Alert.alert("Incorrect username or password");
       setLoading(false);
     } finally {
       setLoading(false);
@@ -113,45 +113,49 @@ const Login: React.FC = () => {
   };
   return (
     <View
-      style={{ flexGrow: 1, backgroundColor: '#fff', paddingTop: insets.top }}>
+      style={{ flexGrow: 1, backgroundColor: "#fff", paddingTop: insets.top }}
+    >
       <ScrollView
         contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled">
+        keyboardShouldPersistTaps="handled"
+      >
         <CustomHeader />
         <View style={styles.childContainer}>
-       
           <View style={[styles.headerContainer]}>
             <View style={[styles.welcomeContainer]}>
-              <Text style={[styles.welcome]}>{t('welcome')}<SvgXml xml={handWave} width={'28'} height={'28'} /></Text>
+              <Text style={[styles.welcome]}>
+                {t("welcome")}
+                <SvgXml xml={handWave} width={"28"} height={"28"} />
+              </Text>
             </View>
-            <Text style={[styles.loginToContinue]}>{t('loginToContinue')}</Text>
+            <Text style={[styles.loginToContinue]}>{t("loginToContinue")}</Text>
           </View>
 
           <CustomInput
-            placeholder={t('email')}
+            placeholder={t("email")}
             value={email}
             iconName={mailIcon}
-            onChangeText={e => setEmail(e)}
-            keyboardType={'email-address'}
-            rightIcon={''}
+            onChangeText={(e) => setEmail(e)}
+            keyboardType={"email-address"}
+            rightIcon={""}
           />
           <CustomInput
-            placeholder={t('password')}
+            placeholder={t("password")}
             value={userPassword}
             iconName={lockIcon}
-            onChangeText={e => setUserPassword(e)}
-            onSubmitEditing = {auth}
+            onChangeText={(e) => setUserPassword(e)}
+            onSubmitEditing={auth}
             secureTextEntry={true}
-            rightIcon={''}
+            rightIcon={""}
           />
 
           <TouchableOpacity style={styles.forgotPass} onPress={onForgot}>
-            <Text style={styles.labelStyle}>{t('forgotPassword')}</Text>
+            <Text style={styles.labelStyle}>{t("forgotPassword")}</Text>
           </TouchableOpacity>
 
           <ButtonCTA
             customStyle={{ width: wp(90) }}
-            buttonText={t('login')}
+            buttonText={t("login")}
             onPress={auth}
             disabled={loading}
             loading={loading}
@@ -161,23 +165,44 @@ const Login: React.FC = () => {
               <ActivityIndicator size="large" color="silver" />
             </View>
           )} */}
-          <Text style={styles.orText}>{t('or')}</Text>
+          <Text style={styles.orText}>{t("or")}</Text>
 
           <TouchableOpacity
             style={styles.googleSignInContainer}
-            onPress={() => console.log('Google Sign in pressed')}>
-            <SvgXml xml={googleIcon} width={'44'} height={'44'} />
-            <Text style={styles.googleText}>{t('continueWithGoogle')}</Text>
+            onPress={() => console.log("Google Sign in pressed")}
+          >
+            {lang === "en" ? (
+              <>
+                <SvgXml xml={googleIcon} width={"44"} height={"44"} />
+                <Text style={styles.googleText}>{t("continueWithGoogle")}</Text>
+              </>
+            ) : (
+              <>
+                <Text style={styles.googleText}>{t("continueWithGoogle")}</Text>
+                <SvgXml xml={googleIcon} width={"44"} height={"44"} />
+              </>
+            )}
           </TouchableOpacity>
         </View>
 
         {/* </View> */}
       </ScrollView>
       <View style={styles.secondaryButtonContainer}>
-        <Text style={styles.noAccount}>{t('dontHaveAnAccount')}</Text>
-        <TouchableOpacity onPress={navigateToSignUp}>
-          <Text style={styles.signUp}>{t('signUp')}</Text>
-        </TouchableOpacity>
+        {lang === "en" ? (
+          <>
+            <Text style={styles.noAccount}>{t("dontHaveAnAccount")}</Text>
+            <TouchableOpacity onPress={navigateToSignUp}>
+              <Text style={styles.signUp}>{t("signUp")}</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity onPress={navigateToSignUp}>
+              <Text style={styles.signUp}>{t("signUp")}</Text>
+            </TouchableOpacity>
+            <Text style={styles.noAccount}>{t("dontHaveAnAccount")}</Text>
+          </>
+        )}
       </View>
     </View>
   );

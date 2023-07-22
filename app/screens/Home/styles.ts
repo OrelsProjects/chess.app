@@ -272,24 +272,18 @@ marginVertical:normalized.hp(1)
     color: '#222222',
   },
   lastView: {
-    // justifyContent: 'flex-end',
-    // alignItems: 'center',
     position: 'absolute',
     width: normalized.wp(60),
-    // alignSelf: 'center',
-    //marginTop: normalized.hp(77),
-    //marginVertical: normalized.hp(-5),
-    // top: 0,
     bottom: normalized.hp(8),
   },
   buttonView:{
-bottom:normalized.hp(5),
-position:'absolute'
+    bottom:normalized.hp(5),
+    position:'absolute'
   },
   userImagesView:{
     width:normalized.wp(10),
-flexDirection:'row',
-alignItems:'center'
+    flexDirection:'row',
+    alignItems:'center'
   },
   buttonLoader: {
     flex:1,
