@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     color: AppStyles.color.DIM_GRAY,
-    paddingHorizontal:10
   },
   secondaryButtonContainer: {
     flexDirection: 'row',

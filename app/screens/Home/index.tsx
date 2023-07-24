@@ -85,12 +85,15 @@ const Home: React.FC = () => {
           points: result?.opponentPoints,
           status: result?.opponentStatus,
           starText: result?.opponentRating,
+          badge: result?.badge,
           image: images.icons.players,
           starImage: images.icons.star,
           wgmImage: images.icons.wgm,
         }))
       : null;
-
+  useEffect(() => {
+    console.log("Content Badge:", content);
+  }, [content]);
   const getCurrentRatingApi = async () => {
     try {
       const response = await BaseURL.get(endPoints.getUserApi);
@@ -219,6 +222,8 @@ const Home: React.FC = () => {
             playerImage={item.svg}
             playerName={item.text}
             rating={item.starText}
+            centerText={item.status}
+            badge={item.badge}
             disabled={true}
             onCancel={() => handleRemoveResult(index)}
           />

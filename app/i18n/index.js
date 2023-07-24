@@ -24,6 +24,8 @@ const resources = {
       opponents: "Opponents",
       failed: "Failed",
       dataNotFound: "Data not found",
+      addOpponents: "Add Opponents",
+      selectedOptions: "Selected Options",
 
       //ForgotPassword
       forgotPassword: "Forgot Password",
@@ -66,6 +68,7 @@ const resources = {
       a4DigitsCodeHasBeenSentToYourEmail:
         "A 4 digits code has been sent to your email",
       verify: "Verify",
+      enterOTP: "Enter OTP",
 
       //ResetPassword
       new: "New",
@@ -114,6 +117,8 @@ const resources = {
       opponents: "יריבים",
       failed: "נכשל",
       dataNotFound: "נתונים לא נמצאו",
+      addOpponents: "הוסף יריבים",
+      selectedOptions: "אפשרויות נבחרות",
 
       //ForgotPassword
       forgotPassword: "שכחת סיסמה",
@@ -156,6 +161,7 @@ const resources = {
       a4DigitsCodeHasBeenSentToYourEmail:
         'קוד באורך 4 ספרות נשלח לכתובת הדוא"ל שלך',
       verify: "אמת",
+      enterOTP: "הזן OTP",
 
       //ResetPassword
       new: "חדש",

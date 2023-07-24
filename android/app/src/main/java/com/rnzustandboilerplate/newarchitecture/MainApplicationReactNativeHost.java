@@ -1,4 +1,4 @@
-package com.rnzustandboilerplate.newarchitecture;
+package com.ChessAppMVP.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.rnzustandboilerplate.BuildConfig;
-import com.rnzustandboilerplate.newarchitecture.components.MainComponentsRegistry;
-import com.rnzustandboilerplate.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.ChessAppMVP.BuildConfig;
+import com.ChessAppMVP.newarchitecture.components.MainComponentsRegistry;
+import com.ChessAppMVP.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

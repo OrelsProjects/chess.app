@@ -8,10 +8,11 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    borderWidth: 1
   },
   childContainer: {
     flex: 1,
@@ -121,14 +122,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: AppStyles.color.COLOR_DARK_SEPERATOR,
     marginVertical: wp(4),
-    backgroundColor: 'red',
-    // height: 20,
     width: wp(90),
   },
   optionText: {
     fontSize: fontSizes.regular,
     color: AppStyles.color.COLOR_BLACK,
     fontWeight: '600',
+    marginBottom: hp(2),
+    textAlign:'center'
   },
   xIcon: {
     backgroundColor: AppStyles.color.COLOR_WHITE,

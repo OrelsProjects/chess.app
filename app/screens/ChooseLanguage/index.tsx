@@ -49,17 +49,7 @@ const ChooseLanguage: React.FC = () => {
     dispatch(setLanguage(language));
   };
 
-  // useEffect(() => {
-  //   isRTL();
-  // }, []);
-  const isRTL = async () => {
-    if (lang === "hr") {
-      await I18nManager.forceRTL(true);
-    } else {
-      await I18nManager.forceRTL(false);
-    }
-  
-  };
+
 
   return (
     <View
