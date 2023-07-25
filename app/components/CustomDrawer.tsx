@@ -9,7 +9,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import AppStyles from "app/config/styles";
+import AppStyles from "../config/styles";
 import { SvgXml } from "react-native-svg";
 import {
   chessLogo,
@@ -22,9 +22,9 @@ import {
   settingsIcon,
   languageIcon,
   logout,
-} from "app/assets/SVGs";
-import { fontSizes, normalized } from "app/config/metrics";
-import NavigationService from "app/navigation/NavigationService";
+} from "../assets/SVGs";
+import { fontSizes, normalized } from "../config/metrics";
+import NavigationService from "../navigation/NavigationService";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { useStore } from "../store";
 import { useTranslation } from "react-i18next";

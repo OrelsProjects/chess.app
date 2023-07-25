@@ -1,17 +1,17 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from './style';
-import images from 'app/config/images';
-import NavigationService from 'app/navigation/NavigationService';
+import images from '../../config/images';
+import NavigationService from '../../navigation/NavigationService';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Svg, { SvgUri, SvgXml } from 'react-native-svg';
-import { onboardOne, onboardTwo, sliderOne, sliderTwo } from 'app/assets/SVGs';
+import { onboardOne, onboardTwo, sliderOne, sliderTwo } from '../../assets/SVGs';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { setOnBoarding } from 'app/redux/actions/action';
+import { setOnBoarding } from '../../redux/actions/action';
 
 const OnBordingScreen: React.FC = () => {
   const {t} = useTranslation()

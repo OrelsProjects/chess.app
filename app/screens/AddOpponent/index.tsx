@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View, Alert } from "react-native";
 import { Button } from "react-native-paper";
 
-import NavigationService from "app/navigation/NavigationService";
+import NavigationService from "../../navigation/NavigationService";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -19,23 +19,23 @@ import {
   starIconTwo,
   userIcon,
   xIcon,
-} from "app/assets/SVGs/index";
+} from "../../assets/SVGs/index";
 
 import styles from "./styles";
-import ButtonCTA from "app/components/ButtonCTA";
-import CustomHeader from "app/components/CustomHeader";
-import CustomInput from "app/components/CustomInput";
+import ButtonCTA from "../../components/ButtonCTA";
+import CustomHeader from "../../components/CustomHeader";
+import CustomInput from "../../components/CustomInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AppStyles from "app/config/styles";
-import { normalized } from "app/config/metrics";
+import AppStyles from "../../config/styles";
+import { normalized } from "../../config/metrics";
 import { SvgXml } from "react-native-svg";
 import { useDispatch, useSelector } from "react-redux";
-import { searchUser } from "app/redux/actions/action";
-import { BaseURL, endPoints } from "app/constants";
+import { searchUser } from "../../redux/actions/action";
+import { BaseURL, endPoints } from "../../constants";
 import { useTranslation } from "react-i18next";
-import images from "app/config/images";
+import images from "../../config/images";
 import axios from "axios";
-import PlayerCard from "app/components/PlayerCard";
+import PlayerCard from "../../components/PlayerCard";
 
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
@@ -94,12 +94,31 @@ const AddOpponent: React.FC = () => {
         badge: badge,
         tag: "GM",
       };
+      // console.log("🚀 ~ file: index.tsx:97 ~ selectedOptionArrayFN ~ valObj:", valObj)
       let obj = [...selectedOptionArray, valObj];
 
       setOpponentName("");
       setRatingNumber("");
       setSelectedOptionArray(obj);
-    } else {
+    } 
+    else if (selectedBtn.name !== "" && selectedBtn.name !== null && ratingNumber !== "") {
+
+      let valObj = {
+        opponentName: opponentName,
+        opponentPoints: selectedBtn.value,
+        opponentStatus: selectedBtn.name,
+        opponentRating: ratingNumber,
+        image: neilPlayer,
+        badge: badge,
+        tag: "GM",
+      };
+      let obj = [...selectedOptionArray, valObj];
+
+      setOpponentName("");
+      setRatingNumber("");
+      setSelectedOptionArray(obj);
+    } 
+    else {
       Alert.alert(t("pleaseFillAllFields"));
     }
   };
@@ -134,6 +153,7 @@ const AddOpponent: React.FC = () => {
 
   const getUsersFromApi = async (text: any) => {
     setOpponentName(text);
+    setRatingNumber("")
     if (source.current) {
       source.current.cancel("Previous request cancelled");
       // setisloading(false)
@@ -166,26 +186,29 @@ const AddOpponent: React.FC = () => {
   const renderUsers = () => {
     return (
       <>
-        <View style={styles.divider} />
-        <Text style={styles.optionText}>Selected Options</Text>
-        <View style={{ width: normalized.wp("95%") }}>
-          {selectedOptionArray.map((user: any, i) => {
-            const randomIndex = Math.floor(Math.random() * colors.length);
-            const randomColor = colors[randomIndex];
-            // console.log('user', user);
-            return (
-              <PlayerCard
-                key={i}
-                playerImage={user?.image}
-                playerName={user?.opponentName}
-                rating={user?.opponentRating}
-                centerText={user?.opponentStatus}
-                badge={user?.badge}
-                onCancel={() => handleRemoveItem(i)}
-              />
-            );
-          })}
-        </View>
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+
+          <View style={styles.divider} />
+          <Text style={styles.optionText}>Selected Options</Text>
+          <View style={{ width: normalized.wp("90%") }}>
+            {selectedOptionArray.map((user: any, i) => {
+              const randomIndex = Math.floor(Math.random() * colors.length);
+              const randomColor = colors[randomIndex];
+              console.log('user', user);
+              return (
+                <PlayerCard
+                  key={i}
+                  playerImage={user?.image}
+                  playerName={user?.opponentName}
+                  rating={user?.opponentRating}
+                  centerText={user?.opponentStatus}
+                  badge={user?.badge}
+                  onCancel={() => handleRemoveItem(i)}
+                />
+              );
+            })}
+          </View>
+        </ScrollView>
       </>
     );
   };
@@ -298,7 +321,7 @@ const AddOpponent: React.FC = () => {
           </View>
 
           <CustomInput
-            editable={false}
+            editable={opponentName == "" ? true : false}
             containerStyle={{ zIndex: 1 }}
             placeholder={t("enterRatingNumber")}
             value={ratingNumber.toString()}
@@ -306,21 +329,22 @@ const AddOpponent: React.FC = () => {
             onRightIconPress={selectedOptionArrayFN}
             onChangeText={(e) => setRatingNumber(e)}
             rightIcon={enterIcon}
+            keyboardType="number-pad"
           />
+          {renderUsers()}
         </View>
 
-        {name != "" ? renderUsers() : null}
 
-        <View style={[styles.secondaryButtonContainer, { zIndex: 1 }]}>
-          <ButtonCTA
-            customStyle={{ width: wp(90) }}
-            buttonText={t("submit")}
-            onPress={() => {
-              userData();
-            }}
-          />
-        </View>
       </ScrollView>
+      <View style={[styles.secondaryButtonContainer, { zIndex: 1 }]}>
+        <ButtonCTA
+          customStyle={{ width: wp(90) }}
+          buttonText={t("submit")}
+          onPress={() => {
+            userData();
+          }}
+        />
+      </View>
     </View>
   );
 };

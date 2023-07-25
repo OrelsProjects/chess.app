@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { fontSizes, normalized, radius } from 'app/config/metrics';
-import AppStyles from 'app/config/styles';
+import { fontSizes, normalized, radius } from '../../config/metrics';
+import AppStyles from '../../config/styles';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

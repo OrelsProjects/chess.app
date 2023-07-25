@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { BaseURL, endPoints } from 'app/constants';
+import { BaseURL, endPoints } from '../../constants';
 import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
@@ -18,9 +18,9 @@ import {
   REMOVE_USERINFO,
   SET_TOKEN
 } from './actionType';
-import NavigationService from 'app/navigation/NavigationService';
+import NavigationService from '../../navigation/NavigationService';
 import { store } from '../store/store';
-import { useStore } from 'app/store/index';
+import { useStore } from '../../store/index';
 
 
 interface SignupData {

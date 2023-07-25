@@ -1,4 +1,4 @@
-import { store } from "app/redux/store/store";
+import { store } from "../redux/store/store";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -19,6 +19,8 @@ export const BaseURL = axios.create({
     UserId: store.getState().auth.token,
   },
 });
+
+console.log("headerFound after create>>>> ", store.getState().auth.token);
 
 export const endPoints = {
   signUp: "/users",

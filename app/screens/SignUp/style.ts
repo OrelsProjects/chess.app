@@ -1,5 +1,5 @@
-import { fontSizes, normalized } from 'app/config/metrics';
-import AppStyles from 'app/config/styles';
+import { fontSizes, normalized } from '../../config/metrics';
+import AppStyles from '../../config/styles';
 import { StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   noAccountTwo: {
     fontSize: fontSizes.medium,
     color: '#666666',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   label: {
     margin: normalized.hp(8),
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     height: hp(7),
     marginBottom: 16,
+    color: "#333",
   },
   datePickerText: {
     flex: 1,

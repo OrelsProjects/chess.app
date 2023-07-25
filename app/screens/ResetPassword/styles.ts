@@ -1,5 +1,5 @@
-import { fontSizes } from 'app/config/metrics';
-import AppStyles from 'app/config/styles';
+import { fontSizes, radius } from '../../config/metrics';
+import AppStyles from '../../config/styles';
 import { StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -51,6 +51,30 @@ const styles = StyleSheet.create({
     color: AppStyles.color.COLOR_PRIMARY,
     fontWeight: '500',
     fontSize: fontSizes.medium,
+  },
+  codeFieldRoot: {
+    marginBottom: hp(4),
+  },
+  cell: {
+    width: hp(6),
+    height: hp(6),
+    color: '#222222',
+    // backgroundColor: theme.color.backgroundColor,
+    // backgroundColor: "red",
+    // lineHeight: hp(5),
+    marginHorizontal: wp(2),
+
+    fontSize: fontSizes.large,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: AppStyles.color.FLASH_WHITE,
+    // color: theme.color.textBlue,
+    textAlign: 'center',
+    borderRadius: radius.xsmallRadius
+  },
+  focusCell: {
+    borderColor: AppStyles.color.COLOR_PRIMARY,
+    borderWidth: 1,
   },
 });
 

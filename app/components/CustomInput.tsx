@@ -27,6 +27,7 @@ interface CustomInputProps {
   maxLength: any;
   containerStyle: object;
   editable: boolean;
+  isEmailValid: boolean
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -43,11 +44,23 @@ const CustomInput: React.FC<CustomInputProps> = ({
   maxLength = 500,
   containerStyle,
   editable,
+  isEmailValid
 }) => {
   const lang = useSelector((state: any) => state.auth.language);
 
+  const [isFocused, setIsFocused] = React.useState("default")
+
+  const handleFocus = () => {
+    setIsFocused("active")
+  }
+
+  const handleBlur = () => {
+    setIsFocused("default")
+  }
+
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={[styles.container, containerStyle, { borderColor: isFocused === "default" ? "#ccc" : isEmailValid === false ? "red" : "#007AFF" }]}>
+
       {lang === "en" ? (
         iconName ? (
           <TouchableOpacity onPress={onRightIconPress}>
@@ -68,22 +81,26 @@ const CustomInput: React.FC<CustomInputProps> = ({
         secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         style={[styles.input, { textAlign: lang === "en" ? "left" : "right" }]}
         value={value}
         maxLength={maxLength}
       />
-      {lang === "hr" ? (
-        iconName ? (
+      {
+        lang === "hr" ? (
+          iconName ? (
+            <TouchableOpacity onPress={onRightIconPress}>
+              <SvgXml xml={iconName} height={"20"} width={"20"} />
+            </TouchableOpacity>
+          ) : null
+        ) : rightIcon ? (
           <TouchableOpacity onPress={onRightIconPress}>
-            <SvgXml xml={iconName} height={"20"} width={"20"} />
+            <SvgXml xml={rightIcon} height={"24"} width={"24"} />
           </TouchableOpacity>
         ) : null
-      ) : rightIcon ? (
-        <TouchableOpacity onPress={onRightIconPress}>
-          <SvgXml xml={rightIcon} height={"24"} width={"24"} />
-        </TouchableOpacity>
-      ) : null}
-    </View>
+      }
+    </View >
   );
 };
 

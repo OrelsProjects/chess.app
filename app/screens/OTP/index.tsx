@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View,ActivityIndicator } from 'react-native';
-import NavigationService from 'app/navigation/NavigationService';
+import NavigationService from '../../navigation/NavigationService';
 import styles from './styles';
-import ButtonCTA from 'app/components/ButtonCTA';
-import CustomHeader from 'app/components/CustomHeader';
-import { leftArrowIcon, mailIcon } from 'app/assets/SVGs';
+import ButtonCTA from '../../components/ButtonCTA';
+import CustomHeader from '../../components/CustomHeader';
+import { leftArrowIcon, mailIcon } from '../../assets/SVGs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Auth } from 'aws-amplify';
 import {
@@ -19,10 +19,10 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHeader, Signup } from 'app/redux/actions/action';
-import { store } from 'app/redux/store/store';
+import { setHeader, Signup } from '../../redux/actions/action';
+import { store } from '../../redux/store/store';
 import { useTranslation } from 'react-i18next';
-import { useStore } from 'app/store/index';
+import { useStore } from '../../store/index';
 
 interface OtpProps {
   username: String;

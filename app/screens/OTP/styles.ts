@@ -1,5 +1,5 @@
-import { fontSizes, radius,normalized} from 'app/config/metrics';
-import AppStyles from 'app/config/styles';
+import { fontSizes, radius,normalized} from '../../config/metrics';
+import AppStyles from '../../config/styles';
 import { StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,

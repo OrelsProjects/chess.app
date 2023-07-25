@@ -1,5 +1,5 @@
-import { starGoldIcon, xIcon } from "app/assets/SVGs";
-import { normalized } from "app/config/metrics";
+import { starGoldIcon, xIcon } from "../assets/SVGs";
+import { normalized, radius } from "../config/metrics";
 import React from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -8,6 +8,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
+import AppStyles from "../config/styles";
 
 interface Parameters {
   playerName: string;
@@ -30,6 +31,7 @@ const PlayerCard: React.FC<Parameters> = ({
   onPress,
   onCancel,
 }) => {
+
   return (
     <Pressable
       onPress={() => (onPress ? onPress() : null)}
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   innerFirstView: {
-    flex: 3.5,
+    flex: 2.5,
     paddingHorizontal: normalized.wp(2),
     flexDirection: "row",
     alignItems: "center",
@@ -100,6 +102,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    // marginLeft: normalized.wp(5),
+    // borderWidth: 1,
+    // borderRadius: radius.regularRadius,
+    // borderColor: AppStyles.color.COLOR_PRIMARY,
+    // paddingVertical: normalized.hp(0.5),
+    // paddingHorizontal: normalized.hp(1.3)
   },
   photoStyle: {
     margin: normalized.wp(2),
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
     color: "black",
   },
   innerSecondView: {
-    flex: 3.5,
+    flex: 2.5,
     alignItems: "flex-end",
     justifyContent: "center",
     paddingRight: normalized.wp(3),

@@ -1,61 +1,81 @@
+import { Auth } from "aws-amplify";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  View,
+  ScrollView,
   Text,
   TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-  Alert,
+  View
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import CustomHeader from "app/components/CustomHeader";
-import styles from "./style";
-import CustomInput from "app/components/CustomInput";
-import { useStore } from "app/store";
+import DatePicker from "react-native-date-picker";
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SvgXml } from "react-native-svg";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  calenderIcon,
   lockIcon,
   mailIcon,
   starIcon,
-  calenderIcon,
-} from "app/assets/SVGs/index";
-import { Auth } from "aws-amplify";
-import ButtonCTA from "app/components/ButtonCTA";
+} from "../../assets/SVGs/index";
+import ButtonCTA from "../../components/ButtonCTA";
+import CustomHeader from "../../components/CustomHeader";
+import CustomInput from "../../components/CustomInput";
+import { normalized } from "../../config/metrics";
+import NavigationService from "../../navigation/NavigationService";
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import NavigationService from "app/navigation/NavigationService";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  Signup,
-  setHeader,
   setToken,
   setUserInfo,
-  userSignupInfo,
-} from "app/redux/actions/action";
-import { normalized } from "app/config/metrics";
-import { t } from "i18next";
-import { useTranslation } from "react-i18next";
-import { SvgXml } from "react-native-svg";
-import DatePicker from "react-native-date-picker";
-import moment from "moment";
+  userSignupInfo
+} from "../../redux/actions/action";
+import {
+  SIGNUP_FAILURE,
+  SIGNUP_REQUEST,
+  SIGNUP_SUCCESS,
+  SET_TOKEN
+} from "../../redux/actions/actionType";
+import styles from "./style";
+import { BaseURL, endPoints } from "../../constants";
+import Snackbar from 'react-native-snackbar';
+import axios from "axios";
+import { store } from "../../redux/store/store";
 
 const SignUpScreen: React.FC = () => {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("")
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [birth, setBirth] = useState("");
   const [israel, setIsrael] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [gender, setGender] = useState(null);
+  const [items, setItems] = useState([
+    {
+      label: `${t('male')}`, value: 'male', labelStyle: {
+        color: "#8A8A8F"
+      }
+    },
+    {
+      label: `${t('female')}`, value: 'female', labelStyle: {
+        color: "#8A8A8F"
+      }
+    }
+  ]);
+  const dispatch = useDispatch();
   const lang = useSelector((state: any) => state.auth.language);
 
   const insets = useSafeAreaInsets();
 
   const handleLogin = () => NavigationService.navigate("Login");
   const authSignup = () =>
-    fetchData(name, password, email, "+123456789", israel);
+    fetchData(name, password, email, phoneNumber, gender, birth, israel);
   //console.log("name, password", name, password);
   //NavigationService.navigate('Login');
 
@@ -64,10 +84,61 @@ const SignUpScreen: React.FC = () => {
     password: string;
     email: string;
     phoneNumber: string;
+    gender: string
+    israel: string
   };
 
-  const fetchData = async (name, password, email, phoneNumber, israel) => {
+  interface SignupData {
+    first_name: string;
+    last_name: string;
+    gender: string;
+    email: string;
+    // password: string;
+    phone_number: string;
+    player_number: number;
+    date_of_birth: number;
+    token:any
+  }
+
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  const validateEmail = (email) => {
+    // Implement your email validation logic here.
+    // For example, you can use a regular expression to validate the email format.
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (text) => {
+    setEmail(text);
+    setIsEmailValid(validateEmail(text)); // Update the isEmailValid state based on email validation
+  };
+
+  const fetchData = async (name, password, email, phoneNumber, gender, birth, israel) => {
     console.log("test", email);
+    if (!name || !email) {
+      console.log('Name or Email is missing');
+      Snackbar.show({
+        text: 'Name or Email is missing',
+        // duration: Snackbar.LENGTH_INDEFINITE,
+        textColor: '#fcfcfd',
+        backgroundColor: 'red'
+      });
+      setLoading(false)
+      return;
+    }
+    if (!birth) {
+      console.log('first_name or email or date_of_birth missing');
+      Snackbar.show({
+        text: 'Date of birth is not valid',
+        // duration: Snackbar.LENGTH_INDEFINITE,
+        textColor: '#fcfcfd',
+        backgroundColor: 'red'
+      });
+      setLoading(false)
+      return;
+    }
+
     try {
       setLoading(true);
       const user = await Auth.signUp({
@@ -76,7 +147,7 @@ const SignUpScreen: React.FC = () => {
 
         attributes: {
           email: email?.toLowerCase(), // optional
-          phone_number: phoneNumber, // optional - E.164 number convention
+          phone_number: "+" + phoneNumber, // optional - E.164 number convention
         },
         autoSignIn: {
           // optional - enables auto sign in after user is confirmed
@@ -92,20 +163,23 @@ const SignUpScreen: React.FC = () => {
           let objParam = {
             first_name: name,
             last_name: "testing",
-            gender: "male",
+            gender: gender,
             email: email,
-            phone_number: "0543442286",
+            phone_number: "+" + phoneNumber,
             player_number: Number(israel),
-            date_of_birth: "12-12-2020",
+            date_of_birth: birth,
+            token: user?.userSub
           };
-          dispatch(Signup(objParam));
+          console.log("🚀 ~ file: index.tsx:144 ~ interval ~ objParam:", objParam)
+          // dispatch(Signup(objParam));
+          Signup(objParam)
           // setLoading(false);
           clearInterval(interval);
         } catch (error) {
           setLoading(false);
           console.error("Signup error:", error);
         }
-      }, 3000);
+      }, 1000);
 
       // NavigationService.navigate('EnterOTP', {
       //   username: name,
@@ -116,16 +190,85 @@ const SignUpScreen: React.FC = () => {
     } catch (error) {
       setLoading(false);
       console.log("error signing up:", error);
+      Snackbar.show({
+        text: error.toString(),
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: '#fcfcfd',
+        backgroundColor: 'red'
+      });
     } finally {
       // setLoading(false);
     }
   };
+
+  const Signup = async (data: SignupData) => {
+    console.log('Check Before API data ==> ', data);
+    try {
+      const {
+        first_name,
+        last_name,
+        gender,
+        email,
+        phone_number,
+        player_number,
+        date_of_birth,
+        token
+      } = data;
+
+      const SignUpAPI = axios.create({
+        baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
+        headers: {
+          "content-type": "text/plain; charset=utf-8",
+          "UserId": token,
+        },
+      });
+
+      let apiParams = {
+        first_name,
+        last_name,
+        gender,
+        email,
+        phone_number,
+        player_number,
+        date_of_birth,
+      }
+      console.log('apiParams22', apiParams)
+      const response = await SignUpAPI.post(endPoints.signUp, apiParams);
+
+      console.log("testing", response)
+      setLoading(false)
+      if (response) {
+        dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
+
+        //  useStore.getState().setIsLoggedIn(true)
+        NavigationService.navigate('EnterOTP', {
+          username: apiParams.first_name,
+          email: apiParams.email,
+        });
+        // dispatch(set)
+        console.log('response Sign Up Data:', response.config.data);
+      }
+    } catch (error) {
+      dispatch({ type: SIGNUP_FAILURE, payload: error });
+      setLoading(false)
+      console.log('error:', error);
+      console.log('Error response:', error?.response?.data)
+      Snackbar.show({
+        text: error?.response?.data.toString(),
+        // duration: Snackbar.LENGTH_INDEFINITE,
+        textColor: '#fcfcfd',
+        backgroundColor: 'red'
+      });
+    }
+
+  };
+
   useEffect(() => {
     console.log("Password:", password);
   }, [password]);
-  const verifyOTP = async () => {};
+  const verifyOTP = async () => { };
 
-  const dispatch = useDispatch();
+
 
   const handleUserInfo = async () => {
     try {
@@ -172,9 +315,44 @@ const SignUpScreen: React.FC = () => {
               placeholder={t("email")}
               value={email}
               iconName={mailIcon}
-              onChangeText={(e) => setEmail(e)}
+              // onChangeText={(e) => setEmail(e)}
+              onChangeText={handleEmailChange}
+              isEmailValid={isEmailValid} // Pass the isEmailValid prop
               keyboardType={"email-address"}
             />
+
+            <CustomInput
+              placeholder={`${t('phoneNumber')}`}
+              value={phoneNumber}
+              iconName={starIcon}
+              // maxLength={6}
+              onChangeText={(e) => setPhoneNumber(e)}
+              keyboardType={"number-pad"}
+            />
+
+            <DropDownPicker
+              open={isDropDownOpen}
+              value={gender}
+              items={items}
+              setOpen={() => setIsDropDownOpen(!isDropDownOpen)}
+              setValue={setGender}
+              setItems={setItems}
+              placeholder={`${t('gender')}`}
+              style={styles.datePickerContainer}
+              placeholderStyle={{
+                color: "#8A8A8F",
+                fontSize: 16,
+              }}
+              dropDownContainerStyle={{
+                borderColor: "#ccc"
+              }}
+              textStyle={{
+                color: '#333',
+                fontSize: 16,
+              }}
+
+            />
+
             <CustomInput
               placeholder={t("password")}
               value={password}

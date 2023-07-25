@@ -9,12 +9,12 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { useStore } from "app/store";
-import { store } from "app/redux/store/store";
+import { useStore } from "../../store";
+import { store } from "../../redux/store/store";
 import styles from "./styles";
-import { GetUserDetails } from "app/services/react-query/queries/user";
+import { GetUserDetails } from "../../services/react-query/queries/user";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CustomHeader from "app/components/CustomHeader";
+import CustomHeader from "../../components/CustomHeader";
 import {
   drawerIcon,
   neilPlayer,
@@ -22,13 +22,13 @@ import {
   starGoldIcon,
   undo,
   xIcon,
-} from "app/assets/SVGs";
-import images from "app/config/images";
+} from "../../assets/SVGs";
+import images from "../../config/images";
 import { SvgXml } from "react-native-svg";
-import { normalized } from "app/config/metrics";
-import NavigationService from "app/navigation/NavigationService";
+import { normalized } from "../../config/metrics";
+import NavigationService from "../../navigation/NavigationService";
 import { useNavigation } from "@react-navigation/native";
-import ButtonCTA from "app/components/ButtonCTA";
+import ButtonCTA from "../../components/ButtonCTA";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -38,11 +38,11 @@ import {
   expectedRating,
   removeSearchResult,
   searchUser,
-} from "app/redux/actions/action";
+} from "../../redux/actions/action";
 import axios from "axios";
-import { BaseURL, endPoints } from "app/constants";
+import { BaseURL, endPoints } from "../../constants";
 import { useTranslation } from "react-i18next";
-import PlayerCard from "app/components/PlayerCard";
+import PlayerCard from "../../components/PlayerCard";
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -218,6 +218,7 @@ const Home: React.FC = () => {
           <PlayerCard
             playerImage={item.svg}
             playerName={item.text}
+            centerText={item.status}
             rating={item.starText}
             disabled={true}
             onCancel={() => handleRemoveResult(index)}

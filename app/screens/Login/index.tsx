@@ -11,20 +11,20 @@ import {
 import { Button } from "react-native-paper";
 
 import styles from "./styles";
-import NavigationService from "app/navigation/NavigationService";
-import { useStore } from "app/store";
-import images from "app/config/images";
-import CustomInput from "app/components/CustomInput";
+import NavigationService from "../../navigation/NavigationService";
+import { useStore } from "../../store";
+import images from "../../config/images";
+import CustomInput from "../../components/CustomInput";
 import {
   googleIcon,
   handWave,
   leftArrowIcon,
   lockIcon,
   mailIcon,
-} from "app/assets/SVGs/index";
+} from "../../assets/SVGs/index";
 import { SvgXml } from "react-native-svg";
-import CustomHeader from "app/components/CustomHeader";
-import ButtonCTA from "app/components/ButtonCTA";
+import CustomHeader from "../../components/CustomHeader";
+import ButtonCTA from "../../components/ButtonCTA";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -37,8 +37,8 @@ import {
   setOnBoarding,
   setToken,
   setUserInfo,
-} from "app/redux/actions/action";
-import { store } from "app/redux/store/store";
+} from "../../redux/actions/action";
+import { store } from "../../redux/store/store";
 import { useTranslation } from "react-i18next";
 
 const Login: React.FC = () => {

@@ -81,6 +81,10 @@ const resources = {
       termsAndConditions: "Term & Conditions",
       and: "and",
       privacyPolicy: "Privacy Policy",
+      phoneNumber: 'Phone Number',
+      gender: 'Gender',
+      male: "Male",
+      female: "Female",
 
       //Drawer
       home: "Home",
@@ -171,6 +175,10 @@ const resources = {
       termsAndConditions: "תנאי השימוש",
       and: "ו",
       privacyPolicy: "מדיניות פרטיות",
+      phoneNumber: 'מספר טלפון',
+      gender: 'מִין',
+      male: "זָכָר",
+      female: "נְקֵבָה",
 
       //Drawer
       home: "בית",

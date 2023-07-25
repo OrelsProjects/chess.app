@@ -7,24 +7,24 @@ import {
   View,
 } from "react-native";
 import { Button } from "react-native-paper";
-import i18n from "app/i18n";
+import i18n from "../../i18n";
 import { useTranslation, withTranslation } from "react-i18next";
 
-import NavigationService from "app/navigation/NavigationService";
+import NavigationService from "../../navigation/NavigationService";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-import { lockIcon } from "app/assets/SVGs/index";
+import { lockIcon } from "../../assets/SVGs/index";
 
 import styles from "./styles";
-import ButtonCTA from "app/components/ButtonCTA";
-import CustomHeader from "app/components/CustomHeader";
-import CustomInput from "app/components/CustomInput";
+import ButtonCTA from "../../components/ButtonCTA";
+import CustomHeader from "../../components/CustomHeader";
+import CustomInput from "../../components/CustomInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { setLanguage } from "app/redux/actions/action";
+import { setLanguage } from "../../redux/actions/action";
 
 
 const ChooseLanguage: React.FC = () => {

@@ -1,5 +1,5 @@
-import { fontSizes, normalized, radius } from 'app/config/metrics';
-import AppStyles from 'app/config/styles';
+import { fontSizes, normalized, radius } from '../../config/metrics';
+import AppStyles from '../../config/styles';
 import { StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -8,7 +8,7 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
@@ -129,6 +129,9 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.regular,
     color: AppStyles.color.COLOR_BLACK,
     fontWeight: '600',
+    textAlign: 'center',
+    alignSelf: "center",
+    marginBottom: normalized.hp(2)
   },
   xIcon: {
     backgroundColor: AppStyles.color.COLOR_WHITE,

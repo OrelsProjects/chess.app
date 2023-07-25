@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface RNZustandBoilerPlateTests : XCTestCase
+@interface ChessAppMVPTests : XCTestCase
 
 @end
 
-@implementation RNZustandBoilerPlateTests
+@implementation ChessAppMVPTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

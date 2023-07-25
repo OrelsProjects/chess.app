@@ -5,23 +5,23 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { navigationRef } from './NavigationService';
 
-import Login from 'app/screens/Login';
-import Home from 'app/screens/Home';
-import ForgotPassword from 'app/screens/ForgotPassword';
+import Login from '../screens/Login';
+import Home from '../screens/Home';
+import ForgotPassword from '../screens/ForgotPassword';
 
 import ThemeController from '../components/ThemeController';
 import { StatusBar } from 'react-native';
 import { useStore } from '../store';
-import EnterOTP from 'app/screens/OTP';
-import ResetPassword from 'app/screens/ResetPassword';
-import OnBordingScreen from 'app/screens/Onboarding';
-import SignUpScreen from 'app/screens/SignUp';
-import AddOpponent from 'app/screens/AddOpponent';
-import CustomDrawer from 'app/components/CustomDrawer';
-import AppStyles from 'app/config/styles';
-import ChooseLanguage from 'app/screens/ChooseLanguage';
+import EnterOTP from '../screens/OTP';
+import ResetPassword from '../screens/ResetPassword';
+import OnBordingScreen from '../screens/Onboarding';
+import SignUpScreen from '../screens/SignUp';
+import AddOpponent from '../screens/AddOpponent';
+import CustomDrawer from '../components/CustomDrawer';
+import AppStyles from '../config/styles';
+import ChooseLanguage from '../screens/ChooseLanguage';
 import { useSelector } from 'react-redux';
-import i18n from 'app/i18n';
+import i18n from '../i18n';
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
