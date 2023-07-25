@@ -251,17 +251,17 @@ const AddOpponent: React.FC = () => {
             {serachApiData.length > 0 ? (
               <View
                 style={{
-                  position: "absolute",
-                  zIndex: 2,
-                  top: 60,
-                  // maxHeight: hp("70"),
-                  width: "100%",
-                  borderRadius: 10,
-                  alignSelf: "center",
-                  backgroundColor: "lightgray",
+                  // position: "absolute",
+                  // zIndex: 2,
+                  // top: 60,
+
+                  // width: "100%",
+                  // borderRadius: 10,
+                  // alignSelf: "center",
+                  // backgroundColor: "lightgray",
                 }}
               >
-                <ScrollView style={{ flex: 1 }}>
+                <ScrollView style={{ }}>
                   {searchData.map((item: any, index: any) => (
                     <PlayerCard
                       playerImage={item?.svg}
@@ -301,11 +301,11 @@ const AddOpponent: React.FC = () => {
                     {
                       backgroundColor:
                         selectedBtn.value === btn.value
-                          ? AppStyles.color.BABY_PINK
-                          : "#F3F7FF",
+                          ? "#C8DBF5"
+                          : AppStyles.color.COLOR_WHITE,
                       borderColor:
                         selectedBtn.value === btn.value
-                          ? AppStyles.color.BABY_PINK
+                          ? AppStyles.color.COLOR_PRIMARY
                           : AppStyles.color.COLOR_PRIMARY,
                     },
                   ]}
