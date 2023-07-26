@@ -38,7 +38,7 @@ const initialState = {
   searchResults: null,
   expectRating:null,
   signupInfo: {},
-  language: 'en',
+  language: '',
   Onboarding: true,
   userInfo: {}
 };

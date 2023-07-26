@@ -152,6 +152,7 @@ const AddOpponent: React.FC = () => {
   };
 
   const getUsersFromApi = async (text: any) => {
+    
     setOpponentName(text);
     setRatingNumber("")
     if (source.current) {
@@ -194,7 +195,7 @@ const AddOpponent: React.FC = () => {
             {selectedOptionArray.map((user: any, i) => {
               const randomIndex = Math.floor(Math.random() * colors.length);
               const randomColor = colors[randomIndex];
-              console.log('user', user);
+             
               return (
                 <PlayerCard
                   key={i}
@@ -261,7 +262,7 @@ const AddOpponent: React.FC = () => {
                   // backgroundColor: "lightgray",
                 }}
               >
-                <ScrollView style={{ }}>
+                <ScrollView style={{height:hp(40) }}>
                   {searchData.map((item: any, index: any) => (
                     <PlayerCard
                       playerImage={item?.svg}
@@ -291,7 +292,8 @@ const AddOpponent: React.FC = () => {
               </View>
             ) : null}
           </View>
-
+          {serachApiData.length == 0 && (
+            <>
           <View style={[styles.gameStatsBtnView, { zIndex: 1 }]}>
             {gameStatsBtn.map((btn: any) => {
               return (
@@ -319,8 +321,7 @@ const AddOpponent: React.FC = () => {
               );
             })}
           </View>
-
-          <CustomInput
+            <CustomInput
             editable={opponentName == "" ? true : false}
             containerStyle={{ zIndex: 1 }}
             placeholder={t("enterRatingNumber")}
@@ -331,7 +332,11 @@ const AddOpponent: React.FC = () => {
             rightIcon={enterIcon}
             keyboardType="number-pad"
           />
-          {renderUsers()}
+           {renderUsers()}
+          </>
+          )}
+        
+         
         </View>
 
 

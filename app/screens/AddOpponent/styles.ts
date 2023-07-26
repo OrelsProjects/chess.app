@@ -18,6 +18,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: wp(90),
   },
+  buttonLoader: {
+    flex:1,
+    zIndex:1,
+    position: 'absolute',
+    alignSelf: 'center',
+    top: hp(38),
+  },
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',

@@ -8,7 +8,7 @@ import { navigationRef } from './NavigationService';
 import Login from '../screens/Login';
 import Home from '../screens/Home';
 import ForgotPassword from '../screens/ForgotPassword';
-
+import { setLanguage } from "../redux/actions/action";
 import ThemeController from '../components/ThemeController';
 import { StatusBar } from 'react-native';
 import { useStore } from '../store';
@@ -20,9 +20,9 @@ import AddOpponent from '../screens/AddOpponent';
 import CustomDrawer from '../components/CustomDrawer';
 import AppStyles from '../config/styles';
 import ChooseLanguage from '../screens/ChooseLanguage';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import i18n from '../i18n';
-
+import * as RNLocalize from 'react-native-localize';
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createStackNavigator();
@@ -36,6 +36,24 @@ interface IProps {
 const AuthNavigator = () => {
   const isLoggedIn = useStore(state => state.isLoggedIn);
   const onboarding = useSelector((state:any)=>state.auth.Onboarding)
+  const language = useSelector((state:any)=>state.auth.language)
+  const dispatch = useDispatch();
+  // Get the user's preferred languages
+if(language==""){
+  console.log("first time")
+  const preferredLanguages = RNLocalize.getLocales();
+
+  // Get the first preferred language (most likely the user's primary language)
+  const userLanguage = preferredLanguages.length > 0 ? preferredLanguages[0].languageCode : 'en'; // Default to 'en' if language not available
+  if(userLanguage=="en"){
+ 
+    dispatch(setLanguage("en"));
+  }else{
+
+    dispatch(setLanguage("hr"));
+  }
+ 
+}
 
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
@@ -173,7 +191,7 @@ const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
   const isLoggedIn = useStore(state => state.isLoggedIn);
   const language = useSelector((state:any)=>state.auth.language)
-  console.log("Language in stack:",language)
+  console.log("Language in stack:",isLoggedIn)
   i18n.changeLanguage(language);
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>
