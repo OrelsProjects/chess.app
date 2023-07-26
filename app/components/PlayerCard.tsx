@@ -96,18 +96,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-    overflow: "hidden",
   },
   innerCenterView: {
-    flex: 1,
+    flex: 2,
+    paddingHorizontal: normalized.wp(2),
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    // marginLeft: normalized.wp(5),
-    // borderWidth: 1,
-    // borderRadius: radius.regularRadius,
-    // borderColor: AppStyles.color.COLOR_PRIMARY,
-    // paddingVertical: normalized.hp(0.5),
-    // paddingHorizontal: normalized.hp(1.3)
+    justifyContent: "flex-end",
   },
   photoStyle: {
     margin: normalized.wp(2),

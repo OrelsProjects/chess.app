@@ -1,8 +1,5 @@
-
-
 import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View, Alert } from "react-native";
-import { Button } from "react-native-paper";
 
 import NavigationService from "../../navigation/NavigationService";
 import {
@@ -13,9 +10,7 @@ import {
 import {
   enterIcon,
   leftArrowIcon,
-  lockIcon,
   neilPlayer,
-  starGoldIcon,
   starIconTwo,
   userIcon,
   xIcon,
@@ -84,7 +79,7 @@ const AddOpponent: React.FC = () => {
   };
 
   const selectedOptionArrayFN = () => {
-    if (opponentName != "" && ratingNumber != "") {
+    if (opponentName != "" && ratingNumber) {
       let valObj = {
         opponentName: opponentName,
         opponentPoints: selectedBtn.value,

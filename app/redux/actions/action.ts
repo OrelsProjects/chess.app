@@ -65,6 +65,7 @@ export const Signup = (data: SignupData) => {
         date_of_birth,
       }
       console.log('apiParams22', apiParams)
+      console.log('base url', BaseURL);
       const response = await BaseURL.post(endPoints.signUp, apiParams);
 
 console.log("testing",response)
