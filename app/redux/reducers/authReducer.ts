@@ -146,13 +146,19 @@ const authReducer = (state = initialState, action: any) => {
           token: action.payload,
           loading: false,
           error: null,
-        };
+        };  
       case REMOVE_USERINFO:
         return {
-          ...state,
+          token: null,
+          user: null,
           loading: false,
           error: null,
-          userInfo: null,
+          searchResults: null,
+          expectRating:null,
+          signupInfo: {},
+          language: '',
+          Onboarding: false,
+          userInfo: {}
         };
     
     default:

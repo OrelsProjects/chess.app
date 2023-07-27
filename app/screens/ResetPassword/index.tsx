@@ -7,7 +7,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { lockIcon } from '../../assets/SVGs/index';
 
 import styles from './styles';
@@ -26,6 +26,7 @@ import Snackbar from 'react-native-snackbar';
 import { Auth } from 'aws-amplify';
 
 const ResetPassword: React.FC = ({ route }) => {
+  const lang = useSelector((state: any) => state.auth.language);
   const { t } = useTranslation()
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -108,7 +109,16 @@ const ResetPassword: React.FC = ({ route }) => {
                 }}
                 // onBlur={handleBlur('code')}
                 cellCount={CELL_COUNT}
-                rootStyle={styles.codeFieldRoot}
+                // rootStyle={styles.codeFieldRoot}
+                rootStyle={
+                  lang=="en" ?   {
+                     
+                         marginVertical: hp(4),
+                     } :  {
+                      flexDirection: 'row-reverse',
+                      marginVertical: hp(4),
+                  }
+                    }
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
                 renderCell={({ index, symbol, isFocused }) => (

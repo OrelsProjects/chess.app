@@ -23,12 +23,13 @@ import {
   languageIcon,
   logout,
 } from "../assets/SVGs";
+import { removeUserInfo } from "../redux/actions/action";
 import { fontSizes, normalized } from "../config/metrics";
 import NavigationService from "../navigation/NavigationService";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { useStore } from "../store";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { Auth } from "aws-amplify";
 
 const CustomDrawer = (props) => {
@@ -39,7 +40,7 @@ const CustomDrawer = (props) => {
   const navigateToSettings = () => NavigationService.navigate("Home");
   const navigateToSupport = () => NavigationService.navigate("Home");
   const navigateToLanguages = () => NavigationService.navigate("Languages");
-
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const closeDrawer = () => {
     navigation.dispatch(DrawerActions.closeDrawer());
@@ -48,6 +49,7 @@ const CustomDrawer = (props) => {
 
   const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
   const onLogOut = () => {
+    dispatch(removeUserInfo());
     Auth.signOut();
     setIsLoggedIn(false);
   };

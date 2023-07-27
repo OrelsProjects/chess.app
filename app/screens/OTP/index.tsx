@@ -29,6 +29,7 @@ interface OtpProps {
 }
 
 const EnterOTP: React.FC<OtpProps> = ({ route }) => {
+  const lang = useSelector((state: any) => state.auth.language);
   const {t} = useTranslation()
   const dispath = useDispatch()
   const {name, email} = useSelector((state: any)=> state
@@ -45,7 +46,6 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  
 
   const navigateToResetPass = async () => {
     if (userName) {
@@ -92,13 +92,23 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
           {...props}
           // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
           value={value}
+
+            rootStyle={
+          lang=="en" ?   {
+             
+                 marginVertical: hp(4),
+             } :  {
+              flexDirection: 'row-reverse',
+              marginVertical: hp(4),
+          }
+            }
           onChangeText={value => {
             setValue(value);
             // setFieldValue('code', value);
           }}
           // onBlur={handleBlur('code')}
           cellCount={CELL_COUNT}
-          rootStyle={styles.codeFieldRoot}
+          // rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={({ index, symbol, isFocused }) => (
