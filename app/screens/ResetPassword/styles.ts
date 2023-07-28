@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
     marginBottom: hp(4),
   },
+  rtl: {
+    flexDirection: 'row-reverse',
+  },
   heading: {
     fontSize: fontSizes.xxlarge,
     fontWeight: '700',
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
   secondaryButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems : 'center',
+    alignItems: 'center',
     marginBottom: hp(5),
   },
   noAccount: {

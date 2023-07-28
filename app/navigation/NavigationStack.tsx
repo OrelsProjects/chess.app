@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { NavigationContainer, Theme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import * as React from "react";
+import { NavigationContainer, Theme } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import { navigationRef } from './NavigationService';
+import { navigationRef } from "./NavigationService";
 
-import Login from '../screens/Login';
-import Home from '../screens/Home';
-import ForgotPassword from '../screens/ForgotPassword';
+import Login from "../screens/Login";
+import Home from "../screens/Home";
+import ForgotPassword from "../screens/ForgotPassword";
 import { setLanguage } from "../redux/actions/action";
-import ThemeController from '../components/ThemeController';
-import { StatusBar } from 'react-native';
-import { useStore } from '../store';
-import EnterOTP from '../screens/OTP';
-import ResetPassword from '../screens/ResetPassword';
-import OnBordingScreen from '../screens/Onboarding';
-import SignUpScreen from '../screens/SignUp';
-import AddOpponent from '../screens/AddOpponent';
-import CustomDrawer from '../components/CustomDrawer';
-import AppStyles from '../config/styles';
-import ChooseLanguage from '../screens/ChooseLanguage';
-import { useSelector,useDispatch } from 'react-redux';
-import i18n from '../i18n';
-import * as RNLocalize from 'react-native-localize';
+import ThemeController from "../components/ThemeController";
+import { StatusBar } from "react-native";
+import { useStore } from "../store";
+import EnterOTP from "../screens/OTP";
+import ResetPassword from "../screens/ResetPassword";
+import OnBordingScreen from "../screens/Onboarding";
+import SignUpScreen from "../screens/SignUp";
+import AddOpponent from "../screens/AddOpponent";
+import CustomDrawer from "../components/CustomDrawer";
+import AppStyles from "../config/styles";
+import ChooseLanguage from "../screens/ChooseLanguage";
+import { useSelector, useDispatch } from "react-redux";
+import i18n from "../i18n";
+import * as RNLocalize from "react-native-localize";
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createStackNavigator();
@@ -34,43 +34,34 @@ interface IProps {
 }
 
 const AuthNavigator = () => {
-  const isLoggedIn = useStore(state => state.isLoggedIn);
-  const onboarding = useSelector((state:any)=>state.auth.Onboarding)
-  const language = useSelector((state:any)=>state.auth.language)
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const onboarding = useSelector((state: any) => state.auth.Onboarding);
+  const language = useSelector((state: any) => state.auth.language);
   const dispatch = useDispatch();
   // Get the user's preferred languages
-if(language==""){
-  console.log("first time")
-  const preferredLanguages = RNLocalize.getLocales();
-
-  // Get the first preferred language (most likely the user's primary language)
-  const userLanguage = preferredLanguages.length > 0 ? preferredLanguages[0].languageCode : 'en'; // Default to 'en' if language not available
-  if(userLanguage=="en"){
- 
-    dispatch(setLanguage("en"));
-  }else{
-
-    dispatch(setLanguage("hr"));
+  if (language == "") {
+    const preferredLanguages = RNLocalize.getLocales();
+    const userLanguage =
+      preferredLanguages.length > 0 ? preferredLanguages[0].languageCode : "en"; // Default to 'en' if language not available
+    dispatch(setLanguage(userLanguage));
   }
- 
-}
 
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
-      {onboarding?
+      {onboarding ? (
         <Stack.Screen
-        name="OnBordingScreen"
-        component={OnBordingScreen}
-        options={{
-          headerShown: false,
-          // When logging out, a pop animation feels intuitive
-          // You can remove this if you want the default 'push' animation
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-          headerRight: () => <ThemeController />,
-        }}
-      />
-      :null}
-      
+          name="OnBordingScreen"
+          component={OnBordingScreen}
+          options={{
+            headerShown: false,
+            // When logging out, a pop animation feels intuitive
+            // You can remove this if you want the default 'push' animation
+            animationTypeForReplace: isLoggedIn ? "push" : "pop",
+            headerRight: () => <ThemeController />,
+          }}
+        />
+      ) : null}
+
       <Stack.Screen
         name="Login"
         component={Login}
@@ -78,7 +69,7 @@ if(language==""){
           headerShown: false,
           // When logging out, a pop animation feels intuitive
           // You can remove this if you want the default 'push' animation
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
           headerRight: () => <ThemeController />,
         }}
       />
@@ -89,7 +80,7 @@ if(language==""){
           headerShown: false,
           // When logging out, a pop animation feels intuitive
           // You can remove this if you want the default 'push' animation
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
           headerRight: () => <ThemeController />,
         }}
       />
@@ -100,7 +91,7 @@ if(language==""){
           headerShown: false,
           // When logging out, a pop animation feels intuitive
           // You can remove this if you want the default 'push' animation
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
           headerRight: () => <ThemeController />,
         }}
       />
@@ -111,7 +102,7 @@ if(language==""){
           headerShown: false,
           // When logging out, a pop animation feels intuitive
           // You can remove this if you want the default 'push' animation
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
           headerRight: () => <ThemeController />,
         }}
       />
@@ -122,7 +113,7 @@ if(language==""){
           headerShown: false,
           // When logging out, a pop animation feels intuitive
           // You can remove this if you want the default 'push' animation
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
           headerRight: () => <ThemeController />,
         }}
       />
@@ -134,7 +125,8 @@ const MainStackNavigator = () => {
   return (
     <HomeStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Home">
+      initialRouteName="Home"
+    >
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Languages" component={ChooseLanguage} />
       <Stack.Screen name="AddOpponent" component={AddOpponent} />
@@ -144,7 +136,7 @@ const MainStackNavigator = () => {
 
 const LoggedInNavigator = () => (
   <Drawer.Navigator
-    drawerContent={props => <CustomDrawer {...props} />}
+    drawerContent={(props) => <CustomDrawer {...props} />}
     // screenOptions={{
     //   headerShown: false,
     //   drawerActiveBackgroundColor: 'transparent',
@@ -162,14 +154,15 @@ const LoggedInNavigator = () => (
     // }}
     screenOptions={{
       swipeEnabled: true,
-      drawerType: 'front',
+      drawerType: "front",
       // drawerHideStatusBarOnOpen: true,
       drawerStyle: {
         // backgroundColor: colors.msuGreen,
       },
       sceneContainerStyle: { backgroundColor: AppStyles.color.COLOR_WHITE },
       // drawerHideStatusBarOnOpen: true,
-    }}>
+    }}
+  >
     <Drawer.Screen
       name="MainStackNavigator"
       component={MainStackNavigator}
@@ -189,13 +182,16 @@ const LoggedInNavigator = () => (
 
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
-  const isLoggedIn = useStore(state => state.isLoggedIn);
-  const language = useSelector((state:any)=>state.auth.language)
-  console.log("Language in stack:",isLoggedIn)
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const language = useSelector((state: any) => state.auth.language);
+  console.log("Language in stack:", isLoggedIn);
   i18n.changeLanguage(language);
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>
-      <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} backgroundColor={theme.dark ? 'black' : 'white'}/>
+      <StatusBar
+        barStyle={theme.dark ? "light-content" : "dark-content"}
+        backgroundColor={theme.dark ? "black" : "white"}
+      />
 
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
@@ -207,7 +203,7 @@ const App: React.FC<IProps> = (props: IProps) => {
             options={{
               // When logging out, a pop animation feels intuitive
               // You can remove this if you want the default 'push' animation
-              animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+              animationTypeForReplace: isLoggedIn ? "push" : "pop",
               headerRight: () => <ThemeController />,
             }}
           />

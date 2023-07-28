@@ -27,7 +27,7 @@ const resources = {
 
       //ForgotPassword
       forgotPassword: "Forgot Password",
-      dontWorryItHappensPleaseEnterYourTheEmailAddressWithAssociatedWithYourAccount:
+      forgotPasswordText:
         "Don't worry it happens. Please enter your the email address with associated with your account",
       email: "Email",
 
@@ -63,8 +63,8 @@ const resources = {
 
       //OTP
       enter: "Enter",
-      a4DigitsCodeHasBeenSentToYourEmail:
-        "A 4 digits code has been sent to your email",
+      a6DigitsCodeHasBeenSentToYourEmail:
+        "A 6 digits code has been sent to your email",
       verify: "Verify",
 
       //ResetPassword
@@ -81,10 +81,12 @@ const resources = {
       termsAndConditions: "Term & Conditions",
       and: "and",
       privacyPolicy: "Privacy Policy",
-      phoneNumber: 'Phone Number',
-      gender: 'Gender',
+      phoneNumber: "Phone Number",
+      gender: "Gender",
       male: "Male",
       female: "Female",
+      playerNumber: "Player Number",
+      haveAnAccount: "Have an account?",
 
       //Drawer
       home: "Home",
@@ -96,7 +98,7 @@ const resources = {
       logout: "Logout",
     },
   },
-  hr: {
+  he: {
     translation: {
       Hebrew: "עִברִית",
       language: "שפה",
@@ -112,7 +114,7 @@ const resources = {
       pleaseSelectUsers: "אנא בחר משתמשים",
       search: "לחפש",
       error: "שְׁגִיאָה",
-      enterRatingNumber: "הזן מספר דירוג",
+      enterRatingNumber: "הזן מספר שחקן",
       submit: "שלח",
       add: "הוסף",
       opponents: "יריבים",
@@ -121,7 +123,7 @@ const resources = {
 
       //ForgotPassword
       forgotPassword: "שכחת סיסמה",
-      dontWorryItHappensPleaseEnterYourTheEmailAddressWithAssociatedWithYourAccount:
+      forgotPasswordText:
         "אל דאגה, זה קורה. אנא הזן את כתובת הדואר האלקטרוני המשוייכת לחשבונך",
       email: "אימייל",
 
@@ -157,8 +159,8 @@ const resources = {
 
       //OTP
       enter: "הזן",
-      a4DigitsCodeHasBeenSentToYourEmail:
-        'קוד באורך 4 ספרות נשלח לכתובת הדוא"ל שלך',
+      a6DigitsCodeHasBeenSentToYourEmail:
+        'קוד באורך 6 ספרות נשלח לכתובת הדוא"ל שלך',
       verify: "אמת",
 
       //ResetPassword
@@ -175,10 +177,12 @@ const resources = {
       termsAndConditions: "תנאי השימוש",
       and: "ו",
       privacyPolicy: "מדיניות פרטיות",
-      phoneNumber: 'מספר טלפון',
-      gender: 'מִין',
+      phoneNumber: "מספר טלפון",
+      gender: "מִין",
       male: "זָכָר",
       female: "נְקֵבָה",
+      playerNumber: "מספר שחקן",
+      haveAnAccount: "יש לך חשבון?",
 
       //Drawer
       home: "בית",

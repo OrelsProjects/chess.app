@@ -1,44 +1,42 @@
-import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import React, { useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-import NavigationService from '../../navigation/NavigationService';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import NavigationService from "../../navigation/NavigationService";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-import { lockIcon } from '../../assets/SVGs/index';
+import { lockIcon } from "../../assets/SVGs/index";
 
-import styles from './styles';
-import ButtonCTA from '../../components/ButtonCTA';
-import CustomHeader from '../../components/CustomHeader';
-import CustomInput from '../../components/CustomInput';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import styles from "./styles";
+import ButtonCTA from "../../components/ButtonCTA";
+import CustomHeader from "../../components/CustomHeader";
+import CustomInput from "../../components/CustomInput";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-import Snackbar from 'react-native-snackbar';
-import { Auth } from 'aws-amplify';
+} from "react-native-confirmation-code-field";
+import Snackbar from "react-native-snackbar";
+import { Auth } from "aws-amplify";
+import { useSelector } from "react-redux";
 
 const ResetPassword: React.FC = ({ route }) => {
-  const { t } = useTranslation()
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const navigateToLogin = () => NavigationService.navigate('Login');
+  const { t } = useTranslation();
+  const lang = useSelector((state: any) => state.auth.language);
+  const isRTL = lang === "he";
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const navigateToLogin = () => NavigationService.navigate("Login");
   const insets = useSafeAreaInsets();
-  const [loading, setLoading] = useState(false)
-  const [showPassField, setShowPassFields] = useState(false)
-  const email = route?.params?.email
-  console.log("🚀 ~ file: index.tsx:34 ~ email:", email)
+  const [loading, setLoading] = useState(false);
+  const [showPassFields, setShowPassFields] = useState(false);
+  const email = route?.params?.email;
 
   const CELL_COUNT = 6;
-  const [code, setCode] = useState('');
-  console.log("🚀 ~ file: index.tsx:36 ~ code:", code)
+  const [code, setCode] = useState("");
   const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: code,
@@ -46,63 +44,92 @@ const ResetPassword: React.FC = ({ route }) => {
   });
 
   // Collect confirmation code and new password
-  async function forgotPasswordSubmit(email: string, code: string, newPassword: string, confirmPassword: string) {
+  async function forgotPasswordSubmit(
+    email: string,
+    code: string,
+    newPassword: string,
+    confirmPassword: string
+  ) {
     setLoading(true);
     if (newPassword !== confirmPassword) {
       Snackbar.show({
-        text: 'Passwords do not match',
-        // duration: Snackbar.LENGTH_INDEFINITE,
-        textColor: '#fcfcfd',
-        backgroundColor: 'red'
+        text: "Passwords do not match",
+        textColor: "#fcfcfd",
+        backgroundColor: "red",
       });
-      setLoading(false)
+      setLoading(false);
       return;
     }
     try {
-      const data = await Auth.forgotPasswordSubmit(email, code, newPassword);
-      console.log(data);
-      navigateToLogin()
-      setLoading(false)
+      await Auth.forgotPasswordSubmit(email, code, newPassword);
+      navigateToLogin();
+      setLoading(false);
       Snackbar.show({
-        text: 'Password has been updated successfully',
+        text: "Password has been updated successfully",
         duration: Snackbar.LENGTH_SHORT,
-        textColor: '#fcfcfd',
-        backgroundColor: '#007AFF'
+        textColor: "#fcfcfd",
+        backgroundColor: "#007AFF",
       });
-    } catch (err) {
-      console.log(err);
-      setLoading(false)
-      Snackbar.show({
-        text: err.toString(),
-        duration: Snackbar.LENGTH_LONG,
-        textColor: '#fcfcfd',
-        backgroundColor: 'red'
-      });
+    } catch (err: any) {
+      setShowPassFields(false);
+
+      if (err.code === "CodeMismatchException") {
+        Snackbar.show({
+          text: "Code mismatch",
+          duration: Snackbar.LENGTH_LONG,
+          textColor: "#fcfcfd",
+          backgroundColor: "red",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
+  }
+
+  const confirmOtp = (): boolean => {
+    if (code.length < 6) {
+      Snackbar.show({
+        text: "Please enter 6 digit code",
+        textColor: "#fcfcfd",
+        backgroundColor: "red",
+      });
+      return false;
+    }
+    return true;
   };
 
   return (
     <View
-      style={{ flexGrow: 1, backgroundColor: '#fff', paddingTop: insets.top }}>
+      style={{
+        flexGrow: 1,
+        backgroundColor: "#fff",
+        paddingTop: insets.top,
+        flexDirection: "column",
+      }}
+    >
       <ScrollView
         contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled">
+        keyboardShouldPersistTaps="handled"
+      >
         <CustomHeader />
         <View style={styles.childContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.heading}>{t('reset')} {t('password')}</Text>
-            <Text style={styles.subHeading}>{t('loginToContinue')}</Text>
+            <Text
+              style={[styles.heading, { textAlign: isRTL ? "right" : "left" }]}
+            >
+              {t("reset")} {t("password")}
+            </Text>
+            <Text style={styles.subHeading}>{t("loginToContinue")}</Text>
           </View>
 
-          {!showPassField ?
-
+          {!showPassFields ? (
             <>
               <CodeField
                 ref={ref}
                 {...props}
                 // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
                 value={code}
-                onChangeText={value => {
+                onChangeText={(value) => {
                   setCode(value);
                   // setFieldValue('code', value);
                 }}
@@ -112,11 +139,14 @@ const ResetPassword: React.FC = ({ route }) => {
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
                 renderCell={({ index, symbol, isFocused }) => (
-                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <View
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                  >
                     <Text
                       key={index}
                       style={[styles.cell, isFocused && styles.focusCell]}
-                      onLayout={getCellOnLayoutHandler(index)}>
+                      onLayout={getCellOnLayoutHandler(index)}
+                    >
                       {symbol || (isFocused ? <Cursor /> : null)}
                     </Text>
                   </View>
@@ -124,43 +154,55 @@ const ResetPassword: React.FC = ({ route }) => {
               />
               <ButtonCTA
                 customStyle={{ width: wp(90) }}
-                buttonText={'Continue'}
-                onPress={() => setShowPassFields(true)}
+                buttonText={"Continue"}
+                onPress={() => {
+                  if (confirmOtp()) {
+                    setShowPassFields(true);
+                  }
+                }}
               />
             </>
-            : <>
+          ) : (
+            <>
               <CustomInput
-                placeholder={`${t('new')} ${t('password')}`}
+                placeholder={`${t("new")} ${t("password")}`}
                 value={newPassword}
                 iconName={lockIcon}
-                onChangeText={e => setNewPassword(e)}
+                onChangeText={(e) => setNewPassword(e)}
                 secureTextEntry={true}
-                rightIcon={''}
+                rightIcon={""}
               />
               <CustomInput
-                placeholder={`${t('confirm')} ${t('new')} ${t('password')}`}
+                placeholder={`${t("confirm")} ${t("new")} ${t("password")}`}
                 value={confirmPassword}
                 iconName={lockIcon}
-                onChangeText={e => setConfirmPassword(e)}
+                onChangeText={(e) => setConfirmPassword(e)}
                 secureTextEntry={true}
-                rightIcon={''}
+                rightIcon={""}
               />
 
               <ButtonCTA
                 customStyle={{ width: wp(90) }}
-                buttonText={'Reset'}
+                buttonText={"Reset"}
                 disabled={loading}
                 loading={loading}
-                onPress={() => forgotPasswordSubmit(email, code, newPassword, confirmPassword)}
+                onPress={() =>
+                  forgotPasswordSubmit(
+                    email,
+                    code,
+                    newPassword,
+                    confirmPassword
+                  )
+                }
               />
             </>
-          }
+          )}
         </View>
       </ScrollView>
       <View style={styles.secondaryButtonContainer}>
-        <Text style={styles.noAccount}>{t('dontNeedToReset')} </Text>
+        <Text style={styles.noAccount}>{t("dontNeedToReset")} </Text>
         <TouchableOpacity>
-          <Text style={styles.login}>{t('login')}</Text>
+          <Text style={styles.login}>{t("login")}</Text>
         </TouchableOpacity>
       </View>
     </View>

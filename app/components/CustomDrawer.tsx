@@ -133,23 +133,23 @@ const CustomDrawer = (props) => {
             style={styles.drawerItemLink}
             onPress={route.route}
           >
-            {lang === "en" ? (
+            {lang === "he" ? (
               <>
+                <Text style={[styles.linkText]}>{route.name}</Text>
                 <SvgXml
                   xml={route.icon}
                   width={normalized.wp(6)}
                   height={normalized.hp(6)}
                 />
-                <Text style={[styles.linkText]}>{route.name}</Text>
               </>
             ) : (
               <>
-                <Text style={[styles.linkText]}>{route.name}</Text>
                 <SvgXml
                   xml={route.icon}
                   width={normalized.wp(6)}
                   height={normalized.hp(6)}
                 />
+                <Text style={[styles.linkText]}>{route.name}</Text>
               </>
             )}
           </TouchableOpacity>

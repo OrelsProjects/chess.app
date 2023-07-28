@@ -75,18 +75,18 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    
+
   },
   googleText: {
     textAlign: 'center',
     fontSize: 17,
     color: AppStyles.color.DIM_GRAY,
-    paddingHorizontal:10
+    paddingHorizontal: 10
   },
   secondaryButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems : 'center',
+    alignItems: 'center',
     marginBottom: hp(5),
   },
   noAccount: {

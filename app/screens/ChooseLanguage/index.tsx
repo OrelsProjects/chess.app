@@ -44,21 +44,9 @@ const ChooseLanguage: React.FC = () => {
   }, [lang]);
   const handleLanguageSelection = (language: string) => {
     if (language === "en") setSelectedLanguage("English");
-    else if (language === "hr") setSelectedLanguage("Hebrew");
+    else if (language === "he") setSelectedLanguage("Hebrew");
     i18n.changeLanguage(language);
     dispatch(setLanguage(language));
-  };
-
-  // useEffect(() => {
-  //   isRTL();
-  // }, []);
-  const isRTL = async () => {
-    if (lang === "hr") {
-      await I18nManager.forceRTL(true);
-    } else {
-      await I18nManager.forceRTL(false);
-    }
-  
   };
 
   return (
@@ -99,7 +87,7 @@ const ChooseLanguage: React.FC = () => {
           <TouchableOpacity
             onPress={() => {
               setSelectedLanguage("Hebrew");
-              handleLanguageSelection("hr");
+              handleLanguageSelection("he");
             }}
           >
             <View

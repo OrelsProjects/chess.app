@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   andView: {
     flexDirection: 'row',
-     alignSelf: 'flex-start',
+    alignSelf: 'flex-start',
   },
   noAccount: {
     fontSize: fontSizes.regular,
@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
   signUpPolicy: {
     color: AppStyles.color.COLOR_PRIMARY,
     fontWeight: '400',
-    alignItems:'flex-start',
-    justifyContent:'flex-start',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     fontSize: normalized.hp(2)
-    
+
     // width:normalized.wp(90),
     // alignSelf:'center'
   },
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   secondaryButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems : 'center',
+    alignItems: 'center',
     marginTop: hp(10),
   },
   noAccountTwo: {
@@ -119,6 +119,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginHorizontal: wp(2),
     color: '#222',
+  },
+
+  placeholder: {
+    color: '#8A8A8F',
   },
 });
 

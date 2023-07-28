@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   TextInput,
@@ -12,23 +12,31 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import { eyeClosed, eyeOpen } from "../assets/SVGs/index";
 
 interface CustomInputProps {
   placeholder: string;
   value: string;
-  iconName: string;
-  secureTextEntry?: boolean | undefined;
-  keyboardType?: KeyboardTypeOptions | undefined;
   onChangeText: (text: string) => void;
   onSubmitEditing: () => void;
-  rightIcon: string;
-  onRightIconPress?: any;
-  onLeftIconPress?: any;
-  maxLength: any;
-  containerStyle: object;
-  editable: boolean;
-  isEmailValid: boolean
+  secureTextEntry?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  iconName?: string;
+  rightIcon?: string;
+  leftIcon?: string;
+  onRightIconPress?: () => void;
+  onLeftIconPress?: () => void;
+  maxLength?: number;
+  containerStyle?: object;
+  editable?: boolean;
+  isEmailValid?: boolean;
 }
+
+type IconProps = {
+  xml: string;
+  onPress: () => void;
+};
 
 const CustomInput: React.FC<CustomInputProps> = ({
   placeholder,
@@ -39,68 +47,69 @@ const CustomInput: React.FC<CustomInputProps> = ({
   keyboardType,
   iconName,
   rightIcon,
+  leftIcon,
   onRightIconPress,
   onLeftIconPress,
   maxLength = 500,
   containerStyle,
-  editable,
-  isEmailValid
+  editable = true,
+  isEmailValid = true,
 }) => {
   const lang = useSelector((state: any) => state.auth.language);
 
-  const [isFocused, setIsFocused] = React.useState("default")
+  const [isFocused, setIsFocused] = React.useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(!secureTextEntry);
 
-  const handleFocus = () => {
-    setIsFocused("active")
-  }
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+  const handlePasswordVisibility = () =>
+    setIsPasswordVisible(!isPasswordVisible);
 
-  const handleBlur = () => {
-    setIsFocused("default")
-  }
+  const isRTL = lang === "he"; // Assuming hr indicates RTL language
+  const borderColor = !isFocused ? "#ccc" : isEmailValid ? "#007AFF" : "red";
+
+  const Icon: React.FC<IconProps> = ({ xml, onPress }) => (
+    <TouchableOpacity onPress={onPress}>
+      <SvgXml xml={xml} height={"24"} width={"24"} />
+    </TouchableOpacity>
+  );
 
   return (
-    <View style={[styles.container, containerStyle, { borderColor: isFocused === "default" ? "#ccc" : isEmailValid === false ? "red" : "#007AFF" }]}>
-
-      {lang === "en" ? (
-        iconName ? (
-          <TouchableOpacity onPress={onRightIconPress}>
-            <SvgXml xml={iconName} height={"20"} width={"20"} />
-          </TouchableOpacity>
-        ) : null
-      ) : rightIcon ? (
-        <TouchableOpacity onPress={onRightIconPress}>
-          <SvgXml xml={rightIcon} height={"24"} width={"24"} />
-        </TouchableOpacity>
-      ) : null}
-
+    <View
+      style={[
+        styles.container,
+        containerStyle,
+        { borderColor, flexDirection: isRTL ? "row-reverse" : "row" },
+      ]}
+    >
+      {leftIcon && <Icon xml={leftIcon} onPress={onLeftIconPress} />}
+      
+      {iconName && <Icon xml={iconName} onPress={onRightIconPress} />}
+      
       <TextInput
         editable={editable}
         keyboardType={keyboardType}
         placeholder={placeholder}
         placeholderTextColor={"#8A8A8F"}
-        secureTextEntry={secureTextEntry}
+        secureTextEntry={!isPasswordVisible}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        style={[styles.input, { textAlign: lang === "en" ? "left" : "right" }]}
+        style={[
+          styles.input,
+          { textAlign: isRTL ? "right" : "left", marginHorizontal: wp(2) },
+        ]}
         value={value}
         maxLength={maxLength}
       />
-      {
-        lang === "hr" ? (
-          iconName ? (
-            <TouchableOpacity onPress={onRightIconPress}>
-              <SvgXml xml={iconName} height={"20"} width={"20"} />
-            </TouchableOpacity>
-          ) : null
-        ) : rightIcon ? (
-          <TouchableOpacity onPress={onRightIconPress}>
-            <SvgXml xml={rightIcon} height={"24"} width={"24"} />
-          </TouchableOpacity>
-        ) : null
-      }
-    </View >
+  
+      {secureTextEntry && (
+        <Icon xml={isPasswordVisible ? eyeOpen : eyeClosed} onPress={handlePasswordVisibility} />
+      )}
+      
+      {rightIcon && <Icon xml={rightIcon} onPress={onRightIconPress} />}
+    </View>
   );
 };
 
@@ -127,5 +136,36 @@ const styles = StyleSheet.create({
     color: "#333",
   },
 });
+
+CustomInput.defaultProps = {
+  secureTextEntry: false,
+  keyboardType: "default",
+  iconName: "",
+  rightIcon: "",
+  leftIcon: "",
+  onRightIconPress: () => {},
+  onLeftIconPress: () => {},
+  maxLength: 500,
+  containerStyle: {},
+  editable: true,
+  isEmailValid: true,
+};
+
+CustomInput.propTypes = {
+  placeholder: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  iconName: PropTypes.string.isRequired,
+  secureTextEntry: PropTypes.bool,
+  keyboardType: PropTypes.string,
+  onChangeText: PropTypes.func.isRequired,
+  onSubmitEditing: PropTypes.func.isRequired,
+  rightIcon: PropTypes.string.isRequired,
+  rightIconName: PropTypes.string,
+  onRightIconPress: PropTypes.func,
+  maxLength: PropTypes.number,
+  containerStyle: PropTypes.object,
+  editable: PropTypes.bool.isRequired,
+  isEmailValid: PropTypes.bool.isRequired,
+};
 
 export default CustomInput;

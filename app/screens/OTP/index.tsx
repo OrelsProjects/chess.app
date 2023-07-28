@@ -82,7 +82,7 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
         <View style={styles.headerContainer}>
           <Text style={styles.heading}>{t('enter')} OTP</Text>
           <Text style={styles.subHeading}>
-            {t('a4DigitsCodeHasBeenSentToYourEmail')}{' '}
+            {t('a6DigitsCodeHasBeenSentToYourEmail')}{' '}
             <Text style={{ color: '#383838' }}>{userEmail}</Text>
           </Text>
         </View>

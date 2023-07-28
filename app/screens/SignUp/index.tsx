@@ -1,18 +1,11 @@
 import { Auth } from "aws-amplify";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import DatePicker from "react-native-date-picker";
-import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
+import DropDownPicker from "react-native-dropdown-picker";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,27 +20,17 @@ import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import { normalized } from "../../config/metrics";
 import NavigationService from "../../navigation/NavigationService";
-import {
-  setToken,
-  setUserInfo,
-  userSignupInfo
-} from "../../redux/actions/action";
-import {
-  SIGNUP_FAILURE,
-  SIGNUP_REQUEST,
-  SIGNUP_SUCCESS,
-  SET_TOKEN
-} from "../../redux/actions/actionType";
+import { setToken, setUserInfo } from "../../redux/actions/action";
+import { SIGNUP_FAILURE, SIGNUP_SUCCESS } from "../../redux/actions/actionType";
 import styles from "./style";
-import { BaseURL, endPoints } from "../../constants";
-import Snackbar from 'react-native-snackbar';
+import { endPoints } from "../../constants";
+import Snackbar from "react-native-snackbar";
 import axios from "axios";
-import { store } from "../../redux/store/store";
 
 const SignUpScreen: React.FC = () => {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [birth, setBirth] = useState("");
@@ -57,16 +40,12 @@ const SignUpScreen: React.FC = () => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [gender, setGender] = useState(null);
   const [items, setItems] = useState([
+    { label: `${t("male")}`, value: "male", labelStyle: { color: "#8A8A8F" } },
     {
-      label: `${t('male')}`, value: 'male', labelStyle: {
-        color: "#8A8A8F"
-      }
+      label: `${t("female")}`,
+      value: "female",
+      labelStyle: { color: "#8A8A8F" },
     },
-    {
-      label: `${t('female')}`, value: 'female', labelStyle: {
-        color: "#8A8A8F"
-      }
-    }
   ]);
   const dispatch = useDispatch();
   const lang = useSelector((state: any) => state.auth.language);
@@ -76,66 +55,46 @@ const SignUpScreen: React.FC = () => {
   const handleLogin = () => NavigationService.navigate("Login");
   const authSignup = () =>
     fetchData(name, password, email, phoneNumber, gender, birth, israel);
-  //console.log("name, password", name, password);
-  //NavigationService.navigate('Login');
-
-  type SignUpParameters = {
-    name: string;
-    password: string;
-    email: string;
-    phoneNumber: string;
-    gender: string
-    israel: string
-  };
-
-  interface SignupData {
-    first_name: string;
-    last_name: string;
-    gender: string;
-    email: string;
-    // password: string;
-    phone_number: string;
-    player_number: number;
-    date_of_birth: number;
-    token:any
-  }
 
   const [isEmailValid, setIsEmailValid] = useState(true);
 
-  const validateEmail = (email) => {
-    // Implement your email validation logic here.
-    // For example, you can use a regular expression to validate the email format.
+  const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleEmailChange = (text) => {
+  const handleEmailChange = (text: string) => {
     setEmail(text);
-    setIsEmailValid(validateEmail(text)); // Update the isEmailValid state based on email validation
+    setIsEmailValid(validateEmail(text));
   };
 
-  const fetchData = async (name, password, email, phoneNumber, gender, birth, israel) => {
-    console.log("test", email);
-    if (!name || !email) {
-      console.log('Name or Email is missing');
-      Snackbar.show({
-        text: 'Name or Email is missing',
-        // duration: Snackbar.LENGTH_INDEFINITE,
-        textColor: '#fcfcfd',
-        backgroundColor: 'red'
-      });
-      setLoading(false)
-      return;
+  const fetchData = async (
+    name: string,
+    password: string,
+    email: string,
+    phoneNumber: string,
+    gender: string,
+    birth: string,
+    israel: string
+  ) => {
+    let errorText = null;
+    if (!name) {
+      errorText = "Name is missing";
+    } else if (!email) {
+      errorText = "Email is missing";
+    } else if (!phoneNumber) {
+      errorText = "Phone number is missing";
+    } else if (!password) {
+      errorText = "Password is missing";
     }
-    if (!birth) {
-      console.log('first_name or email or date_of_birth missing');
+
+    if (errorText) {
       Snackbar.show({
-        text: 'Date of birth is not valid',
-        // duration: Snackbar.LENGTH_INDEFINITE,
-        textColor: '#fcfcfd',
-        backgroundColor: 'red'
+        text: errorText,
+        textColor: "#fcfcfd",
+        backgroundColor: "red",
       });
-      setLoading(false)
+      setLoading(false);
       return;
     }
 
@@ -144,65 +103,45 @@ const SignUpScreen: React.FC = () => {
       const user = await Auth.signUp({
         username: name,
         password: password,
-
         attributes: {
-          email: email?.toLowerCase(), // optional
-          phone_number: "+" + phoneNumber, // optional - E.164 number convention
+          email: email?.toLowerCase(),
+          phone_number: "+" + phoneNumber,
         },
         autoSignIn: {
-          // optional - enables auto sign in after user is confirmed
           enabled: false,
         },
       });
-      console.log("zest", JSON.stringify(user));
       dispatch(setToken(user?.userSub));
 
       const interval = setInterval(() => {
         dispatch(setUserInfo({ name, email }));
-        try {
-          let objParam = {
-            first_name: name,
-            last_name: "testing",
-            gender: gender,
-            email: email,
-            phone_number: "+" + phoneNumber,
-            player_number: Number(israel),
-            date_of_birth: birth,
-            token: user?.userSub
-          };
-          console.log("🚀 ~ file: index.tsx:144 ~ interval ~ objParam:", objParam)
-          // dispatch(Signup(objParam));
-          Signup(objParam)
-          // setLoading(false);
-          clearInterval(interval);
-        } catch (error) {
-          setLoading(false);
-          console.error("Signup error:", error);
-        }
+        let objParam = {
+          first_name: name,
+          last_name: "testing",
+          gender: gender,
+          email: email,
+          phone_number: "+" + phoneNumber,
+          player_number: Number(israel),
+          date_of_birth: birth,
+          token: user?.userSub,
+        };
+        Signup(objParam);
+        clearInterval(interval);
       }, 1000);
-
-      // NavigationService.navigate('EnterOTP', {
-      //   username: name,
-      //   password: password,
-      //   email: email,
-      //   israel_rt:israel
-      // });
     } catch (error) {
       setLoading(false);
-      console.log("error signing up:", error);
       Snackbar.show({
         text: error.toString(),
         duration: Snackbar.LENGTH_SHORT,
-        textColor: '#fcfcfd',
-        backgroundColor: 'red'
+        textColor: "#fcfcfd",
+        backgroundColor: "red",
       });
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
   const Signup = async (data: SignupData) => {
-    console.log('Check Before API data ==> ', data);
     try {
       const {
         first_name,
@@ -212,14 +151,14 @@ const SignUpScreen: React.FC = () => {
         phone_number,
         player_number,
         date_of_birth,
-        token
+        token,
       } = data;
 
       const SignUpAPI = axios.create({
         baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
         headers: {
           "content-type": "text/plain; charset=utf-8",
-          "UserId": token,
+          UserId: token,
         },
       });
 
@@ -231,64 +170,28 @@ const SignUpScreen: React.FC = () => {
         phone_number,
         player_number,
         date_of_birth,
-      }
-      console.log('apiParams22', apiParams)
+      };
       const response = await SignUpAPI.post(endPoints.signUp, apiParams);
 
-      console.log("testing", response)
-      setLoading(false)
+      setLoading(false);
       if (response) {
         dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
 
-        //  useStore.getState().setIsLoggedIn(true)
-        NavigationService.navigate('EnterOTP', {
+        NavigationService.navigate("EnterOTP", {
           username: apiParams.first_name,
           email: apiParams.email,
         });
-        // dispatch(set)
-        console.log('response Sign Up Data:', response.config.data);
       }
     } catch (error) {
       dispatch({ type: SIGNUP_FAILURE, payload: error });
-      setLoading(false)
-      console.log('error:', error);
-      console.log('Error response:', error?.response?.data)
+      setLoading(false);
       Snackbar.show({
         text: error?.response?.data.toString(),
-        // duration: Snackbar.LENGTH_INDEFINITE,
-        textColor: '#fcfcfd',
-        backgroundColor: 'red'
+        textColor: "#fcfcfd",
+        backgroundColor: "red",
       });
     }
-
   };
-
-  useEffect(() => {
-    console.log("Password:", password);
-  }, [password]);
-  const verifyOTP = async () => { };
-
-
-
-  const handleUserInfo = async () => {
-    try {
-      let obj = {
-        first_name: name,
-        gender: "male",
-        email: email.toLowerCase(),
-        password: password,
-        date_of_birth: birth,
-      };
-      dispatch(userSignupInfo(obj));
-      //console.log('userSignUp dispatched', name, email, password, birth);
-    } catch (error) {
-      console.error("Signup error:", error);
-    }
-  };
-
-  // useEffect(() => {
-  //   handleLogin;
-  // }, []);
 
   return (
     <View
@@ -322,12 +225,12 @@ const SignUpScreen: React.FC = () => {
             />
 
             <CustomInput
-              placeholder={`${t('phoneNumber')}`}
+              placeholder={`${t("phoneNumber")}`}
               value={phoneNumber}
               iconName={starIcon}
-              // maxLength={6}
+              maxLength={7}
               onChangeText={(e) => setPhoneNumber(e)}
-              keyboardType={"number-pad"}
+              keyboardType={"phone-pad"}
             />
 
             <DropDownPicker
@@ -337,20 +240,19 @@ const SignUpScreen: React.FC = () => {
               setOpen={() => setIsDropDownOpen(!isDropDownOpen)}
               setValue={setGender}
               setItems={setItems}
-              placeholder={`${t('gender')}`}
+              placeholder={`${t("gender")}`}
               style={styles.datePickerContainer}
               placeholderStyle={{
                 color: "#8A8A8F",
                 fontSize: 16,
               }}
               dropDownContainerStyle={{
-                borderColor: "#ccc"
+                borderColor: "#ccc",
               }}
               textStyle={{
-                color: '#333',
+                color: "#333",
                 fontSize: 16,
               }}
-
             />
 
             <CustomInput
@@ -360,33 +262,36 @@ const SignUpScreen: React.FC = () => {
               onChangeText={(e) => setPassword(e)}
               secureTextEntry={true}
             />
+
             <TouchableOpacity
               style={styles.datePickerContainer}
               onPress={() => setOpen(true)}
             >
-              {lang === "en" ? (
+              {lang === "he" ? (
                 <>
-                  <SvgXml xml={calenderIcon} height={"20"} width={"20"} />
                   <Text
                     style={[
                       styles.datePickerText,
-                      { textAlign: lang === "en" ? "left" : "right" },
+                      { textAlign: lang === "he" ? "right" : "left" },
+                      birth ? {} : { color: "#8A8A8F" },
                     ]}
                   >
-                    {birth ? birth : moment(new Date()).format("DD-MM-YYYY")}
+                    {birth ? birth : t("dateOfBirth")}
                   </Text>
+                  <SvgXml xml={calenderIcon} height={"20"} width={"20"} />
                 </>
               ) : (
                 <>
+                  <SvgXml xml={calenderIcon} height={"20"} width={"20"} />
                   <Text
                     style={[
                       styles.datePickerText,
-                      { textAlign: lang === "en" ? "left" : "right" },
+                      { textAlign: lang === "he" ? "right" : "left" },
+                      birth ? {} : { color: "#8A8A8F" },
                     ]}
                   >
-                    {birth ? birth : moment(new Date()).format("DD-MM-YYYY")}
+                    {birth ? birth : t("dateOfBirth")}
                   </Text>
-                  <SvgXml xml={calenderIcon} height={"20"} width={"20"} />
                 </>
               )}
             </TouchableOpacity>
@@ -394,6 +299,7 @@ const SignUpScreen: React.FC = () => {
               modal
               mode="date"
               open={open}
+              locale={lang}
               date={new Date()}
               onConfirm={(date) => {
                 setOpen(false);
@@ -405,11 +311,12 @@ const SignUpScreen: React.FC = () => {
             />
 
             <CustomInput
-              placeholder={`${t("israel")} ${t("rating")}`}
+              placeholder={`${t("playerNumber")}`}
               value={israel}
               iconName={starIcon}
               maxLength={6}
               onChangeText={(e) => setIsrael(e)}
+              keyboardType="phone-pad"
             />
 
             <View style={styles.mainSigningView}>
@@ -440,23 +347,23 @@ const SignUpScreen: React.FC = () => {
             />
           </View>
           <View style={styles.secondaryButtonContainer}>
-            {lang === "en" ? (
+            {lang === "he" ? (
               <>
-                <Text style={styles.noAccountTwo}>
-                  {t("dontHaveAnAccount")}{" "}
-                </Text>
                 <TouchableOpacity onPress={handleLogin}>
                   <Text style={styles.signUp}>{t("login")}</Text>
                 </TouchableOpacity>
+                <Text style={styles.noAccountTwo}>
+                  {t("haveAnAccount")}{" "}
+                </Text>
               </>
             ) : (
               <>
+                <Text style={styles.noAccountTwo}>
+                  {t("haveAnAccount")}{" "}
+                </Text>
                 <TouchableOpacity onPress={handleLogin}>
                   <Text style={styles.signUp}>{t("login")}</Text>
                 </TouchableOpacity>
-                <Text style={styles.noAccountTwo}>
-                  {t("dontHaveAnAccount")}{" "}
-                </Text>
               </>
             )}
           </View>
