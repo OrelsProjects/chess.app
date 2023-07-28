@@ -111,13 +111,10 @@ const ResetPassword: React.FC = ({ route }) => {
                 cellCount={CELL_COUNT}
                 // rootStyle={styles.codeFieldRoot}
                 rootStyle={
-                  lang=="en" ?   {
+              {
                      
                          marginVertical: hp(4),
-                     } :  {
-                      flexDirection: 'row-reverse',
-                      marginVertical: hp(4),
-                  }
+                     } 
                     }
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
@@ -134,7 +131,7 @@ const ResetPassword: React.FC = ({ route }) => {
               />
               <ButtonCTA
                 customStyle={{ width: wp(90) }}
-                buttonText={'Continue'}
+                buttonText={t('continue')}
                 onPress={() => setShowPassFields(true)}
               />
             </>
@@ -158,7 +155,7 @@ const ResetPassword: React.FC = ({ route }) => {
 
               <ButtonCTA
                 customStyle={{ width: wp(90) }}
-                buttonText={'Reset'}
+                buttonText={t('reset')}
                 disabled={loading}
                 loading={loading}
                 onPress={() => forgotPasswordSubmit(email, code, newPassword, confirmPassword)}
@@ -168,9 +165,9 @@ const ResetPassword: React.FC = ({ route }) => {
         </View>
       </ScrollView>
       <View style={styles.secondaryButtonContainer}>
-        <Text style={styles.noAccount}>{t('dontNeedToReset')} </Text>
+        <Text style={styles.noAccount}>{t('dontNeedToReset')}  <Text style={styles.login}>{t('login')}</Text> </Text>
         <TouchableOpacity>
-          <Text style={styles.login}>{t('login')}</Text>
+        
         </TouchableOpacity>
       </View>
     </View>

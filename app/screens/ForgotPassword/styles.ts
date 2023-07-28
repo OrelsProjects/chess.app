@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(4),
   },
   heading: {
+    width: '100%',
     fontSize: fontSizes.xxlarge,
     fontWeight: '700',
     color: AppStyles.color.RAISIN_BLACK

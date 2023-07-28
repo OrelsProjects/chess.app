@@ -92,16 +92,16 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
           {...props}
           // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
           value={value}
-
-            rootStyle={
-          lang=="en" ?   {
+rootStyle={{marginVertical:hp(4)}}
+          //   rootStyle={
+          // lang=="en" ?   {
              
-                 marginVertical: hp(4),
-             } :  {
-              flexDirection: 'row-reverse',
-              marginVertical: hp(4),
-          }
-            }
+          //        marginVertical: hp(4),
+          //    } :  {
+          //     flexDirection: 'row-reverse',
+          //     marginVertical: hp(4),
+          // }
+          //   }
           onChangeText={value => {
             setValue(value);
             // setFieldValue('code', value);

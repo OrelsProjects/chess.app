@@ -27,11 +27,13 @@ const styles = StyleSheet.create({
     marginBottom: hp(4),
   },
   heading: {
+    width:"100%",
     fontSize: fontSizes.xxlarge,
     fontWeight: '700',
     color: AppStyles.color.RAISIN_BLACK,
   },
   subHeading: {
+    width:"100%",
     marginTop: hp(1),
     fontSize: fontSizes.regular,
     color: AppStyles.color.GRANITE_GRAY,

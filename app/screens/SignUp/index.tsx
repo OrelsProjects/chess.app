@@ -394,6 +394,7 @@ const SignUpScreen: React.FC = () => {
               modal
               mode="date"
               open={open}
+              locale = {lang}
               date={new Date()}
               onConfirm={(date) => {
                 setOpen(false);
