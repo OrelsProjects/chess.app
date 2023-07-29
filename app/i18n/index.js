@@ -71,6 +71,7 @@ const resources = {
       new: "New",
       confirm: "Confirm",
       dontNeedToReset: "Don't need to reset?",
+      continue: "Continue",
 
       //SignUp
       signUpForRegistration: "Sign up for registration",
@@ -167,6 +168,7 @@ const resources = {
       new: "חדש",
       confirm: "אשר",
       dontNeedToReset: "אין צורך לאפס?",
+      continue: "לְהַמשִׁיך",
 
       //SignUp
       signUpForRegistration: "הרשמה להרשמה",

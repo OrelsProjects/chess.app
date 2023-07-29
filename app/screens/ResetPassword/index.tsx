@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import NavigationService from "../../navigation/NavigationService";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { useSelector } from "react-redux";
 import { lockIcon } from "../../assets/SVGs/index";
 
 import styles from "./styles";
@@ -135,7 +138,10 @@ const ResetPassword: React.FC = ({ route }) => {
                 }}
                 // onBlur={handleBlur('code')}
                 cellCount={CELL_COUNT}
-                rootStyle={styles.codeFieldRoot}
+                // rootStyle={styles.codeFieldRoot}
+                rootStyle={{
+                  marginVertical: hp(4),
+                }}
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
                 renderCell={({ index, symbol, isFocused }) => (
@@ -183,7 +189,7 @@ const ResetPassword: React.FC = ({ route }) => {
 
               <ButtonCTA
                 customStyle={{ width: wp(90) }}
-                buttonText={"Reset"}
+                buttonText={t("reset")}
                 disabled={loading}
                 loading={loading}
                 onPress={() =>
@@ -200,10 +206,10 @@ const ResetPassword: React.FC = ({ route }) => {
         </View>
       </ScrollView>
       <View style={styles.secondaryButtonContainer}>
-        <Text style={styles.noAccount}>{t("dontNeedToReset")} </Text>
-        <TouchableOpacity>
-          <Text style={styles.login}>{t("login")}</Text>
-        </TouchableOpacity>
+        <Text style={styles.noAccount}>
+          {t("dontNeedToReset")} <Text style={styles.login}>{t("login")}</Text>{" "}
+        </Text>
+        <TouchableOpacity></TouchableOpacity>
       </View>
     </View>
   );

@@ -112,7 +112,7 @@ const Home: React.FC = () => {
 
     try {
       const response = await BaseURL.post(endPoints.calculateRating, payload);
-
+console.log("zuli",response.data)
       dispatch(expectedRating(response.data));
       setLoading(false);
       console.log(response.data);
