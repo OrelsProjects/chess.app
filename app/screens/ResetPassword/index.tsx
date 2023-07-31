@@ -6,7 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { useSelector } from "react-redux";
+
 import { lockIcon } from "../../assets/SVGs/index";
 
 import styles from "./styles";
