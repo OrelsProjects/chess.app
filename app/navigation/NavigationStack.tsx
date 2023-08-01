@@ -10,7 +10,7 @@ import Home from "../screens/Home";
 import ForgotPassword from "../screens/ForgotPassword";
 import { setLanguage } from "../redux/actions/action";
 import ThemeController from "../components/ThemeController";
-import { StatusBar } from "react-native";
+import { StatusBar,Platform,NativeModules } from "react-native";
 import { useStore } from "../store";
 import EnterOTP from "../screens/OTP";
 import ResetPassword from "../screens/ResetPassword";
@@ -40,12 +40,28 @@ const AuthNavigator = () => {
   const dispatch = useDispatch();
   // Get the user's preferred languages
   if (language == "") {
-    const preferredLanguages = RNLocalize.getLocales();
-    const userLanguage =
-      preferredLanguages.length > 0 ? preferredLanguages[0].languageCode : "en"; // Default to 'en' if language not available
-    dispatch(setLanguage(userLanguage));
+    // const preferredLanguages = RNLocalize.getLocales();
+    // const userLanguage =
+    //   preferredLanguages.length > 0 ? preferredLanguages[0].languageCode : "en"; // Default to 'en' if language not available
+    // dispatch(setLanguage(userLanguage));
+    const appLanguage =
+    Platform.OS === 'ios'
+      ? NativeModules.SettingsManager.settings.AppleLocale ||
+        NativeModules.SettingsManager.settings.AppleLanguages[0]
+      : NativeModules.I18nManager.localeIdentifier;
+      console.log("zuee",appLanguage)
+      if(appLanguage=="iw_" || appLanguage =="iw_IL"){
+        dispatch(setLanguage("he"));
+      }else{
+        dispatch(setLanguage("en"));
+      }
   }
-
+  const appLanguage =
+  Platform.OS === 'ios'
+    ? NativeModules.SettingsManager.settings.AppleLocale ||
+      NativeModules.SettingsManager.settings.AppleLanguages[0]
+    : NativeModules.I18nManager.localeIdentifier;
+    console.log("zuee",appLanguage)
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
       {onboarding ? (
