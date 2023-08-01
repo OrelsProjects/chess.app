@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: fontSizes.xxlarge,
     fontWeight: '700',
-    color: AppStyles.color.RAISIN_BLACK
+    color: AppStyles.color.RAISIN_BLACK,
+    width:'100%'
   },
   subHeading:{
     marginTop: hp(1),

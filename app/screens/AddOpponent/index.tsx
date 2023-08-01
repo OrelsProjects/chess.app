@@ -36,6 +36,7 @@ import { useTranslation } from "react-i18next";
 import images from "../../config/images";
 import axios from "axios";
 import PlayerCard from "../../components/PlayerCard";
+import CustomInputNonRtl from "../../components/CustomInoutNonRtl";
 
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
@@ -321,7 +322,7 @@ const AddOpponent: React.FC = () => {
               );
             })}
           </View>
-            <CustomInput
+            <CustomInputNonRtl
             editable={opponentName == "" ? true : false}
             containerStyle={{ zIndex: 1 }}
             placeholder={t("enterRatingNumber")}

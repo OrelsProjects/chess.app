@@ -63,6 +63,7 @@ const resources = {
 
       //OTP
       enter: "Enter",
+      enterOTP: "הזן OTP",
       a6DigitsCodeHasBeenSentToYourEmail:
         "A 6 digits code has been sent to your email",
       verify: "Verify",
