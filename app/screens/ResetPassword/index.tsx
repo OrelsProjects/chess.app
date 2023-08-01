@@ -160,7 +160,7 @@ const ResetPassword: React.FC = ({ route }) => {
               />
               <ButtonCTA
                 customStyle={{ width: wp(90) }}
-                buttonText={"Continue"}
+                buttonText={`${t("continue")} `}
                 onPress={() => {
                   if (confirmOtp()) {
                     setShowPassFields(true);
