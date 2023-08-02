@@ -6,16 +6,24 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { SvgXml } from 'react-native-svg';
+import { useSelector } from 'react-redux';
 
 const CustomHeader = (props: any) => {
+  const lang = useSelector((state: any) => state.auth.language);
   return (
     <View style={styles.topView}>
       <View style={{ width: wp(10) }}>
-        <TouchableOpacity onPress={props?.onBackButtonPress}>
-          {props?.leftIcon && (
+        {lang !== "he" && props?.drawerIcon && (
+          <TouchableOpacity onPress={props?.drawerButtonPress}>
+            <SvgXml xml={props?.drawerIcon} height={20} width={20} />
+          </TouchableOpacity>
+        )}
+
+        {props?.leftIcon && (
+          <TouchableOpacity onPress={props?.onBackButtonPress}>
             <SvgXml xml={props?.leftIcon} height={20} width={20} />
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
       </View>
 
       <View
@@ -27,6 +35,11 @@ const CustomHeader = (props: any) => {
         }}>
         <SvgXml xml={chessLogo} width={wp(14)} height={wp(18)} />
       </View>
+      {lang === "he" && props?.drawerIcon && (
+        <TouchableOpacity onPress={props?.drawerButtonPress} style={{transform: [{ scaleX: -1 }]}}>
+          <SvgXml xml={props?.drawerIcon} height={20} width={20} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

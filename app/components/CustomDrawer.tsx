@@ -29,7 +29,7 @@ import NavigationService from "../navigation/NavigationService";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { useStore } from "../store";
 import { useTranslation } from "react-i18next";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Auth } from "aws-amplify";
 
 const CustomDrawer = (props) => {
@@ -103,13 +103,21 @@ const CustomDrawer = (props) => {
         {...props}
         contentContainerStyle={styles.contentContainer}
       >
-        <View style={styles.drawerHeader}>
-          <SvgXml xml={chessLogo} width={wp(10)} height={wp(14)} />
-          <TouchableOpacity style={styles.xIcon} onPress={closeDrawer}>
-            <SvgXml xml={xIcon} width={wp(8)} height={wp(8)} />
-          </TouchableOpacity>
-        </View>
-
+        {lang === "he" ?
+          <View style={styles.drawerHeader}>
+            <TouchableOpacity style={styles.xIcon} onPress={closeDrawer}>
+              <SvgXml xml={xIcon} width={wp(8)} height={wp(8)} />
+            </TouchableOpacity>
+            <SvgXml xml={chessLogo} width={wp(10)} height={wp(14)} />
+          </View>
+          :
+          <View style={styles.drawerHeader}>
+            <SvgXml xml={chessLogo} width={wp(10)} height={wp(14)} />
+            <TouchableOpacity style={styles.xIcon} onPress={closeDrawer}>
+              <SvgXml xml={xIcon} width={wp(8)} height={wp(8)} />
+            </TouchableOpacity>
+          </View>
+        }
         <View style={styles.userInfo}>
           <SvgXml
             xml={neilPlayer}

@@ -37,6 +37,7 @@ const AuthNavigator = () => {
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const onboarding = useSelector((state: any) => state.auth.Onboarding);
   const language = useSelector((state: any) => state.auth.language);
+  const isRTL = language === "he";
   const dispatch = useDispatch();
   // Get the user's preferred languages
   if (language == "") {
@@ -150,7 +151,9 @@ const MainStackNavigator = () => {
   );
 };
 
-const LoggedInNavigator = () => (
+const LoggedInNavigator = () => {
+  const language = useSelector((state: any) => state.auth.language);
+return(
   <Drawer.Navigator
     drawerContent={(props) => <CustomDrawer {...props} />}
     // screenOptions={{
@@ -171,6 +174,8 @@ const LoggedInNavigator = () => (
     screenOptions={{
       swipeEnabled: true,
       drawerType: "front",
+      
+      drawerPosition:language=='he' ?'right':'left',
       // drawerHideStatusBarOnOpen: true,
       drawerStyle: {
         // backgroundColor: colors.msuGreen,
@@ -194,7 +199,8 @@ const LoggedInNavigator = () => (
       options={{ headerShown: false }}
     />
   </Drawer.Navigator>
-);
+)
+}
 
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;

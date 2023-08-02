@@ -54,6 +54,7 @@ const Home: React.FC = () => {
   const [resetResponse, setResetResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
+  const lang = useSelector((state: any) => state.auth.language);
   console.log("User Data2:", user);
 
   const onLogOut = () => {
@@ -190,7 +191,7 @@ console.log("zuli",response.data)
           <ActivityIndicator size="large" color="silver" />
         </View>
       )}
-      <CustomHeader leftIcon={drawerIcon} onBackButtonPress={openDrawer} />
+      <CustomHeader drawerIcon={drawerIcon} drawerButtonPress={openDrawer} />
 
       <View style={styles.ratingDirection}>
         <View style={styles.ratingView}>
@@ -226,7 +227,7 @@ console.log("zuli",response.data)
         ))}
       </ScrollView>
 
-      <TouchableOpacity style={styles.view2} onPress={navigateToAddOpponent}>
+      <TouchableOpacity style={[styles.view2, {alignItems: lang === "he" ? "flex-start" : "flex-end"}]} onPress={navigateToAddOpponent}>
         <View style={styles.button}>
           {/* <Text style={[styles.text,{borderWidth: 1,textAlign: 'center'}]}>+</Text> */}
           <SvgXml xml={plusIcon} width={20} height={20} />
