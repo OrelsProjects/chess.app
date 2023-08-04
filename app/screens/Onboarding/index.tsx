@@ -10,13 +10,14 @@ import {
 import Svg, { SvgUri, SvgXml } from 'react-native-svg';
 import { onboardOne, onboardTwo, sliderOne, sliderTwo } from '../../assets/SVGs';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setOnBoarding } from '../../redux/actions/action';
 
 const OnBordingScreen: React.FC = () => {
   const {t} = useTranslation()
   const dispatch = useDispatch()
   const [showComponent, setShowComponent] = useState(false);
+  const lang = useSelector((state: any) => state.auth.language);
 
   useEffect(()=>{
     console.log("on boarding screen opened!")
@@ -94,7 +95,7 @@ const OnBordingScreen: React.FC = () => {
             /> */}
             </View>
             <View style={styles.buttons}>
-              <View style={styles.buttonDirection}>
+              <View style={[styles.buttonDirection, {flexDirection: lang === "he" ? 'row-reverse' : 'row'}]}>
                 <TouchableOpacity onPress={skipNavigation}>
                   <Text style={styles.skipText}>{t('skip')}</Text>
                 </TouchableOpacity>
