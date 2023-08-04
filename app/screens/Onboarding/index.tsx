@@ -47,7 +47,7 @@ const OnBordingScreen: React.FC = () => {
               <SvgXml xml={sliderTwo} width={wp(8)} height={wp(12)} />
             </View>
             <View style={styles.buttons}>
-              <View style={styles.buttonDirection}>
+              <View style={[styles.buttonDirection, {flexDirection: lang === "he" ? 'row-reverse' : 'row'}]}>
                 <TouchableOpacity onPress={navigation}>
                   <Text style={styles.skipText}>{t('skip')}</Text>
                 </TouchableOpacity>

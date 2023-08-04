@@ -57,6 +57,7 @@ const AuthNavigator = () => {
         dispatch(setLanguage("en"));
       }
   }
+ 
   const appLanguage =
   Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLocale ||

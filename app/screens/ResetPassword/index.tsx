@@ -139,9 +139,7 @@ const ResetPassword: React.FC = ({ route }) => {
                 // onBlur={handleBlur('code')}
                 cellCount={CELL_COUNT}
                 // rootStyle={styles.codeFieldRoot}
-                rootStyle={{
-                  marginVertical: hp(4),
-                }}
+                rootStyle={{marginVertical:hp(4),flexDirection: 'row'}}
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
                 renderCell={({ index, symbol, isFocused }) => (

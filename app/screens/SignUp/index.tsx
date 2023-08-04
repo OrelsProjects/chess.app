@@ -136,9 +136,10 @@ const SignUpScreen: React.FC = () => {
         textColor: "#fcfcfd",
         backgroundColor: "red",
       });
-    } finally {
-      setLoading(false);
-    }
+    } 
+    // finally {
+    //   setLoading(false);
+    // }
   };
 
   const Signup = async (data: SignupData) => {
@@ -228,7 +229,7 @@ const SignUpScreen: React.FC = () => {
               placeholder={`${t("phoneNumber")}`}
               value={phoneNumber}
               iconName={starIcon}
-              maxLength={7}
+              maxLength={8}
               onChangeText={(e) => setPhoneNumber(e)}
               keyboardType={"phone-pad"}
             />

@@ -63,7 +63,7 @@ const resources = {
 
       //OTP
       enter: "Enter",
-      enterOTP: "הזן OTP",
+      enterOTP: "Enter OTP",
       a6DigitsCodeHasBeenSentToYourEmail:
         "A 6 digits code has been sent to your email",
       verify: "Verify",
@@ -164,6 +164,7 @@ const resources = {
       a6DigitsCodeHasBeenSentToYourEmail:
         'קוד באורך 6 ספרות נשלח לכתובת הדוא"ל שלך',
       verify: "אמת",
+      enterOTP: "הזן OTP",
 
       //ResetPassword
       new: "חדש",

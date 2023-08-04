@@ -53,8 +53,10 @@ const styles = StyleSheet.create({
     fontSize: normalized.hp(2),
   },
   forgotPass: {
-    alignSelf: 'flex-end',
+   // alignSelf: 'flex-end',
     marginBottom: hp(4),
+    width:'100%'
+
   },
   buttonLoader: {
     position: 'absolute',
