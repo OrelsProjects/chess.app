@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   FlatList,
@@ -15,7 +15,9 @@ import styles from "./styles";
 import { GetUserDetails } from "../../services/react-query/queries/user";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomHeader from "../../components/CustomHeader";
+import RBSheet from "react-native-raw-bottom-sheet";
 import {
+  addFilter,
   drawerIcon,
   neilPlayer,
   plusIcon,
@@ -45,6 +47,7 @@ import { useTranslation } from "react-i18next";
 import PlayerCard from "../../components/PlayerCard";
 
 const Home: React.FC = () => {
+  const [isClickedBtn, setIsClickedBtn] = useState("rapid");
   const { t } = useTranslation();
   const user = useSelector((state: any) => state.auth);
   const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
@@ -113,7 +116,6 @@ const Home: React.FC = () => {
 
     try {
       const response = await BaseURL.post(endPoints.calculateRating, payload);
-console.log("zuli",response.data)
       dispatch(expectedRating(response.data));
       setLoading(false);
       console.log(response.data);
@@ -176,6 +178,18 @@ console.log("zuli",response.data)
     }
   };
 
+  const refRBSheet = useRef();
+
+  const defaultButtonStyle = {
+    width: wp(18),
+    height: hp(4.5),
+    backgroundColor: "white",
+    color: "black",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+  };
+
   return (
     <View
       style={{
@@ -184,6 +198,7 @@ console.log("zuli",response.data)
         paddingTop: insets.top,
         justifyContent: "space-evenly",
         alignItems: "center",
+        
       }}
     >
       {loading && (
@@ -191,7 +206,21 @@ console.log("zuli",response.data)
           <ActivityIndicator size="large" color="silver" />
         </View>
       )}
-      <CustomHeader drawerIcon={drawerIcon} drawerButtonPress={openDrawer} />
+       <CustomHeader drawerIcon={drawerIcon} drawerButtonPress={openDrawer} />
+      <View style={styles.allPlayerView}>
+        <Text></Text>
+        <Text
+          style={[
+            styles.allPlayerText,
+            { fontWeight: "700", fontSize: normalized.wp(6) },
+          ]}
+        >
+          All Player's
+        </Text>
+        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+          <SvgXml xml={addFilter} width={20} height={20} />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.ratingDirection}>
         <View style={styles.ratingView}>
@@ -215,7 +244,7 @@ console.log("zuli",response.data)
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}
       >
-        {content?.map((item: any, index: any) => (
+    {content?.map((item: any, index: any) => (
           <PlayerCard
             playerImage={item.svg}
             playerName={item.text}
@@ -257,6 +286,91 @@ console.log("zuli",response.data)
         />
       </View>
       <Text style={styles.nineText}>{t("theRatingsMayNotBeAccurate")}</Text>
+
+      <RBSheet
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+          },
+          draggableIcon: {
+            backgroundColor: "black",
+          },
+        }}
+      >
+        <View style={styles.bottomStyle}>
+          <TouchableOpacity
+            style={styles.bottomXIcon}
+            onPress={() => refRBSheet.current.close()}
+          >
+            <SvgXml xml={xIcon} width={20} height={20} />
+          </TouchableOpacity>
+          <Text
+            style={[
+              styles.allPlayerText,
+              { fontWeight: "700", fontSize: normalized.wp(5) },
+            ]}
+          >
+            Game Type
+          </Text>
+
+          <View style={styles.bottomButtonView}>
+            <TouchableOpacity
+              style={[
+                defaultButtonStyle,
+                isClickedBtn === "rapid"
+                  ? { backgroundColor: "#007AFF" }
+                  : null,
+              ]}
+              onPress={() => setIsClickedBtn("rapid")}
+            >
+              <Text
+                style={
+                  isClickedBtn === "rapid"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+              >
+                Rapid
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                defaultButtonStyle,
+                isClickedBtn === "blitz"
+                  ? { backgroundColor: "#007AFF" }
+                  : null,
+              ]}
+              onPress={() => setIsClickedBtn("blitz")}
+            >
+              <Text
+                style={
+                  isClickedBtn === "blitz"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+              >
+                Blitz
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                defaultButtonStyle,
+                isClickedBtn === "classical"
+                  ? { backgroundColor: "#007AFF" }
+                  : null,
+              ]}
+              onPress={() => setIsClickedBtn("classical")}
+            >
+              <Text style={{ color: defaultButtonStyle.color }}>Classical</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </RBSheet>
     </View>
   );
 };

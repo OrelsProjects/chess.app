@@ -13,6 +13,14 @@ const styles = StyleSheet.create({
   card: {
     margin: 4,
   },
+  allPlayerView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: normalized.wp(90),
+    //backgroundColor: 'red',
+    marginVertical: normalized.hp(1),
+  },
   content: { flexDirection: 'row', justifyContent: 'space-between' },
   ratingDirection:{
 flexDirection:'row',
@@ -36,8 +44,8 @@ marginVertical:normalized.hp(1)
 
   scrollViewContent: {
     flexGrow: 1,
-    width: normalized.wp('100')
-    // backgroundColor: 'red',
+    width: normalized.wp('100'),
+    backgroundColor: '#e5e5e5',
     // zIndex: -1,
   },
   middleView: {
@@ -312,6 +320,29 @@ marginVertical:normalized.hp(1)
     fontSize: 14,
     fontWeight: 'bold',
   },
+  bottomStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomXIcon: {
+    alignSelf: 'flex-end',
+    marginHorizontal: normalized.wp(3),
+  },
+  allPlayerText: {
+    color: '#212121',
+  },
+
+  bottomButtonView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: normalized.hp(3),
+    width: normalized.wp(80),
+    // backgroundColor: 'red',
+  },
+
+
+
 });
 
 export default styles;
