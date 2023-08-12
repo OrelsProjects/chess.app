@@ -16,12 +16,9 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-import { lockIcon } from "../../assets/SVGs/index";
-
 import styles from "./styles";
 import ButtonCTA from "../../components/ButtonCTA";
 import CustomHeader from "../../components/CustomHeader";
-import CustomInput from "../../components/CustomInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanguage } from "../../redux/actions/action";
@@ -30,16 +27,11 @@ import { setLanguage } from "../../redux/actions/action";
 const ChooseLanguage: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [newPassword, setNewPassword] = useState("");
-  const signupUserInfo = useSelector((state: any) => state.auth.signupInfo);
   const lang = useSelector((state: any) => state.auth.language);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const navigateToLogin = () => NavigationService.navigate("Login");
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    console.log("current language code:", lang);
     handleLanguageSelection(lang);
   }, [lang]);
   const handleLanguageSelection = (language: string) => {
@@ -106,18 +98,11 @@ const ChooseLanguage: React.FC = () => {
             customStyle={{ width: wp(90) }}
             buttonText={t("next")}
             onPress={() => {
-              // isRTL();
               NavigationService.goBack();
             }}
           />
         </View>
       </ScrollView>
-      {/* <View style={styles.secondaryButtonContainer}>
-        <Text style={styles.noAccount}>Don't need to reset? </Text>
-        <TouchableOpacity>
-          <Text style={styles.login}>Login</Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };

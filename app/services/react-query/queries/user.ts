@@ -10,7 +10,6 @@ import { ApiService } from '../../../services/ApiService';
  */
 export const GetUserDetails = () => {
   const staffRequestService = ApiService.createInstance();
-  // const userId = useStore(state => state.userId);
 
   return useQuery(['UserDetails'], async () => {
     const response: AxiosResponse = await staffRequestService.getCharacters();

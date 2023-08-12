@@ -18,27 +18,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: normalized.wp(90),
-    //backgroundColor: 'red',
     marginVertical: normalized.hp(1),
   },
   content: { flexDirection: 'row', justifyContent: 'space-between' },
-  ratingDirection:{
-flexDirection:'row',
-alignItems:'center',
-justifyContent:'space-between',
-width:normalized.wp(95),
-marginVertical:normalized.hp(1)
+  ratingDirection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: normalized.wp(95),
+    marginVertical: normalized.hp(1)
   },
-  ratingView:{
-    width:normalized.wp(45),
-    // height:normalized.hp(4),
-    backgroundColor:AppStyles.color.COLOR_WHITE,
-    // elevation:1,
-    alignItems:'center',justifyContent:'center'
+  ratingView: {
+    width: normalized.wp(45),
+    backgroundColor: AppStyles.color.COLOR_WHITE,
+    alignItems: 'center', justifyContent: 'center'
   },
-  ratingText:{
-    fontSize:fontSizes.regular,
-    padding:3,
+  ratingText: {
+    fontSize: fontSizes.regular,
+    padding: 3,
     color: '#222222',
   },
 
@@ -46,7 +43,6 @@ marginVertical:normalized.hp(1)
     flexGrow: 1,
     width: normalized.wp('100'),
     backgroundColor: '#e5e5e5',
-    // zIndex: -1,
   },
   middleView: {
     flexDirection: 'row',
@@ -83,30 +79,22 @@ marginVertical:normalized.hp(1)
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 22,
-    // position: 'absolute',
     marginTop: normalized.wp(-22),
-    // marginLeft: wp(10),
   },
   wgmContainer: {
     backgroundColor: AppStyles.color.NORTH_TEXAS_GREEN,
     borderRadius: 24,
-    // width: normalized.wp(16),
     padding: normalized.wp(2.5),
   },
   wgmText: {
     fontSize: fontSizes.large,
     color: AppStyles.color.COLOR_WHITE,
   },
-  // starImage: {
-  //   width: normalized.wp(7),
-  //   height: normalized.hp(3),
-  // },
   firstView: {
     justifyContent: 'center',
     alignItems: 'center',
     width: normalized.wp(95),
     marginTop: normalized.hp(5),
-    //backgroundColor: 'red',
   },
   secondView: {
     flexDirection: 'row',
@@ -116,14 +104,11 @@ marginVertical:normalized.hp(1)
     height: normalized.hp(10),
     borderRadius: radius.regularRadius,
     backgroundColor: '#F3F7FF',
-    //marginVertical: normalized.hp(2), // Adjust the margin bottom value as desired
   },
   thirdView: {
     flexDirection: 'row',
-    //justifyContent: 'space-evenly',
     alignItems: 'center',
     width: normalized.wp(60),
-    //backgroundColor: 'red',
   },
   neil: {
     alignSelf: 'center',
@@ -132,44 +117,14 @@ marginVertical:normalized.hp(1)
   },
   fourthView: {
     width: normalized.wp(30),
-    //backgroundColor: 'pink',
   },
   neilText: {
     color: '#222222',
     alignSelf: 'flex-start',
     marginHorizontal: normalized.wp(3),
     fontSize: fontSizes.large,
-    // marginTop: normalized.hp(2),
   },
-  // multiImages: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'center',
-  //   backgroundColor: 'pink',
-  // },
-  // innerMultiView: {
-  //   //flex: 1,
-  //   backgroundColor: 'red'
-  // },
-  // innerMultiViewTwo: {
-  //   backgroundColor: 'gray',
-  // },
-  // innerMultiView: {
-  //   position: 'absolute',
-  //   left: -10,
-  //   top: 0,
-  //   backgroundColor: 'red',
-  // },
-  // innerMultiViewTwo: {
-  //   position: 'absolute',
-  //   left: -5,
-  //   top: 0,
-  //   backgroundColor: 'gray',
-  // },
-  // innerMultiViewThree: {
-  //   position: 'absolute',
-  //   left: 0,
-  //   top: 0,
-  // },
+
   starImageTwo: {
     width: normalized.wp(5),
     height: normalized.hp(2),
@@ -206,7 +161,7 @@ marginVertical:normalized.hp(1)
   },
   text: {
     fontSize: hp(3.5),
-    fontWeight: '700', 
+    fontWeight: '700',
     color: '#ffffff'
   },
   sixView: {
@@ -220,13 +175,6 @@ marginVertical:normalized.hp(1)
     borderRadius: radius.xxlargeRadius,
     backgroundColor: AppStyles.color.COLOR_GREY_WHITE,
     alignSelf: 'center',
-    // shadowColor: '#000000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.5,
-    // shadowRadius: 4,
     elevation: 4
   },
   seperator: {
@@ -239,8 +187,6 @@ marginVertical:normalized.hp(1)
   },
   sevenView: {
     justifyContent: 'space-around',
-    //backgroundColor: 'blue',
-    //height: normalized.hp(6)
   },
   undo: {
     width: normalized.wp(8),
@@ -252,8 +198,6 @@ marginVertical:normalized.hp(1)
   },
   eightView: {
     justifyContent: 'space-around',
-    // backgroundColor: 'red',
-    // height: normalized.hp(6)
   },
   reset: {
     width: normalized.wp(8),
@@ -266,9 +210,6 @@ marginVertical:normalized.hp(1)
   nineView: {
     justifyContent: 'center',
     alignItems: 'center',
-    // position:'absolute'
-    //backgroundColor: 'pink',
-    //marginVertical: normalized.hp(2),
   },
   nineText: {
     fontSize: fontSizes.medium,
@@ -284,27 +225,27 @@ marginVertical:normalized.hp(1)
     width: normalized.wp(60),
     bottom: normalized.hp(8),
   },
-  buttonView:{
-    bottom:normalized.hp(5),
-    position:'absolute'
+  buttonView: {
+    bottom: normalized.hp(5),
+    position: 'absolute'
   },
-  userImagesView:{
-    width:normalized.wp(10),
-    flexDirection:'row',
-    alignItems:'center'
+  userImagesView: {
+    width: normalized.wp(10),
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   buttonLoader: {
-    flex:1,
-    zIndex:1,
+    flex: 1,
+    zIndex: 1,
     position: 'absolute',
     alignSelf: 'center',
     top: hp(38),
   },
-  userImagesWidth:{
+  userImagesWidth: {
     width: normalized.wp(4.5),
-    marginVertical:normalized.hp(1)
+    marginVertical: normalized.hp(1)
   },
-  plusUserView:{
+  plusUserView: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     width: normalized.wp(7),
     height: normalized.hp(3.3),
@@ -315,7 +256,7 @@ marginVertical:normalized.hp(1)
     justifyContent: 'center',
     alignItems: 'center',
   },
-  plusUserText:{
+  plusUserText: {
     color: 'white',
     fontSize: 14,
     fontWeight: 'bold',
@@ -338,11 +279,7 @@ marginVertical:normalized.hp(1)
     alignItems: 'center',
     marginVertical: normalized.hp(3),
     width: normalized.wp(80),
-    // backgroundColor: 'red',
   },
-
-
-
 });
 
 export default styles;

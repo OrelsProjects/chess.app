@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     width: normalized.wp(95),
-    //backgroundColor: AppStyles.color.COLOR_PRIMARY,
     marginVertical: normalized.hp(1),
   },
   userChildContainer: {
@@ -79,7 +78,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: wp(68),
-    // gap: 4,
   },
   userImg: {
     elevation: 2.5,
@@ -100,7 +98,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // width: normalized.wp(18),
     height: normalized.hp(3),
     borderWidth: 1,
     borderRadius: radius.regularRadius,
@@ -129,7 +126,6 @@ const styles = StyleSheet.create({
     borderColor: AppStyles.color.COLOR_DARK_SEPERATOR,
     marginVertical: wp(4),
     backgroundColor: 'red',
-    // height: 20,
     width: wp(90),
   },
   optionText: {
@@ -152,9 +148,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 22,
-    // position: 'absolute',
     marginTop: wp(-22),
-    // marginLeft: wp(10),
   },
   gameStatsBtnView: {
     flexDirection: 'row',
@@ -180,10 +174,8 @@ const styles = StyleSheet.create({
   firstView: {
     justifyContent: 'center',
     alignItems: 'center',
-    // width: normalized.wp(95),
     marginHorizontal: normalized.wp('2'),
     margin: normalized.hp(2),
-    //backgroundColor: 'red',
   },
   secondView: {
     flexDirection: 'row',
@@ -193,14 +185,11 @@ const styles = StyleSheet.create({
     height: normalized.hp(10),
     borderRadius: radius.regularRadius,
     backgroundColor: '#F3F7FF',
-    //marginVertical: normalized.hp(2), // Adjust the margin bottom value as desired
   },
   thirdView: {
     flexDirection: 'row',
-    //justifyContent: 'space-evenly',
     alignItems: 'center',
     width: normalized.wp(60),
-    //backgroundColor: 'red',
   },
   neil: {
     alignSelf: 'center',
@@ -209,14 +198,12 @@ const styles = StyleSheet.create({
   },
   fourthView: {
     width: normalized.wp(30),
-    //backgroundColor: 'pink',
   },
   neilText: {
     alignSelf: 'flex-start',
     color: 'black',
     marginHorizontal: normalized.wp(3),
     fontSize: fontSizes.large,
-    // marginTop: normalized.hp(2),
   },
   middleView: {
     flexDirection: 'row',

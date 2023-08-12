@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   View,
-  FlatList,
-  RefreshControl,
   TouchableOpacity,
   Text,
   Image,
@@ -10,7 +8,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useStore } from "../../store";
-import { store } from "../../redux/store/store";
 import styles from "./styles";
 import { GetUserDetails } from "../../services/react-query/queries/user";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -21,7 +18,6 @@ import {
   drawerIcon,
   neilPlayer,
   plusIcon,
-  starGoldIcon,
   undo,
   xIcon,
 } from "../../assets/SVGs";
@@ -36,12 +32,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  expectedRating,
-  removeSearchResult,
-  searchUser,
-} from "../../redux/actions/action";
-import axios from "axios";
+import { expectedRating, removeSearchResult } from "../../redux/actions/action";
 import { BaseURL, endPoints } from "../../constants";
 import { useTranslation } from "react-i18next";
 import PlayerCard from "../../components/PlayerCard";
@@ -50,19 +41,11 @@ const Home: React.FC = () => {
   const [isClickedBtn, setIsClickedBtn] = useState("rapid");
   const { t } = useTranslation();
   const user = useSelector((state: any) => state.auth);
-  const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
-  const { isLoading, isFetching, data = { results: [] } } = GetUserDetails();
   const [calRating, setCalRating] = useState(0);
   const [itemListArray, setItemListArray] = useState([]);
-  const [resetResponse, setResetResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
   const lang = useSelector((state: any) => state.auth.language);
-  console.log("User Data2:", user);
-
-  const onLogOut = () => {
-    setIsLoggedIn(false);
-  };
 
   const navigateToAddOpponent = () => NavigationService.navigate("AddOpponent");
 
@@ -109,7 +92,6 @@ const Home: React.FC = () => {
 
   const sendDataToAPI = async () => {
     setLoading(true);
-    console.log("itemlist", itemListArray);
     const payload = {
       games: itemListArray,
     };
@@ -117,11 +99,11 @@ const Home: React.FC = () => {
     try {
       const response = await BaseURL.post(endPoints.calculateRating, payload);
       dispatch(expectedRating(response.data));
-      setLoading(false);
       console.log(response.data);
     } catch (error) {
-      setLoading(false);
       console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -198,7 +180,6 @@ const Home: React.FC = () => {
         paddingTop: insets.top,
         justifyContent: "space-evenly",
         alignItems: "center",
-        
       }}
     >
       {loading && (
@@ -206,7 +187,7 @@ const Home: React.FC = () => {
           <ActivityIndicator size="large" color="silver" />
         </View>
       )}
-       <CustomHeader drawerIcon={drawerIcon} drawerButtonPress={openDrawer} />
+      <CustomHeader drawerIcon={drawerIcon} drawerButtonPress={openDrawer} />
       <View style={styles.allPlayerView}>
         <Text></Text>
         <Text
@@ -244,7 +225,7 @@ const Home: React.FC = () => {
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}
       >
-    {content?.map((item: any, index: any) => (
+        {content?.map((item: any, index: any) => (
           <PlayerCard
             playerImage={item.svg}
             playerName={item.text}
@@ -256,9 +237,14 @@ const Home: React.FC = () => {
         ))}
       </ScrollView>
 
-      <TouchableOpacity style={[styles.view2, {alignItems: lang === "he" ? "flex-start" : "flex-end"}]} onPress={navigateToAddOpponent}>
+      <TouchableOpacity
+        style={[
+          styles.view2,
+          { alignItems: lang === "he" ? "flex-start" : "flex-end" },
+        ]}
+        onPress={navigateToAddOpponent}
+      >
         <View style={styles.button}>
-          {/* <Text style={[styles.text,{borderWidth: 1,textAlign: 'center'}]}>+</Text> */}
           <SvgXml xml={plusIcon} width={20} height={20} />
         </View>
       </TouchableOpacity>

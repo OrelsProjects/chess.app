@@ -1,8 +1,5 @@
-
-
 import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View, Alert } from "react-native";
-import { Button } from "react-native-paper";
 
 import NavigationService from "../../navigation/NavigationService";
 import {
@@ -13,9 +10,7 @@ import {
 import {
   enterIcon,
   leftArrowIcon,
-  lockIcon,
   neilPlayer,
-  starGoldIcon,
   starIconTwo,
   userIcon,
   xIcon,
@@ -28,10 +23,9 @@ import CustomInput from "../../components/CustomInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppStyles from "../../config/styles";
 import { normalized } from "../../config/metrics";
-import { SvgXml } from "react-native-svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { searchUser } from "../../redux/actions/action";
-import { BaseURL, endPoints } from "../../constants";
+import { BaseURL } from "../../constants";
 import { useTranslation } from "react-i18next";
 import images from "../../config/images";
 import axios from "axios";
@@ -56,8 +50,8 @@ const AddOpponent: React.FC = () => {
   const colors = [AppStyles.color.COLOR_PRIMARY, AppStyles.color.BABY_PINK];
   const source = React.useRef(null);
 
-  const [name, setName] = useState("");
-  const [rating, setRating] = useState("");
+  const [, setName] = useState("");
+  const [, setRating] = useState("");
 
   const dispatch = useDispatch();
 
@@ -73,7 +67,6 @@ const AddOpponent: React.FC = () => {
         badge: result?.badge,
       }))
     );
-    console.log("serachApiData:", serachApiData);
   }, [serachApiData]);
   const userData = () => {
     if (selectedOptionArray.length == 0) {
@@ -95,15 +88,16 @@ const AddOpponent: React.FC = () => {
         badge: badge,
         tag: "GM",
       };
-      // console.log("🚀 ~ file: index.tsx:97 ~ selectedOptionArrayFN ~ valObj:", valObj)
       let obj = [...selectedOptionArray, valObj];
 
       setOpponentName("");
       setRatingNumber("");
       setSelectedOptionArray(obj);
-    } 
-    else if (selectedBtn.name !== "" && selectedBtn.name !== null && ratingNumber !== "") {
-
+    } else if (
+      selectedBtn.name !== "" &&
+      selectedBtn.name !== null &&
+      ratingNumber !== ""
+    ) {
       let valObj = {
         opponentName: opponentName,
         opponentPoints: selectedBtn.value,
@@ -118,8 +112,7 @@ const AddOpponent: React.FC = () => {
       setOpponentName("");
       setRatingNumber("");
       setSelectedOptionArray(obj);
-    } 
-    else {
+    } else {
       Alert.alert(t("pleaseFillAllFields"));
     }
   };
@@ -146,24 +139,18 @@ const AddOpponent: React.FC = () => {
     };
   }, []);
   const handleRemoveItem = (index: number) => {
-    console.log("index:", index);
     var list = [...selectedOptionArray];
     list.splice(index, 1);
     setSelectedOptionArray(list);
   };
 
   const getUsersFromApi = async (text: any) => {
-    
     setOpponentName(text);
-    setRatingNumber("")
+    setRatingNumber("");
     if (source.current) {
       source.current.cancel("Previous request cancelled");
-      // setisloading(false)
     }
     try {
-      // if (text == '') {
-      // setSearchApiData([]);
-      // } else {
       source.current = axios.CancelToken.source();
       const response = await BaseURL.get(
         `/search/users/${text.toLowerCase()}/1/10`,
@@ -175,11 +162,7 @@ const AddOpponent: React.FC = () => {
       setSearchApiData(response.data);
 
       return response.data;
-      // }
     } catch (error) {
-      console.log("search error:", error);
-      console.log("error response:", error?.response?.data);
-
       setSearchApiData([]);
       throw error;
     }
@@ -189,14 +172,13 @@ const AddOpponent: React.FC = () => {
     return (
       <>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-
           <View style={styles.divider} />
           <Text style={styles.optionText}>Selected Options</Text>
           <View style={{ width: normalized.wp("90%") }}>
             {selectedOptionArray.map((user: any, i) => {
               const randomIndex = Math.floor(Math.random() * colors.length);
               const randomColor = colors[randomIndex];
-             
+
               return (
                 <PlayerCard
                   key={i}
@@ -216,7 +198,6 @@ const AddOpponent: React.FC = () => {
   };
 
   const onPressItem = (item: any) => {
-    console.log("item", item);
     setSearchApiData([]);
     setOpponentName(item.first_name);
     setRatingNumber(item.rating_israel);
@@ -224,7 +205,6 @@ const AddOpponent: React.FC = () => {
     setRating(item.rating_israel);
     setBadge(item.badge);
   };
-  console.log("eqwe", serachApiData[0]);
   return (
     <View
       style={{ flexGrow: 1, backgroundColor: "#fff", paddingTop: insets.top }}
@@ -251,19 +231,8 @@ const AddOpponent: React.FC = () => {
               onRightIconPress={() => getUsersFromApi("")}
             />
             {serachApiData.length > 0 ? (
-              <View
-                style={{
-                  // position: "absolute",
-                  // zIndex: 2,
-                  // top: 60,
-
-                  // width: "100%",
-                  // borderRadius: 10,
-                  // alignSelf: "center",
-                  // backgroundColor: "lightgray",
-                }}
-              >
-                <ScrollView style={{height:hp(40) }}>
+              <View>
+                <ScrollView style={{ height: hp(40) }}>
                   {searchData.map((item: any, index: any) => (
                     <PlayerCard
                       playerImage={item?.svg}
@@ -280,8 +249,6 @@ const AddOpponent: React.FC = () => {
                 style={{
                   flex: 1,
                   backgroundColor: "white",
-                  // elevation: 2,
-                  // top: -normalized.hp(2),
                   marginTop: -normalized.hp(1),
                   marginBottom: normalized.hp(2),
                   borderRadius: 10,
@@ -295,52 +262,48 @@ const AddOpponent: React.FC = () => {
           </View>
           {serachApiData.length == 0 && (
             <>
-          <View style={[styles.gameStatsBtnView, { zIndex: 1 }]}>
-            {gameStatsBtn.map((btn: any) => {
-              return (
-                <TouchableOpacity
-                  style={[
-                    styles.statsBtnContainer,
-                    {
-                      backgroundColor:
-                        selectedBtn.value === btn.value
-                          ? "#C8DBF5"
-                          : AppStyles.color.COLOR_WHITE,
-                      borderColor:
-                        selectedBtn.value === btn.value
-                          ? AppStyles.color.COLOR_PRIMARY
-                          : AppStyles.color.COLOR_PRIMARY,
-                    },
-                  ]}
-                  key={btn.name}
-                  onPress={() => {
-                    setSelectedBtn({ name: btn.name, value: btn.value });
-                  }}
-                >
-                  <Text style={styles.statsBtnText}>{btn.name}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-            <CustomInputNonRtl
-            editable={opponentName == "" ? true : false}
-            containerStyle={{ zIndex: 1 }}
-            placeholder={t("enterRatingNumber")}
-            value={ratingNumber.toString()}
-            iconName={starIconTwo}
-            onRightIconPress={selectedOptionArrayFN}
-            onChangeText={(e) => setRatingNumber(e)}
-            rightIcon={enterIcon}
-            keyboardType="number-pad"
-          />
-           {renderUsers()}
-          </>
+              <View style={[styles.gameStatsBtnView, { zIndex: 1 }]}>
+                {gameStatsBtn.map((btn: any) => {
+                  return (
+                    <TouchableOpacity
+                      style={[
+                        styles.statsBtnContainer,
+                        {
+                          backgroundColor:
+                            selectedBtn.value === btn.value
+                              ? "#C8DBF5"
+                              : AppStyles.color.COLOR_WHITE,
+                          borderColor:
+                            selectedBtn.value === btn.value
+                              ? AppStyles.color.COLOR_PRIMARY
+                              : AppStyles.color.COLOR_PRIMARY,
+                        },
+                      ]}
+                      key={btn.name}
+                      onPress={() => {
+                        setSelectedBtn({ name: btn.name, value: btn.value });
+                      }}
+                    >
+                      <Text style={styles.statsBtnText}>{btn.name}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+              <CustomInputNonRtl
+                editable={opponentName == "" ? true : false}
+                containerStyle={{ zIndex: 1 }}
+                placeholder={t("enterRatingNumber")}
+                value={ratingNumber.toString()}
+                iconName={starIconTwo}
+                onRightIconPress={selectedOptionArrayFN}
+                onChangeText={(e) => setRatingNumber(e)}
+                rightIcon={enterIcon}
+                keyboardType="number-pad"
+              />
+              {renderUsers()}
+            </>
           )}
-        
-         
         </View>
-
-
       </ScrollView>
       <View style={[styles.secondaryButtonContainer, { zIndex: 1 }]}>
         <ButtonCTA

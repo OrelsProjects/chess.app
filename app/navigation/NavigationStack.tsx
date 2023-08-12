@@ -50,7 +50,6 @@ const AuthNavigator = () => {
       ? NativeModules.SettingsManager.settings.AppleLocale ||
         NativeModules.SettingsManager.settings.AppleLanguages[0]
       : NativeModules.I18nManager.localeIdentifier;
-      console.log("zuee",appLanguage)
       if(appLanguage=="iw_" || appLanguage =="iw_IL"){
         dispatch(setLanguage("he"));
       }else{
@@ -63,7 +62,6 @@ const AuthNavigator = () => {
     ? NativeModules.SettingsManager.settings.AppleLocale ||
       NativeModules.SettingsManager.settings.AppleLanguages[0]
     : NativeModules.I18nManager.localeIdentifier;
-    console.log("zuee",appLanguage)
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
       {onboarding ? (
@@ -207,7 +205,6 @@ const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const language = useSelector((state: any) => state.auth.language);
-  console.log("Language in stack:", isLoggedIn);
   i18n.changeLanguage(language);
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>

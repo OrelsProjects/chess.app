@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
   },
   childContainer: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     width: wp(90),
   },

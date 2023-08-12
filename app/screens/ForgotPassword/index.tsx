@@ -28,7 +28,6 @@ const ForgotPassword: React.FC = () => {
     NavigationService.navigate("ResetPassword", { email: email });
   const insets = useSafeAreaInsets();
 
-  // Send confirmation code to user's email
   async function forgotPassword(email: string) {
     setLoading(true);
     try {

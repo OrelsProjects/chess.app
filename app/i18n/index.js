@@ -77,6 +77,7 @@ const resources = {
       //SignUp
       signUpForRegistration: "Sign up for registration",
       name: "Name",
+      username: "Username",
       dateOfBirth: "Date of birth",
       israel: "Israel",
       bySigningUpYoureAgreeToOur: "By signing up, you're agree to our",
@@ -175,6 +176,7 @@ const resources = {
       //SignUp
       signUpForRegistration: "הרשמה להרשמה",
       name: "שם",
+      username: "שם משתמש",
       dateOfBirth: "תאריך לידה",
       israel: "ישראל",
       bySigningUpYoureAgreeToOur: "בהרשמה, אתה מסכים לתנאי השימוש שלנו",

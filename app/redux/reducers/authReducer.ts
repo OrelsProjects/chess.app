@@ -44,7 +44,6 @@ const initialState = {
 };
 
 const authReducer = (state = initialState, action: any) => {
-  console.log('action.type',action?.type, action?.payload)
   switch (action.type) {
     case SIGNUP_REQUEST:
       return {
@@ -132,7 +131,6 @@ const authReducer = (state = initialState, action: any) => {
           Onboarding: action.payload,
         };
       case SET_USERINFO:
-        console.log("userInfo:",action.payload)
         return {
           ...state,
           loading: false,

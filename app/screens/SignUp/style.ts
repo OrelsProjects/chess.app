@@ -14,19 +14,15 @@ const styles = StyleSheet.create({
   },
   childContainer: {
     flex: 1,
-    //justifyContent: 'space-between',
     alignItems: 'center',
     width: wp(92),
-    //backgroundColor: 'red'
   },
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'flex-start',
     width: wp(90),
     height: hp(12),
-    // marginTop: hp(1),
     marginBottom: hp(2),
-    //backgroundColor: 'blue'
   },
   welcome: {
     width: '100%',
@@ -54,7 +50,6 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.regular,
     color: AppStyles.color.GRANITE_GRAY,
     justifyContent: 'flex-end',
-    // marginBottom: hp(4),
   },
   haveAccount: {
     fontSize: fontSizes.medium,
@@ -73,9 +68,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     fontSize: normalized.hp(2)
-
-    // width:normalized.wp(90),
-    // alignSelf:'center'
   },
   buttonLoader: {
     position: 'absolute',
@@ -96,12 +88,10 @@ const styles = StyleSheet.create({
   label: {
     margin: normalized.hp(8),
     fontWeight: '400',
-    //color: Colors.white,
   },
   labelColored: {
     margin: normalized.hp(8),
     fontWeight: '400',
-    //color: Colors.baseColor,
   },
   datePickerContainer: {
     flexDirection: 'row',

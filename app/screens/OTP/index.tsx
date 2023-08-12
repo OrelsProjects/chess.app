@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View,ActivityIndicator } from 'react-native';
-import NavigationService from '../../navigation/NavigationService';
-import styles from './styles';
-import ButtonCTA from '../../components/ButtonCTA';
-import CustomHeader from '../../components/CustomHeader';
-import { leftArrowIcon, mailIcon } from '../../assets/SVGs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Auth } from 'aws-amplify';
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import NavigationService from "../../navigation/NavigationService";
+import styles from "./styles";
+import ButtonCTA from "../../components/ButtonCTA";
+import CustomHeader from "../../components/CustomHeader";
+import { leftArrowIcon } from "../../assets/SVGs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Auth } from "aws-amplify";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+} from "react-native-responsive-screen";
 
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-import { useDispatch, useSelector } from 'react-redux';
-import { setHeader, Signup } from '../../redux/actions/action';
-import { store } from '../../redux/store/store';
-import { useTranslation } from 'react-i18next';
-import { useStore } from '../../store/index';
+} from "react-native-confirmation-code-field";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useStore } from "../../store/index";
 
 interface OtpProps {
   username: String;
@@ -30,45 +28,31 @@ interface OtpProps {
 
 const EnterOTP: React.FC<OtpProps> = ({ route }) => {
   const lang = useSelector((state: any) => state.auth.language);
-  const {t} = useTranslation()
-  const dispath = useDispatch()
-  const {name, email} = useSelector((state: any)=> state
-  )
-  const setIsLoggedIn = useStore(state => state.setIsLoggedIn);
-  const signupUserInfo = useSelector((state: any) => state.auth.signupInfo);
-  const userId = useSelector((state: any) => state.auth.user);
-  const userName = route.params.username || 'test';
-  const userEmail = route.params.email|| 'test@gmail.com';
-  // const israel_rt = route.params.israel_rt;
+  const { t } = useTranslation();
+  const userName = route.params.username || "test";
+  const userEmail = route.params.email || "test@gmail.com";
 
   const insets = useSafeAreaInsets();
   const goBack = () => NavigationService.goBack();
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
 
   const navigateToResetPass = async () => {
     if (userName) {
-      setLoading(true)
+      setLoading(true);
       try {
         await Auth.confirmSignUp(userName, value);
-        console.log('Sign-up confirmed successfully.');
-        setLoading(false)
-        // NavigationService.resetStack('Home','hello')
-         useStore.getState().setIsLoggedIn(true)
-        // Continue with the confirmed user flow
+        setLoading(false);
+        useStore.getState().setIsLoggedIn(true);
       } catch (error) {
-        console.error('Error confirming sign-up:', error);
-        setLoading(false)
-        // Display an appropriate error message to the user
+        setLoading(false);
       }
     } else {
-      NavigationService.navigate('ResetPassword');
+      NavigationService.navigate("ResetPassword");
     }
   };
 
   const CELL_COUNT = 6;
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -80,58 +64,48 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
       <CustomHeader leftIcon={leftArrowIcon} onBackButtonPress={goBack} />
       <View style={styles.childContainer}>
         <View style={styles.headerContainer}>
-          <Text style={styles.heading}>{t('enterOTP')}</Text>
+          <Text style={styles.heading}>{t("enterOTP")}</Text>
           <Text style={styles.subHeading}>
-            {t('a6DigitsCodeHasBeenSentToYourEmail')}{' '}
-            <Text style={{ color: '#383838' }}>{userEmail}</Text>
+            {t("a6DigitsCodeHasBeenSentToYourEmail")}{" "}
+            <Text style={{ color: "#383838" }}>{userEmail}</Text>
           </Text>
         </View>
 
         <CodeField
           ref={ref}
           {...props}
-          // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
           value={value}
-rootStyle={{marginVertical:hp(4),flexDirection: 'row'}}
-          //   rootStyle={
-          // lang=="en" ?   {
-             
-          //        marginVertical: hp(4),
-          //    } :  {
-          //     flexDirection: 'row-reverse',
-          //     marginVertical: hp(4),
-          // }
-          //   }
-          onChangeText={value => {
-            setValue(value);
-            // setFieldValue('code', value);
+          rootStyle={{
+            marginVertical: hp(4),
+            flexDirection: `${lang == "he" ? "row-reveresed" : "row"}`,
           }}
-          // onBlur={handleBlur('code')}
+          onChangeText={(value) => {
+            setValue(value);
+          }}
           cellCount={CELL_COUNT}
-          // rootStyle={styles.codeFieldRoot}
-          keyboardType="number-pad"
+          keyboardType="phone-pad"
           textContentType="oneTimeCode"
           renderCell={({ index, symbol, isFocused }) => (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Text
-              key={index}
-              style={[styles.cell, isFocused && styles.focusCell]}
-              onLayout={getCellOnLayoutHandler(index)}>
-              {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text
+                key={index}
+                style={[styles.cell, isFocused && styles.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}
+              >
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
             </View>
           )}
         />
-  
+
         <ButtonCTA
           customStyle={{ width: wp(90) }}
-          buttonText={t('verify')}
+          buttonText={t("verify")}
           onPress={() => {
             navigateToResetPass();
-            // verifyOTP();
           }}
-          disabled = {loading}
-          loading = {loading}
+          disabled={loading}
+          loading={loading}
         />
       </View>
     </View>

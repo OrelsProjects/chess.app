@@ -137,9 +137,6 @@ const SignUpScreen: React.FC = () => {
         backgroundColor: "red",
       });
     } 
-    // finally {
-    //   setLoading(false);
-    // }
   };
 
   const Signup = async (data: SignupData) => {
@@ -210,7 +207,7 @@ const SignUpScreen: React.FC = () => {
               </Text>
             </View>
             <CustomInput
-              placeholder={t("name")}
+              placeholder={t("username")}
               value={name}
               iconName={mailIcon}
               onChangeText={(e) => setName(e)}
@@ -219,9 +216,8 @@ const SignUpScreen: React.FC = () => {
               placeholder={t("email")}
               value={email}
               iconName={mailIcon}
-              // onChangeText={(e) => setEmail(e)}
               onChangeText={handleEmailChange}
-              isEmailValid={isEmailValid} // Pass the isEmailValid prop
+              isEmailValid={isEmailValid}
               keyboardType={"email-address"}
             />
 
@@ -229,7 +225,7 @@ const SignUpScreen: React.FC = () => {
               placeholder={`${t("phoneNumber")}`}
               value={phoneNumber}
               iconName={starIcon}
-              maxLength={8}
+              maxLength={10}
               onChangeText={(e) => setPhoneNumber(e)}
               keyboardType={"phone-pad"}
             />

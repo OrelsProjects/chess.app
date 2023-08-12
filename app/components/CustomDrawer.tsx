@@ -53,11 +53,6 @@ const CustomDrawer = (props) => {
     Auth.signOut();
     setIsLoggedIn(false);
   };
-  useEffect(() => {
-    if (user) {
-      console.log("User Data:", user);
-    }
-  }, [user]);
 
   const drawerItemRoutes = [
     {

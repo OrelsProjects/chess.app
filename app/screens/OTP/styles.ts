@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
   },
   childContainer: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     width: wp(90),
   },
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
     width: wp(90),
     height: hp(14),
     marginTop: hp(2),
-    // marginBottom: hp(4),
   },
   heading: {
     fontSize: fontSizes.xxlarge,
@@ -55,16 +53,12 @@ const styles = StyleSheet.create({
     width: hp(6),
     height: hp(6),
     color: '#222222',
-    // backgroundColor: theme.color.backgroundColor,
-    // backgroundColor: "red",
-    // lineHeight: hp(5),
     marginHorizontal: wp(2),
 
     fontSize: fontSizes.large,
     padding: 10,
     borderWidth: 1,
     borderColor: AppStyles.color.FLASH_WHITE,
-    // color: theme.color.textBlue,
     textAlign: 'center',
     borderRadius: radius.xsmallRadius
   },

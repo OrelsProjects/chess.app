@@ -19,9 +19,6 @@ const OnBordingScreen: React.FC = () => {
   const [showComponent, setShowComponent] = useState(false);
   const lang = useSelector((state: any) => state.auth.language);
 
-  useEffect(()=>{
-    console.log("on boarding screen opened!")
-  })
   const _renderCalender = () => {
     const navigation = () => {
       NavigationService.navigate('Login');
@@ -43,7 +40,6 @@ const OnBordingScreen: React.FC = () => {
               <Text style={styles.text}>
                 {t('interactAndEarnRewardsWithOurPointsProgramHelpClassmatesAndEarnPointsRedeemableForCashOrFutureCoursePurchasesStartBuildingYourRewardsNow')}
               </Text>
-              {/* <Image source={images.icons.Slider2} style={styles.slider} /> */}
               <SvgXml xml={sliderTwo} width={wp(8)} height={wp(12)} />
             </View>
             <View style={styles.buttons}>
@@ -74,7 +70,6 @@ const OnBordingScreen: React.FC = () => {
     return (
       <View style={styles.container}>
         <View style={styles.imageView}>
-          {/* <Image source={images.icons.gameImage} style={styles.image} /> */}
           <SvgXml xml={onboardOne} width={wp(100)} height={wp(60)} />
         </View>
         <View style={styles.textView}>
