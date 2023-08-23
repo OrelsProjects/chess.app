@@ -24,7 +24,12 @@ import { useStore } from "../../store/index";
 import { DdLogs } from "@datadog/mobile-react-native";
 
 interface OtpProps {
-  username: String;
+  route: {
+    params: {
+      username: string;
+      email: string;
+    };
+  };
 }
 
 const EnterOTP: React.FC<OtpProps> = ({ route }) => {

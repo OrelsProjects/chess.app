@@ -24,14 +24,12 @@ import { useSelector, useDispatch } from "react-redux";
 import i18n from "../i18n";
 import datadogConfig from "../../datadog.config";
 import mixpanelConfig from "../../mixpanel.config";
-import { DdSdkReactNative, DdLogs } from "@datadog/mobile-react-native";
-import { DdRumReactNavigationTracking } from "@datadog/mobile-react-navigation";
+import { DdSdkReactNative } from "@datadog/mobile-react-native";
 import { useEffect } from "react";
 import { Mixpanel } from "mixpanel-react-native";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const LoggedInStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 
@@ -62,31 +60,24 @@ const AuthNavigator = () => {
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const onboarding = useSelector((state: any) => state.auth.Onboarding);
   const language = useSelector((state: any) => state.auth.language);
-  const isRTL = language === "he";
+
   const dispatch = useDispatch();
-  // Get the user's preferred languages
-  if (language == "") {
-    // const preferredLanguages = RNLocalize.getLocales();
-    // const userLanguage =
-    //   preferredLanguages.length > 0 ? preferredLanguages[0].languageCode : "en"; // Default to 'en' if language not available
-    // dispatch(setLanguage(userLanguage));
+
+  if (language === "") {
     const appLanguage =
       Platform.OS === "ios"
         ? NativeModules.SettingsManager.settings.AppleLocale ||
           NativeModules.SettingsManager.settings.AppleLanguages[0]
         : NativeModules.I18nManager.localeIdentifier;
-    if (appLanguage == "iw_" || appLanguage == "iw_IL") {
+
+    console.log("Language!: " + appLanguage);
+
+    if (appLanguage.includes("iw") || appLanguage.includes("he")) {
       dispatch(setLanguage("he"));
     } else {
       dispatch(setLanguage("en"));
     }
   }
-
-  const appLanguage =
-    Platform.OS === "ios"
-      ? NativeModules.SettingsManager.settings.AppleLocale ||
-        NativeModules.SettingsManager.settings.AppleLanguages[0]
-      : NativeModules.I18nManager.localeIdentifier;
 
   useEffect(() => {
     initializeDatadog();

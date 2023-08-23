@@ -1,20 +1,11 @@
 import { store } from "../redux/store/store";
 import axios from "axios";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-
-// const [header, setHeader] = useState('');
-
-// const headerFound = useSelector(state => state.auth);
-// setHeader(headerFound?.user);
 
 export const BaseURL = axios.create({
   baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
-  // baseURL: Platform.OS === 'ios' ? iosUrl : androidUrl,
   headers: {
-    //accept: 'application/json',
+    accept: 'application/json',
     "content-type": "text/plain; charset=utf-8",
-    // UserId: header,
     UserId: store.getState().auth.token,
   },
 });
