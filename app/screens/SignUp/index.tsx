@@ -13,6 +13,7 @@ import {
   calenderIcon,
   lockIcon,
   mailIcon,
+  userIcon,
   starIcon,
 } from "../../assets/SVGs/index";
 import ButtonCTA from "../../components/ButtonCTA";
@@ -209,7 +210,7 @@ const SignUpScreen: React.FC = () => {
             <CustomInput
               placeholder={t("username")}
               value={name}
-              iconName={mailIcon}
+              iconName={userIcon}
               onChangeText={(e) => setName(e)}
             />
             <CustomInput
@@ -342,27 +343,6 @@ const SignUpScreen: React.FC = () => {
               disabled={loading}
               loading={loading}
             />
-          </View>
-          <View style={styles.secondaryButtonContainer}>
-            {lang === "he" ? (
-              <>
-                <TouchableOpacity onPress={handleLogin}>
-                  <Text style={styles.signUp}>{t("login")}</Text>
-                </TouchableOpacity>
-                <Text style={styles.noAccountTwo}>
-                  {t("haveAnAccount")}{" "}
-                </Text>
-              </>
-            ) : (
-              <>
-                <Text style={styles.noAccountTwo}>
-                  {t("haveAnAccount")}{" "}
-                </Text>
-                <TouchableOpacity onPress={handleLogin}>
-                  <Text style={styles.signUp}>{t("login")}</Text>
-                </TouchableOpacity>
-              </>
-            )}
           </View>
         </View>
       </ScrollView>

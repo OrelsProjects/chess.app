@@ -31,33 +31,35 @@ import images from "../../config/images";
 import axios from "axios";
 import PlayerCard from "../../components/PlayerCard";
 import CustomInputNonRtl from "../../components/CustomInoutNonRtl";
+import { IGameStateProps, ISearchOpponentProps, IUseRefProps } from "./types";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
   const [opponentName, setOpponentName] = useState("");
-  const [ratingNumber, setRatingNumber] = useState(0);
+  const [ratingNumber, setRatingNumber] = useState("");
   const [badge, setBadge] = useState("");
-  const [selectedBtn, setSelectedBtn] = useState({
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedOptionArray, setSelectedOptionArray] = useState([]);
+  const [searchData, setSearchData] = useState<ISearchOpponentProps[]>([]);
+  const [selectedGameState, setSelectedGameState] = useState({
     name: "",
     value: "",
   });
-  const [serachApiData, setSearchApiData] = useState([]);
-  const [selectedOptionArray, setSelectedOptionArray] = useState([]);
-  const goBack = () => NavigationService.goBack();
-  const navigateToHome = () => NavigationService.navigate("Home");
   const insets = useSafeAreaInsets();
-  const [searchData, setSearchData] = useState([]);
   const colors = [AppStyles.color.COLOR_PRIMARY, AppStyles.color.BABY_PINK];
-  const source = React.useRef(null);
-
   const [, setName] = useState("");
   const [, setRating] = useState("");
+
+  const source = React.useRef<IUseRefProps | null>(null);
+  const gameTypeSheet = React.useRef<IUseRefProps | null>(null);
+  const gameStateSheet = React.useRef<IUseRefProps | null>(null);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     setSearchData(
-      serachApiData.map((result: any) => ({
+      searchResults.map((result: any) => ({
         svg: neilPlayer,
         first_name: result?.first_name + " " + result?.last_name,
         rating_israel: result?.rating_israel,
@@ -67,7 +69,11 @@ const AddOpponent: React.FC = () => {
         badge: result?.badge,
       }))
     );
-  }, [serachApiData]);
+  }, [searchResults]);
+
+  const goBack = () => NavigationService.goBack();
+  const navigateToHome = () => NavigationService.navigate("Home");
+
   const userData = () => {
     if (selectedOptionArray.length == 0) {
       Alert.alert(`${t("note")}:`, t("pleaseSelectUsers"));
@@ -77,65 +83,45 @@ const AddOpponent: React.FC = () => {
     }
   };
 
-  const selectedOptionArrayFN = () => {
-    if (opponentName != "" && ratingNumber != "") {
-      let valObj = {
+  const addOpponent = (gameState: IGameStateProps) => {
+    if (ratingNumber && gameState) {
+      let opponent = {
         opponentName: opponentName,
-        opponentPoints: selectedBtn.value,
-        opponentStatus: selectedBtn.name,
+        opponentPoints: gameState.value,
+        opponentStatus: gameState.name,
         opponentRating: ratingNumber,
         image: neilPlayer,
         badge: badge,
-        tag: "GM",
+        // tag: "GM",
       };
-      let obj = [...selectedOptionArray, valObj];
+      let allOpponents = [...selectedOptionArray, opponent];
 
       setOpponentName("");
       setRatingNumber("");
-      setSelectedOptionArray(obj);
-    } else if (
-      selectedBtn.name !== "" &&
-      selectedBtn.name !== null &&
-      ratingNumber !== ""
-    ) {
-      let valObj = {
-        opponentName: opponentName,
-        opponentPoints: selectedBtn.value,
-        opponentStatus: selectedBtn.name,
-        opponentRating: ratingNumber,
-        image: neilPlayer,
-        badge: badge,
-        tag: "GM",
-      };
-      let obj = [...selectedOptionArray, valObj];
-
-      setOpponentName("");
-      setRatingNumber("");
-      setSelectedOptionArray(obj);
+      setSelectedOptionArray(allOpponents);
     } else {
       Alert.alert(t("pleaseFillAllFields"));
     }
   };
 
-  const gameStatsBtn = [
+  const gameStates: IGameStateProps[] = [
     {
-      name: "W",
+      name: t("statusWin"),
       value: "0",
     },
     {
-      name: "D",
+      name: t("statusDraw"),
       value: "0.5",
     },
     {
-      name: "L",
+      name: t("statusLose"),
       value: "1",
     },
   ];
+
   React.useEffect(() => {
     return () => {
-      if (source.current) {
-        source.current.cancel("Component unmounted");
-      }
+      source?.current?.cancel("Component unmounted");
     };
   }, []);
   const handleRemoveItem = (index: number) => {
@@ -144,7 +130,12 @@ const AddOpponent: React.FC = () => {
     setSelectedOptionArray(list);
   };
 
-  const getUsersFromApi = async (text: any) => {
+  const clearSearchResults = () => {
+    setOpponentName("");
+    setSearchResults([]);
+  };
+
+  const searchUsers = async (text: any) => {
     setOpponentName(text);
     setRatingNumber("");
     if (source.current) {
@@ -153,17 +144,16 @@ const AddOpponent: React.FC = () => {
     try {
       source.current = axios.CancelToken.source();
       const response = await BaseURL.get(
-        `/search/users/${text.toLowerCase()}/1/10`,
+        `/search/users/${text.toLowerCase()}/1/5`,
         {
           cancelToken: source.current.token,
         }
       );
-
-      setSearchApiData(response.data);
+      setSearchResults(response.data);
 
       return response.data;
     } catch (error) {
-      setSearchApiData([]);
+      setSearchResults([]);
       throw error;
     }
   };
@@ -173,12 +163,8 @@ const AddOpponent: React.FC = () => {
       <>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <View style={styles.divider} />
-          <Text style={styles.optionText}>Selected Options</Text>
           <View style={{ width: normalized.wp("90%") }}>
             {selectedOptionArray.map((user: any, i) => {
-              const randomIndex = Math.floor(Math.random() * colors.length);
-              const randomColor = colors[randomIndex];
-
               return (
                 <PlayerCard
                   key={i}
@@ -197,14 +183,21 @@ const AddOpponent: React.FC = () => {
     );
   };
 
-  const onPressItem = (item: any) => {
-    setSearchApiData([]);
+  const onUserSelected = (item: any) => {
+    setSearchResults([]);
     setOpponentName(item.first_name);
     setRatingNumber(item.rating_israel);
     setName(item.first_name);
     setRating(item.rating_israel);
     setBadge(item.badge);
+    showGameStateSheet();
   };
+
+  const showGameStateSheet = () => {
+    gameTypeSheet.current?.close();
+    gameStateSheet.current?.open();
+  }
+
   return (
     <View
       style={{ flexGrow: 1, backgroundColor: "#fff", paddingTop: insets.top }}
@@ -225,12 +218,12 @@ const AddOpponent: React.FC = () => {
             <CustomInput
               value={opponentName}
               iconName={userIcon}
-              onChangeText={(e) => getUsersFromApi(e)}
+              onChangeText={(value) => searchUsers(value)}
               placeholder={t("search")}
               rightIcon={opponentName ? xIcon : ""}
-              onRightIconPress={() => getUsersFromApi("")}
+              onRightIconPress={() => clearSearchResults()}
             />
-            {serachApiData.length > 0 ? (
+            {searchResults.length > 0 ? (
               <View>
                 <ScrollView style={{ height: hp(40) }}>
                   {searchData.map((item: any, index: any) => (
@@ -238,7 +231,7 @@ const AddOpponent: React.FC = () => {
                       playerImage={item?.svg}
                       playerName={item?.first_name}
                       rating={item?.rating_israel}
-                      onPress={() => onPressItem(item)}
+                      onPress={() => onUserSelected(item)}
                       badge={item.badge}
                     />
                   ))}
@@ -260,42 +253,15 @@ const AddOpponent: React.FC = () => {
               </View>
             ) : null}
           </View>
-          {serachApiData.length == 0 && (
+          {searchResults.length == 0 && (
             <>
-              <View style={[styles.gameStatsBtnView, { zIndex: 1 }]}>
-                {gameStatsBtn.map((btn: any) => {
-                  return (
-                    <TouchableOpacity
-                      style={[
-                        styles.statsBtnContainer,
-                        {
-                          backgroundColor:
-                            selectedBtn.value === btn.value
-                              ? "#C8DBF5"
-                              : AppStyles.color.COLOR_WHITE,
-                          borderColor:
-                            selectedBtn.value === btn.value
-                              ? AppStyles.color.COLOR_PRIMARY
-                              : AppStyles.color.COLOR_PRIMARY,
-                        },
-                      ]}
-                      key={btn.name}
-                      onPress={() => {
-                        setSelectedBtn({ name: btn.name, value: btn.value });
-                      }}
-                    >
-                      <Text style={styles.statsBtnText}>{btn.name}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
               <CustomInputNonRtl
                 editable={opponentName == "" ? true : false}
                 containerStyle={{ zIndex: 1 }}
-                placeholder={t("enterRatingNumber")}
+                placeholder={t("rating")}
                 value={ratingNumber.toString()}
                 iconName={starIconTwo}
-                onRightIconPress={selectedOptionArrayFN}
+                onRightIconPress={() => showGameStateSheet()}
                 onChangeText={(e) => setRatingNumber(e)}
                 rightIcon={enterIcon}
                 keyboardType="number-pad"
@@ -314,6 +280,34 @@ const AddOpponent: React.FC = () => {
           }}
         />
       </View>
+      <RBSheet
+        ref={gameStateSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "#00000030",
+          },
+          draggableIcon: {
+            backgroundColor: "black",
+          },
+        }}
+      >
+        <View style={styles.gameStatesContainer}>
+          {gameStates.map((state: IGameStateProps) => (
+            <TouchableOpacity
+              key={state.name}
+              style={styles.gameStateButton}
+              onPress={() => {
+                gameStateSheet.current?.close();
+                addOpponent(state);
+              }}
+            >
+              <Text style={[styles.defaultButtonTextStyle]}>{state.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </RBSheet>
     </View>
   );
 };

@@ -220,6 +220,29 @@ const styles = StyleSheet.create({
     borderColor: 'gold',
     paddingHorizontal: normalized.wp(3),
   },
+  gameStateButton: {
+    width: wp(18),
+    height: hp(5.5),
+    borderWidth: 1,
+    borderColor: AppStyles.color.COLOR_PRIMARY,
+    color: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+  },
+  defaultButtonTextStyle: {
+    color: AppStyles.color.COLOR_PRIMARY,
+    fontSize: fontSizes.medium,
+  },
+  gameStatesContainer: {
+    height: normalized.hp(22),
+    width: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 28,
+    alignItems: 'center',
+  },
 });
 
 export default styles;

@@ -18,12 +18,15 @@ const resources = {
       pleaseSelectUsers: "Please select users",
       search: "Search",
       error: "Error",
-      enterRatingNumber: "Enter rating number",
+      rating: "Rating",
       submit: "Submit",
       add: "Add",
       opponents: "Opponents",
       failed: "Failed",
       dataNotFound: "Data not found",
+      statusWin: "I won",
+      statusLose: "I lost",
+      statusDraw: "Draw",
 
       //ForgotPassword
       forgotPassword: "Forgot Password",
@@ -38,7 +41,6 @@ const resources = {
       calculate: "Calculate",
       undo: "Undo",
       reset: "Reset",
-      theRatingsMayNotBeAccurate: "The ratings may not be accurate",
       currentRating: "Current Rating",
       expectedRating: "Expected Rating",
 
@@ -117,12 +119,15 @@ const resources = {
       pleaseSelectUsers: "אנא בחר משתמשים",
       search: "לחפש",
       error: "שְׁגִיאָה",
-      enterRatingNumber: "הזן מספר שחקן",
+      rating: "דירוג",
       submit: "שלח",
       add: "הוסף",
       opponents: "יריבים",
       failed: "נכשל",
       dataNotFound: "נתונים לא נמצאו",
+      statusWin: "ניצחתי",
+      statusLose: "הפסדתי",
+      statusDraw: "תיקו",
 
       //ForgotPassword
       forgotPassword: "שכחת סיסמה",
@@ -137,7 +142,6 @@ const resources = {
       calculate: "חשב",
       undo: "בטל",
       reset: "איפוס",
-      theRatingsMayNotBeAccurate: "הדירוגים עשויים לא להיות מדויקים",
       currentRating: "דירוג נוכחי",
       expectedRating: "דירוג צפוי",
 

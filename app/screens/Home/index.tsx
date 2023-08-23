@@ -189,15 +189,6 @@ const Home: React.FC = () => {
       )}
       <CustomHeader drawerIcon={drawerIcon} drawerButtonPress={openDrawer} />
       <View style={styles.allPlayerView}>
-        <Text></Text>
-        <Text
-          style={[
-            styles.allPlayerText,
-            { fontWeight: "700", fontSize: normalized.wp(6) },
-          ]}
-        >
-          All Player's
-        </Text>
         <TouchableOpacity onPress={() => refRBSheet.current.open()}>
           <SvgXml xml={addFilter} width={20} height={20} />
         </TouchableOpacity>
@@ -271,8 +262,6 @@ const Home: React.FC = () => {
           onPress={calRatingButton}
         />
       </View>
-      <Text style={styles.nineText}>{t("theRatingsMayNotBeAccurate")}</Text>
-
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
