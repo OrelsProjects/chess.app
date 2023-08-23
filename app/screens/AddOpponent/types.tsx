@@ -1,6 +1,6 @@
 /*
 A type of:
-    svg: neilPlayer,
+    svg: defaultPlayer,
         first_name: result?.first_name + " " + result?.last_name,
         rating_israel: result?.rating_israel,
         image: images.icons.players,
@@ -20,7 +20,7 @@ export interface ISearchOpponentProps {
   badge: string;
 }
 
-export interface IGameStateProps {
+export interface IGameProps {
   name: string;
   value: string;
 }

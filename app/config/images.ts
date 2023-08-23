@@ -5,7 +5,7 @@ const images = {
     chessLogo: require('../images/chessLogo.png'),
     googleLogo: require('../images/googleLogo.svg'),
     handWaveIcon: require('../images/handWaveIcon.svg'),
-    neilPlayer: require('../images/neilPlayer.png'),
+    defaultPlayer: require('../images/defaultPlayer.png'),
     players: require('../images/players.png'),
     wgm: require('../images/wgm.png'),
     addIcon: require('../images/addIcon.png'),

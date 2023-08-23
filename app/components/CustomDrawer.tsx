@@ -14,7 +14,7 @@ import { SvgXml } from "react-native-svg";
 import {
   chessLogo,
   externalLinkIcon,
-  neilPlayer,
+  defaultPlayer,
   xIcon,
   calculatorIcon,
   homeIcon,
@@ -115,7 +115,7 @@ const CustomDrawer = (props) => {
         }
         <View style={styles.userInfo}>
           <SvgXml
-            xml={neilPlayer}
+            xml={defaultPlayer}
             width={normalized.wp(12)}
             height={normalized.hp(12)}
             style={styles.userImg}

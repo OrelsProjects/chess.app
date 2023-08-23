@@ -10,7 +10,7 @@ import {
 import {
   enterIcon,
   leftArrowIcon,
-  neilPlayer,
+  defaultPlayer,
   starIconTwo,
   userIcon,
   xIcon,
@@ -21,17 +21,16 @@ import ButtonCTA from "../../components/ButtonCTA";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AppStyles from "../../config/styles";
 import { normalized } from "../../config/metrics";
 import { useDispatch } from "react-redux";
-import { searchUser } from "../../redux/actions/action";
+import { addOpponents } from "../../redux/actions/action";
 import { BaseURL } from "../../constants";
 import { useTranslation } from "react-i18next";
 import images from "../../config/images";
 import axios from "axios";
 import PlayerCard from "../../components/PlayerCard";
 import CustomInputNonRtl from "../../components/CustomInoutNonRtl";
-import { IGameStateProps, ISearchOpponentProps, IUseRefProps } from "./types";
+import { IGameProps, ISearchOpponentProps, IUseRefProps } from "./types";
 import RBSheet from "react-native-raw-bottom-sheet";
 
 const AddOpponent: React.FC = () => {
@@ -40,14 +39,9 @@ const AddOpponent: React.FC = () => {
   const [ratingNumber, setRatingNumber] = useState("");
   const [badge, setBadge] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedOptionArray, setSelectedOptionArray] = useState([]);
+  const [selectedOpponents, setSelectedOptionArray] = useState([]);
   const [searchData, setSearchData] = useState<ISearchOpponentProps[]>([]);
-  const [selectedGameState, setSelectedGameState] = useState({
-    name: "",
-    value: "",
-  });
   const insets = useSafeAreaInsets();
-  const colors = [AppStyles.color.COLOR_PRIMARY, AppStyles.color.BABY_PINK];
   const [, setName] = useState("");
   const [, setRating] = useState("");
 
@@ -60,7 +54,7 @@ const AddOpponent: React.FC = () => {
   useEffect(() => {
     setSearchData(
       searchResults.map((result: any) => ({
-        svg: neilPlayer,
+        svg: defaultPlayer,
         first_name: result?.first_name + " " + result?.last_name,
         rating_israel: result?.rating_israel,
         image: images.icons.players,
@@ -74,27 +68,30 @@ const AddOpponent: React.FC = () => {
   const goBack = () => NavigationService.goBack();
   const navigateToHome = () => NavigationService.navigate("Home");
 
-  const userData = () => {
-    if (selectedOptionArray.length == 0) {
+  const submitOpponents = (gameType: string) => {
+    if (selectedOpponents.length == 0) {
       Alert.alert(`${t("note")}:`, t("pleaseSelectUsers"));
     } else {
-      dispatch(searchUser(selectedOptionArray));
+      selectedOpponents?.map((item: any) => {
+        item.gameType = gameType;
+      });
+      console.log(selectedOpponents);
+      dispatch(addOpponents(selectedOpponents));
       navigateToHome();
     }
   };
 
-  const addOpponent = (gameState: IGameStateProps) => {
+  const addOpponent = (gameState: IGameProps) => {
     if (ratingNumber && gameState) {
       let opponent = {
         opponentName: opponentName,
         opponentPoints: gameState.value,
         opponentStatus: gameState.name,
         opponentRating: ratingNumber,
-        image: neilPlayer,
+        image: defaultPlayer,
         badge: badge,
-        // tag: "GM",
       };
-      let allOpponents = [...selectedOptionArray, opponent];
+      let allOpponents = [...selectedOpponents, opponent];
 
       setOpponentName("");
       setRatingNumber("");
@@ -104,18 +101,33 @@ const AddOpponent: React.FC = () => {
     }
   };
 
-  const gameStates: IGameStateProps[] = [
+  const gameStates: IGameProps[] = [
     {
-      name: t("statusWin"),
-      value: "0",
+      name: t("statusLose"),
+      value: "1",
     },
     {
       name: t("statusDraw"),
       value: "0.5",
     },
     {
-      name: t("statusLose"),
-      value: "1",
+      name: t("statusWin"),
+      value: "0",
+    },
+  ];
+
+  const gameTypes: IGameProps[] = [
+    {
+      name: t("blitz"),
+      value: "blitz",
+    },
+    {
+      name: t("rapid"),
+      value: "rapid",
+    },
+    {
+      name: t("classical"),
+      value: "classical",
     },
   ];
 
@@ -125,7 +137,7 @@ const AddOpponent: React.FC = () => {
     };
   }, []);
   const handleRemoveItem = (index: number) => {
-    var list = [...selectedOptionArray];
+    var list = [...selectedOpponents];
     list.splice(index, 1);
     setSelectedOptionArray(list);
   };
@@ -158,13 +170,81 @@ const AddOpponent: React.FC = () => {
     }
   };
 
+  const renderGameTypesSheet = () => (
+    <RBSheet
+      ref={gameTypeSheet}
+      closeOnDragDown={true}
+      closeOnPressMask={false}
+      customStyles={{
+        wrapper: {
+          backgroundColor: "#00000030",
+        },
+        draggableIcon: {
+          backgroundColor: "black",
+        },
+      }}
+    >
+      <View style={styles.sheetContainer}>
+        <Text style={styles.sheetTitleText}>{t("sheetTitleGameType")}</Text>
+        <View style={styles.sheetButtonsContainer}>
+          {gameTypes.map((gameType: IGameProps) => (
+            <TouchableOpacity
+              key={gameType.name}
+              style={styles.sheetButton}
+              onPress={() => {
+                gameTypeSheet.current?.close();
+                submitOpponents(gameType.value);
+              }}
+            >
+              <Text style={[styles.sheetButtonText]}>{gameType.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    </RBSheet>
+  );
+
+  const renderGameStatesSheet = () => (
+    <RBSheet
+      ref={gameStateSheet}
+      closeOnDragDown={true}
+      closeOnPressMask={false}
+      customStyles={{
+        wrapper: {
+          backgroundColor: "#00000030",
+        },
+        draggableIcon: {
+          backgroundColor: "black",
+        },
+      }}
+    >
+      <View style={styles.sheetContainer}>
+        <Text style={styles.sheetTitleText}>{t("sheetTitleGameState")}</Text>
+        <View style={styles.sheetButtonsContainer}>
+          {gameStates.map((state: IGameProps) => (
+            <TouchableOpacity
+              key={state.name}
+              style={styles.sheetButton}
+              onPress={() => {
+                gameStateSheet.current?.close();
+                addOpponent(state);
+              }}
+            >
+              <Text style={[styles.sheetButtonText]}>{state.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    </RBSheet>
+  );
+
   const renderUsers = () => {
     return (
       <>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <View style={styles.divider} />
           <View style={{ width: normalized.wp("90%") }}>
-            {selectedOptionArray.map((user: any, i) => {
+            {selectedOpponents.map((user: any, i) => {
               return (
                 <PlayerCard
                   key={i}
@@ -196,7 +276,7 @@ const AddOpponent: React.FC = () => {
   const showGameStateSheet = () => {
     gameTypeSheet.current?.close();
     gameStateSheet.current?.open();
-  }
+  };
 
   return (
     <View
@@ -275,39 +355,11 @@ const AddOpponent: React.FC = () => {
         <ButtonCTA
           customStyle={{ width: wp(90) }}
           buttonText={t("submit")}
-          onPress={() => {
-            userData();
-          }}
+          onPress={() => gameTypeSheet?.current?.open()}
         />
       </View>
-      <RBSheet
-        ref={gameStateSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "#00000030",
-          },
-          draggableIcon: {
-            backgroundColor: "black",
-          },
-        }}
-      >
-        <View style={styles.gameStatesContainer}>
-          {gameStates.map((state: IGameStateProps) => (
-            <TouchableOpacity
-              key={state.name}
-              style={styles.gameStateButton}
-              onPress={() => {
-                gameStateSheet.current?.close();
-                addOpponent(state);
-              }}
-            >
-              <Text style={[styles.defaultButtonTextStyle]}>{state.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </RBSheet>
+      {renderGameStatesSheet()}
+      {renderGameTypesSheet()}
     </View>
   );
 };

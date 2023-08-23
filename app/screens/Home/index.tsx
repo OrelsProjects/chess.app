@@ -16,7 +16,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import {
   addFilter,
   drawerIcon,
-  neilPlayer,
+  defaultPlayer,
   plusIcon,
   undo,
   xIcon,
@@ -67,7 +67,7 @@ const Home: React.FC = () => {
   const content =
     searchResults?.length > 0
       ? searchResults.map((result: any) => ({
-          svg: neilPlayer,
+          svg: defaultPlayer,
           text: result?.opponentName,
           points: result?.opponentPoints,
           status: result?.opponentStatus,
@@ -160,18 +160,6 @@ const Home: React.FC = () => {
     }
   };
 
-  const refRBSheet = useRef();
-
-  const defaultButtonStyle = {
-    width: wp(18),
-    height: hp(4.5),
-    backgroundColor: "white",
-    color: "black",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 8,
-  };
-
   return (
     <View
       style={{
@@ -188,11 +176,6 @@ const Home: React.FC = () => {
         </View>
       )}
       <CustomHeader drawerIcon={drawerIcon} drawerButtonPress={openDrawer} />
-      <View style={styles.allPlayerView}>
-        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
-          <SvgXml xml={addFilter} width={20} height={20} />
-        </TouchableOpacity>
-      </View>
 
       <View style={styles.ratingDirection}>
         <View style={styles.ratingView}>
@@ -262,90 +245,6 @@ const Home: React.FC = () => {
           onPress={calRatingButton}
         />
       </View>
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "transparent",
-          },
-          draggableIcon: {
-            backgroundColor: "black",
-          },
-        }}
-      >
-        <View style={styles.bottomStyle}>
-          <TouchableOpacity
-            style={styles.bottomXIcon}
-            onPress={() => refRBSheet.current.close()}
-          >
-            <SvgXml xml={xIcon} width={20} height={20} />
-          </TouchableOpacity>
-          <Text
-            style={[
-              styles.allPlayerText,
-              { fontWeight: "700", fontSize: normalized.wp(5) },
-            ]}
-          >
-            Game Type
-          </Text>
-
-          <View style={styles.bottomButtonView}>
-            <TouchableOpacity
-              style={[
-                defaultButtonStyle,
-                isClickedBtn === "rapid"
-                  ? { backgroundColor: "#007AFF" }
-                  : null,
-              ]}
-              onPress={() => setIsClickedBtn("rapid")}
-            >
-              <Text
-                style={
-                  isClickedBtn === "rapid"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-              >
-                Rapid
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                defaultButtonStyle,
-                isClickedBtn === "blitz"
-                  ? { backgroundColor: "#007AFF" }
-                  : null,
-              ]}
-              onPress={() => setIsClickedBtn("blitz")}
-            >
-              <Text
-                style={
-                  isClickedBtn === "blitz"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-              >
-                Blitz
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                defaultButtonStyle,
-                isClickedBtn === "classical"
-                  ? { backgroundColor: "#007AFF" }
-                  : null,
-              ]}
-              onPress={() => setIsClickedBtn("classical")}
-            >
-              <Text style={{ color: defaultButtonStyle.color }}>Classical</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </RBSheet>
     </View>
   );
 };

@@ -208,7 +208,7 @@ export const calenderIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fil
 </defs>
 </svg>`;
 
-export const neilPlayer = `<svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+export const defaultPlayer = `<svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <path d="M40 20.5C40 9.4543 31.0457 0.5 20 0.5C8.9543 0.5 0 9.4543 0 20.5C0 31.5457 8.9543 40.5 20 40.5C31.0457 40.5 40 31.5457 40 20.5Z" fill="url(#pattern0)"/>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">

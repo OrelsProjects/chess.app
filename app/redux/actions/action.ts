@@ -103,15 +103,15 @@ export const signin = (email: string, password: string) => {
   };
 };
 
-export const searchUser = (serachedData: any) => {
+export const addOpponents = (opponents: any) => {
 
   let tempArray: any = []
   if (store.getState().auth.searchResults == undefined) {
-    tempArray = serachedData
+    tempArray = opponents
   } else {
     tempArray = [
       ...store.getState().auth.searchResults,
-      ...serachedData
+      ...opponents
     ]
   }
   return async (dispatch: any) => {

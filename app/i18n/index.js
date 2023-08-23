@@ -27,6 +27,11 @@ const resources = {
       statusWin: "I won",
       statusLose: "I lost",
       statusDraw: "Draw",
+      blitz: "Blitz",
+      rapid: "Rapid",
+      classical: "Classical",
+      sheetTitleGameState: "What was the score?",
+      sheetTitleGameType: "Which game did you play?",
 
       //ForgotPassword
       forgotPassword: "Forgot Password",
@@ -128,6 +133,11 @@ const resources = {
       statusWin: "ניצחתי",
       statusLose: "הפסדתי",
       statusDraw: "תיקו",
+      blitz: "בליץ",
+      rapid: "מהיר",
+      classical: "איטי",
+      sheetTitleGameState: "מה עשית?",
+      sheetTitleGameType: "מה שיחקת?",
 
       //ForgotPassword
       forgotPassword: "שכחת סיסמה",

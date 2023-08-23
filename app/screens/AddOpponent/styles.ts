@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     borderColor: 'gold',
     paddingHorizontal: normalized.wp(3),
   },
-  gameStateButton: {
+  sheetButton: {
     width: wp(18),
     height: hp(5.5),
     borderWidth: 1,
@@ -230,12 +230,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 8,
   },
-  defaultButtonTextStyle: {
+  sheetButtonText: {
     color: AppStyles.color.COLOR_PRIMARY,
     fontSize: fontSizes.medium,
   },
-  gameStatesContainer: {
+  sheetContainer: {
     height: normalized.hp(22),
+    width: "100%",
+    display: 'flex',
+    gap: 24,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sheetTitleText: {
+    fontSize: fontSizes.large,
+    fontWeight: '700',
+    color: AppStyles.color.RAISIN_BLACK,
+  },
+  sheetButtonsContainer: {
     width: "100%",
     display: 'flex',
     flexDirection: 'row',
