@@ -32,6 +32,7 @@ import PlayerCard from "../../components/PlayerCard";
 import CustomInputNonRtl from "../../components/CustomInoutNonRtl";
 import { IGameProps, ISearchOpponentProps, IUseRefProps } from "./types";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 
 const AddOpponent: React.FC = () => {
@@ -76,7 +77,6 @@ const AddOpponent: React.FC = () => {
       selectedOpponents?.map((item: any) => {
         item.gameType = gameType;
       });
-      console.log(selectedOpponents);
       dispatch(addOpponents(selectedOpponents));
       navigateToHome();
     }
@@ -166,6 +166,7 @@ const AddOpponent: React.FC = () => {
 
       return response.data;
     } catch (error) {
+      DdLogs.error(`Search error: ${error}`);
       setSearchResults([]);
       throw error;
     }

@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { Auth } from "aws-amplify";
 import Snackbar from "react-native-snackbar";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 const ForgotPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -33,12 +34,13 @@ const ForgotPassword: React.FC = () => {
     try {
       await Auth.forgotPassword(email);
       navigateToResetPass();
-    } catch (err: any) {
+    } catch (error) {
+      DdLogs.error(`Forgot password error: ${error}`);
       Snackbar.show({
-        text: err.toString(),
+        text: t("somethingWereWrong"),
         duration: Snackbar.LENGTH_SHORT,
         textColor: "#fcfcfd",
-        backgroundColor: "red",
+        backgroundColor: "#ff1a51",
       });
     } finally {
       setLoading(false);

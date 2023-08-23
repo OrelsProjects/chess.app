@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 
 // const headerFound = useSelector(state => state.auth);
 // setHeader(headerFound?.user);
-console.log("headerFound>>>> ", store.getState().auth.token);
 
 export const BaseURL = axios.create({
   baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
@@ -19,8 +18,6 @@ export const BaseURL = axios.create({
     UserId: store.getState().auth.token,
   },
 });
-
-console.log("headerFound after create>>>> ", store.getState().auth.token);
 
 export const endPoints = {
   signUp: "/users",

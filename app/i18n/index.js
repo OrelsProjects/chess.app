@@ -106,6 +106,9 @@ const resources = {
       support: "Support",
       visitOurWebsite: "Visit our website",
       logout: "Logout",
+
+      // Errors
+      somethingWereWrong: "Something were wrong.. We are on it",
     },
   },
   he: {
@@ -212,6 +215,9 @@ const resources = {
       support: "תמיכה",
       visitOurWebsite: "בקר באתר שלנו",
       logout: "התנתקות",
+
+      // Errors
+      somethingWereWrong: "משהו השתבש.. אנחנו על זה",
     },
   },
 };

@@ -36,6 +36,7 @@ import { expectedRating, removeSearchResult } from "../../redux/actions/action";
 import { BaseURL, endPoints } from "../../constants";
 import { useTranslation } from "react-i18next";
 import PlayerCard from "../../components/PlayerCard";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 const Home: React.FC = () => {
   const [isClickedBtn, setIsClickedBtn] = useState("rapid");
@@ -84,8 +85,7 @@ const Home: React.FC = () => {
       setCalRating(response.data.rating_israel);
       return response.data;
     } catch (error) {
-      console.error("Search error:", error);
-      console.log("error response:", error?.response?.data);
+      DdLogs.error(`Get current api error: ${error}`);
       throw error;
     }
   };
@@ -99,9 +99,8 @@ const Home: React.FC = () => {
     try {
       const response = await BaseURL.post(endPoints.calculateRating, payload);
       dispatch(expectedRating(response.data));
-      console.log(response.data);
     } catch (error) {
-      console.error("Error:", error);
+      DdLogs.error(`Forgot password error: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -143,7 +142,7 @@ const Home: React.FC = () => {
       dispatch(expectedRating(response));
       setLoading(false);
     } catch (error) {
-      console.log("API error:", error);
+      DdLogs.error(`Reset rating error: ${error}`);
       setLoading(false);
     }
   };
@@ -156,7 +155,7 @@ const Home: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log("API error:", error);
+      DdLogs.error(`Undo error: ${error}`);
     }
   };
 

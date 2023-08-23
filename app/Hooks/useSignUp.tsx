@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setToken, setUserInfo } from '../redux/actions/action';
 import { endPoints } from '../constants';
 import axios from 'axios';
+import { DdLogs } from '@datadog/mobile-react-native';
 
 export const useSignUp = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,8 @@ export const useSignUp = () => {
       setLoading(false);
       return true;
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error();
+      DdLogs.error(`Signup error: ${error}`);
       setLoading(false);
       return false;
     }

@@ -20,6 +20,7 @@ import {
 } from './actionType';
 import NavigationService from '../../navigation/NavigationService';
 import { store } from '../store/store';
+import { DdLogs } from '@datadog/mobile-react-native';
 
 interface SignupData {
   first_name: string;
@@ -70,6 +71,7 @@ export const Signup = (data: SignupData) => {
         });
       }
     } catch (error) {
+      DdLogs.error(`Signup redux error: ${error}`);
       dispatch({ type: SIGNUP_FAILURE, payload: error });
     }
   };
@@ -97,6 +99,7 @@ export const signin = (email: string, password: string) => {
       }
     } catch (error: any) {
       const errorMessage = error.response?.data || error.message;
+      DdLogs.error(`Sign in redux error: ${error}`);
       dispatch({ type: SIGNIN_FAILURE, payload: errorMessage });
       Alert.alert('Failed', errorMessage);
     }
@@ -134,6 +137,7 @@ export const userSignupInfo = (userObject: any) => {
         payload: userObject,
       });
     } catch (error) {
+      DdLogs.error(`fetch data user redux error: ${error}`);
       console.error('Signup error:', error);
     }
   };

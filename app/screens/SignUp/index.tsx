@@ -27,6 +27,7 @@ import styles from "./style";
 import { endPoints } from "../../constants";
 import Snackbar from "react-native-snackbar";
 import axios from "axios";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 const SignUpScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -131,8 +132,9 @@ const SignUpScreen: React.FC = () => {
       }, 1000);
     } catch (error) {
       setLoading(false);
+      DdLogs.error(`Signup error: ${error}`);
       Snackbar.show({
-        text: error.toString(),
+        text: t("somethingWereWrong"),
         duration: Snackbar.LENGTH_SHORT,
         textColor: "#fcfcfd",
         backgroundColor: "red",
@@ -184,8 +186,9 @@ const SignUpScreen: React.FC = () => {
     } catch (error) {
       dispatch({ type: SIGNUP_FAILURE, payload: error });
       setLoading(false);
+      DdLogs.error(`Signup error: ${error}`);
       Snackbar.show({
-        text: error?.response?.data.toString(),
+        text: t("somethingWereWrong"),
         textColor: "#fcfcfd",
         backgroundColor: "red",
       });

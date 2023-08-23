@@ -21,6 +21,7 @@ import {
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../store/index";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 interface OtpProps {
   username: String;
@@ -44,6 +45,7 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
         setLoading(false);
         useStore.getState().setIsLoggedIn(true);
       } catch (error) {
+        DdLogs.error(`Confirm sign up error: ${error}`);
         setLoading(false);
       }
     } else {

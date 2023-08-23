@@ -24,6 +24,7 @@ import {
 import Snackbar from "react-native-snackbar";
 import { Auth } from "aws-amplify";
 import { useSelector } from "react-redux";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 const ResetPassword: React.FC = ({ route }) => {
   const { t } = useTranslation();
@@ -79,6 +80,14 @@ const ResetPassword: React.FC = ({ route }) => {
       if (err.code === "CodeMismatchException") {
         Snackbar.show({
           text: "Code mismatch",
+          duration: Snackbar.LENGTH_LONG,
+          textColor: "#fcfcfd",
+          backgroundColor: "red",
+        });
+      } else {
+        DdLogs.error(`Forgot password submit error: ${err}`);
+        Snackbar.show({
+          text: "Something went wrong",
           duration: Snackbar.LENGTH_LONG,
           textColor: "#fcfcfd",
           backgroundColor: "red",

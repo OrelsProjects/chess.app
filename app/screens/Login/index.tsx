@@ -23,6 +23,8 @@ import {
   setUserInfo,
 } from "../../redux/actions/action";
 import { useTranslation } from "react-i18next";
+import Snackbar from "react-native-snackbar";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
@@ -56,7 +58,13 @@ const Login: React.FC = () => {
       onLogin();
       setLoading(false);
     } catch (error) {
-      Alert.alert("Incorrect username or password");
+      DdLogs.error(`Login error: ${error}`);
+      Snackbar.show({
+        text: t("somethingWereWrong"),
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: "#fcfcfd",
+        backgroundColor: "#ff1a51",
+      });
       setLoading(false);
     } finally {
       setLoading(false);
