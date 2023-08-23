@@ -38,8 +38,6 @@ yarn.lock
 .vscode/
 .idea/
 
-aws-exports.js
-
 # Logs
 *.log
 logs/
@@ -60,3 +58,8 @@ logs/
 .env.test*
 .env.staging*
 .env.production*
+
+# Configs
+**/datadog.config.ts
+**/mixpanel.config.ts
+**/aws-exports.js

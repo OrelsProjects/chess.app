@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@datadog/mobile-react-native": "^1.8.2",
+    "@datadog/mobile-react-navigation": "^1.8.2",
     "@react-native-async-storage/async-storage": "^1.19.0",
     "@react-native-community/netinfo": "^9.4.1",
     "@react-navigation/drawer": "^6.6.3",
@@ -23,6 +25,7 @@
     "axios": "^1.4.0",
     "i18next": "^23.2.11",
     "install": "^0.13.0",
+    "mixpanel-react-native": "^2.3.1",
     "moment": "^2.29.4",
     "npm": "^9.8.0",
     "react": "18.2.0",

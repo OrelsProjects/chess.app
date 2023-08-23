@@ -10,7 +10,7 @@ import Home from "../screens/Home";
 import ForgotPassword from "../screens/ForgotPassword";
 import { setLanguage } from "../redux/actions/action";
 import ThemeController from "../components/ThemeController";
-import { StatusBar,Platform,NativeModules } from "react-native";
+import { StatusBar, Platform, NativeModules } from "react-native";
 import { useStore } from "../store";
 import EnterOTP from "../screens/OTP";
 import ResetPassword from "../screens/ResetPassword";
@@ -22,12 +22,37 @@ import AppStyles from "../config/styles";
 import ChooseLanguage from "../screens/ChooseLanguage";
 import { useSelector, useDispatch } from "react-redux";
 import i18n from "../i18n";
-import * as RNLocalize from "react-native-localize";
+import datadogConfig from "../../datadog.config";
+import mixpanelConfig from "../../mixpanel.config";
+import { DdSdkReactNative, DdLogs } from "@datadog/mobile-react-native";
+import { DdRumReactNavigationTracking } from "@datadog/mobile-react-navigation";
+import { useEffect } from "react";
+import { Mixpanel } from "mixpanel-react-native";
+
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
+
+let isMixpanelInit = false;
+let isDatadogInit = false;
+
+const initializeDatadog = async () => {
+  if (isDatadogInit) {
+    return;
+  }
+  await DdSdkReactNative.initialize(datadogConfig);
+  isDatadogInit = true;
+};
+
+const initializeMixpanel = () => {
+  if (isMixpanelInit) {
+    return;
+  }
+  new Mixpanel(mixpanelConfig.key, true).init();
+  isMixpanelInit = true;
+};
 
 interface IProps {
   theme: Theme;
@@ -46,22 +71,23 @@ const AuthNavigator = () => {
     //   preferredLanguages.length > 0 ? preferredLanguages[0].languageCode : "en"; // Default to 'en' if language not available
     // dispatch(setLanguage(userLanguage));
     const appLanguage =
-    Platform.OS === 'ios'
+      Platform.OS === "ios"
+        ? NativeModules.SettingsManager.settings.AppleLocale ||
+          NativeModules.SettingsManager.settings.AppleLanguages[0]
+        : NativeModules.I18nManager.localeIdentifier;
+    if (appLanguage == "iw_" || appLanguage == "iw_IL") {
+      dispatch(setLanguage("he"));
+    } else {
+      dispatch(setLanguage("en"));
+    }
+  }
+
+  const appLanguage =
+    Platform.OS === "ios"
       ? NativeModules.SettingsManager.settings.AppleLocale ||
         NativeModules.SettingsManager.settings.AppleLanguages[0]
       : NativeModules.I18nManager.localeIdentifier;
-      if(appLanguage=="iw_" || appLanguage =="iw_IL"){
-        dispatch(setLanguage("he"));
-      }else{
-        dispatch(setLanguage("en"));
-      }
-  }
- 
-  const appLanguage =
-  Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale ||
-      NativeModules.SettingsManager.settings.AppleLanguages[0]
-    : NativeModules.I18nManager.localeIdentifier;
+
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
       {onboarding ? (
@@ -138,6 +164,11 @@ const AuthNavigator = () => {
 };
 
 const MainStackNavigator = () => {
+  useEffect(() => {
+    initializeDatadog();
+    initializeMixpanel();
+  }, []);
+
   return (
     <HomeStack.Navigator
       screenOptions={{ headerShown: false }}
@@ -152,54 +183,54 @@ const MainStackNavigator = () => {
 
 const LoggedInNavigator = () => {
   const language = useSelector((state: any) => state.auth.language);
-return(
-  <Drawer.Navigator
-    drawerContent={(props) => <CustomDrawer {...props} />}
-    // screenOptions={{
-    //   headerShown: false,
-    //   drawerActiveBackgroundColor: 'transparent',
-    //   drawerInactiveTintColor: AppStyles.color.RAISIN_BLACK,
-    //   drawerActiveTintColor: AppStyles.color.RAISIN_BLACK,
-    //   drawerLabelStyle: {
-    //     // marginLeft: -15,
-    //     fontSize: fontSizes.regular,
-    //   },
-    //   drawerItemStyle: {
-    //     // padding: 0,
-    //     backgroundColor: 'red',
-    //     borderRadius: 0,
-    //   },
-    // }}
-    screenOptions={{
-      swipeEnabled: true,
-      drawerType: "front",
-      
-      drawerPosition:language=='he' ?'right':'left',
-      // drawerHideStatusBarOnOpen: true,
-      drawerStyle: {
-        // backgroundColor: colors.msuGreen,
-      },
-      sceneContainerStyle: { backgroundColor: AppStyles.color.COLOR_WHITE },
-      // drawerHideStatusBarOnOpen: true,
-    }}
-  >
-    <Drawer.Screen
-      name="MainStackNavigator"
-      component={MainStackNavigator}
-      // options={{
-      //   drawerIcon: ({ color }) => (
-      //     <SvgXml
-      //       xml={homeIcon}
-      //       width={normalized.wp(6)}
-      //       height={normalized.hp(6)}
-      //     />
-      //   ),
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawer {...props} />}
+      // screenOptions={{
+      //   headerShown: false,
+      //   drawerActiveBackgroundColor: 'transparent',
+      //   drawerInactiveTintColor: AppStyles.color.RAISIN_BLACK,
+      //   drawerActiveTintColor: AppStyles.color.RAISIN_BLACK,
+      //   drawerLabelStyle: {
+      //     // marginLeft: -15,
+      //     fontSize: fontSizes.regular,
+      //   },
+      //   drawerItemStyle: {
+      //     // padding: 0,
+      //     backgroundColor: 'red',
+      //     borderRadius: 0,
+      //   },
       // }}
-      options={{ headerShown: false }}
-    />
-  </Drawer.Navigator>
-)
-}
+      screenOptions={{
+        swipeEnabled: true,
+        drawerType: "front",
+
+        drawerPosition: language == "he" ? "right" : "left",
+        // drawerHideStatusBarOnOpen: true,
+        drawerStyle: {
+          // backgroundColor: colors.msuGreen,
+        },
+        sceneContainerStyle: { backgroundColor: AppStyles.color.COLOR_WHITE },
+        // drawerHideStatusBarOnOpen: true,
+      }}
+    >
+      <Drawer.Screen
+        name="MainStackNavigator"
+        component={MainStackNavigator}
+        // options={{
+        //   drawerIcon: ({ color }) => (
+        //     <SvgXml
+        //       xml={homeIcon}
+        //       width={normalized.wp(6)}
+        //       height={normalized.hp(6)}
+        //     />
+        //   ),
+        // }}
+        options={{ headerShown: false }}
+      />
+    </Drawer.Navigator>
+  );
+};
 
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;

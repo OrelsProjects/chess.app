@@ -33,6 +33,7 @@ import CustomInputNonRtl from "../../components/CustomInoutNonRtl";
 import { IGameProps, ISearchOpponentProps, IUseRefProps } from "./types";
 import RBSheet from "react-native-raw-bottom-sheet";
 
+
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
   const [opponentName, setOpponentName] = useState("");

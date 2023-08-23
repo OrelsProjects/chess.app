@@ -17,6 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Amplify } from "aws-amplify";
 import awsconfig from "../aws-exports";
 import { LogBox } from "react-native";
+import { Mixpanel } from "mixpanel-react-native";
 
 LogBox.ignoreAllLogs();
 
