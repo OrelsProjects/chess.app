@@ -88,6 +88,11 @@ const AuthNavigator = () => {
         NativeModules.SettingsManager.settings.AppleLanguages[0]
       : NativeModules.I18nManager.localeIdentifier;
 
+  useEffect(() => {
+    initializeDatadog();
+    initializeMixpanel();
+  }, []);
+
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
       {onboarding ? (
