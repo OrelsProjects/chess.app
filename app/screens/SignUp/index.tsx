@@ -31,6 +31,8 @@ import { DdLogs } from "@datadog/mobile-react-native";
 
 const SignUpScreen: React.FC = () => {
   const { t } = useTranslation();
+  const language = useSelector((state: any) => state.auth.language);
+  const isRTL = language === "he";
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -206,9 +208,15 @@ const SignUpScreen: React.FC = () => {
 
           <View style={styles.childContainer}>
             <View style={styles.headerContainer}>
-              <Text style={styles.welcome}>{t("signUp")} </Text>
-              <Text style={styles.loginToContinue}>
-                {t("signUpForRegistration")}
+              <Text
+                style={[
+                  styles.signupTitle,
+                  {
+                    textAlign: isRTL ? "right" : "left",
+                  },
+                ]}
+              >
+                {t("signUp")}
               </Text>
             </View>
             <CustomInput
@@ -242,7 +250,7 @@ const SignUpScreen: React.FC = () => {
               setOpen={() => setIsDropDownOpen(!isDropDownOpen)}
               setValue={setGender}
               setItems={setItems}
-              placeholder={`${t("gender")}`}
+              placeholder={t("gender")}
               style={styles.datePickerContainer}
               placeholderStyle={{
                 color: "#8A8A8F",
@@ -254,6 +262,7 @@ const SignUpScreen: React.FC = () => {
               textStyle={{
                 color: "#333",
                 fontSize: 16,
+                textAlign: isRTL ? "right" : "left",
               }}
             />
 
@@ -321,8 +330,16 @@ const SignUpScreen: React.FC = () => {
               keyboardType="phone-pad"
             />
 
-            <View style={styles.mainSigningView}>
-              <View style={styles.childSigningView}>
+            <View style={[styles.mainSigningView]}>
+              <View
+                style={[
+                  styles.childSigningView,
+                  {
+                    display: "flex",
+                    flexDirection: isRTL ? "row-reverse" : "row",
+                  },
+                ]}
+              >
                 <Text style={styles.noAccount}>
                   {t("bySigningUpYoureAgreeToOur")}
                 </Text>
@@ -330,16 +347,10 @@ const SignUpScreen: React.FC = () => {
                   <Text style={styles.signUp}> {t("termsAndConditions")} </Text>
                 </TouchableOpacity>
               </View>
-              <View style={styles.andView}>
-                <Text style={styles.noAccount}>{t("and")}</Text>
-                <TouchableOpacity>
-                  <Text style={styles.signUpPolicy}> {t("privacyPolicy")}</Text>
-                </TouchableOpacity>
-              </View>
             </View>
 
             <ButtonCTA
-              customStyle={{ width: wp(90), top: normalized.hp(3) }}
+              customStyle={{ width: wp(90), top: normalized.hp(1) }}
               buttonText={t("signUp")}
               onPress={() => {
                 authSignup();

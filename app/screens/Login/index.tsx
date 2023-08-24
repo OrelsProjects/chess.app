@@ -59,6 +59,7 @@ const Login: React.FC = () => {
       setLoading(false);
     } catch (error: unknown) {
       const typedError = error as CustomError;
+      console.log(JSON.stringify(typedError));
       if (typedError.code === "NotAuthorizedException") {
         Snackbar.show({
           text: t("incorrectUsernameOrPassword"),
@@ -68,6 +69,9 @@ const Login: React.FC = () => {
         });
         return;
       }
+
+      
+
       DdLogs.error(`Login error: ${error}`);
       Snackbar.show({
         text: t("somethingWentWrong"),
