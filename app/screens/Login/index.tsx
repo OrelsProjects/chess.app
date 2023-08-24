@@ -93,12 +93,24 @@ const Login: React.FC = () => {
         <View style={styles.childContainer}>
           <View style={[styles.headerContainer]}>
             <View style={[styles.welcomeContainer]}>
-              <Text style={[styles.welcome]}>
+              <Text
+                style={[
+                  styles.welcome,
+                  { textAlign: isRTL ? "right" : "left" },
+                ]}
+              >
                 {t("welcome")}
                 <SvgXml xml={handWave} width={"28"} height={"28"} />
               </Text>
             </View>
-            <Text style={[styles.loginToContinue]}>{t("loginToContinue")}</Text>
+            <Text
+              style={[
+                styles.loginToContinue,
+                { textAlign: isRTL ? "right" : "left" },
+              ]}
+            >
+              {t("loginToContinue")}
+            </Text>
           </View>
           <CustomInput
             placeholder={t("email")}
@@ -154,15 +166,15 @@ const Login: React.FC = () => {
         {lang === "he" ? (
           <>
             <TouchableOpacity onPress={navigateToSignUp}>
-              <Text style={styles.signUp}>{t("signUp")}</Text>
+              <Text style={styles.signUp}> {t("signUp")} </Text>
             </TouchableOpacity>
-            <Text style={styles.noAccount}>{t("dontHaveAnAccount")}</Text>
+            <Text style={styles.noAccount}> {t("dontHaveAnAccount")} </Text>
           </>
         ) : (
           <>
-            <Text style={styles.noAccount}>{t("dontHaveAnAccount")}</Text>
+            <Text style={styles.noAccount}> {t("dontHaveAnAccount")} </Text>
             <TouchableOpacity onPress={navigateToSignUp}>
-              <Text style={styles.signUp}>{t("signUp")}</Text>
+              <Text style={styles.signUp}> {t("signUp")} </Text>
             </TouchableOpacity>
           </>
         )}

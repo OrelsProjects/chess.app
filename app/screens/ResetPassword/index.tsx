@@ -28,8 +28,8 @@ import { DdLogs } from "@datadog/mobile-react-native";
 
 const ResetPassword: React.FC = ({ route }) => {
   const { t } = useTranslation();
-  const lang = useSelector((state: any) => state.auth.language);
-  const isRTL = lang === "he";
+  const language = useSelector((state: any) => state.auth.language);
+  const isRTL = language === "he";
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

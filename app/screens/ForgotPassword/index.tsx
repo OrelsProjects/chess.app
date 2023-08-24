@@ -1,12 +1,8 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Text, View } from "react-native";
-import { Button } from "react-native-paper";
-
 import NavigationService from "../../navigation/NavigationService";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 import styles from "./styles";
 import ButtonCTA from "../../components/ButtonCTA";
@@ -21,6 +17,8 @@ import { DdLogs } from "@datadog/mobile-react-native";
 
 const ForgotPassword: React.FC = () => {
   const { t } = useTranslation();
+  const language = useSelector((state: any) => state.auth.language);
+  const isRTL = language === "he";
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const goBack = () => NavigationService.goBack();
@@ -62,8 +60,16 @@ const ForgotPassword: React.FC = () => {
       <CustomHeader leftIcon={leftArrowIcon} onBackButtonPress={goBack} />
       <View style={styles.childContainer}>
         <View style={styles.headerContainer}>
-          <Text style={styles.heading}>{t("forgotPassword")}</Text>
-          <Text style={styles.subHeading}>{t("forgotPasswordText")}</Text>
+          <Text
+            style={[styles.heading, { textAlign: isRTL ? "right" : "left" }]}
+          >
+            {t("forgotPassword")}
+          </Text>
+          <Text
+            style={[styles.subHeading, { textAlign: isRTL ? "right" : "left" }]}
+          >
+            {t("forgotPasswordText")}
+          </Text>
         </View>
 
         <CustomInput

@@ -213,7 +213,6 @@ const Home: React.FC = () => {
       <TouchableOpacity
         style={[
           styles.view2,
-          { alignItems: lang === "he" ? "flex-start" : "flex-end" },
         ]}
         onPress={navigateToAddOpponent}
       >

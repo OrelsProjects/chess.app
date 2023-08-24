@@ -70,8 +70,6 @@ const AuthNavigator = () => {
           NativeModules.SettingsManager.settings.AppleLanguages[0]
         : NativeModules.I18nManager.localeIdentifier;
 
-    console.log("Language!: " + appLanguage);
-
     if (appLanguage.includes("iw") || appLanguage.includes("he")) {
       dispatch(setLanguage("he"));
     } else {
@@ -179,29 +177,16 @@ const MainStackNavigator = () => {
 
 const LoggedInNavigator = () => {
   const language = useSelector((state: any) => state.auth.language);
+  const isRTL = language === "he"; // Determine if the language is Hebrew
+
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawer {...props} />}
-      // screenOptions={{
-      //   headerShown: false,
-      //   drawerActiveBackgroundColor: 'transparent',
-      //   drawerInactiveTintColor: AppStyles.color.RAISIN_BLACK,
-      //   drawerActiveTintColor: AppStyles.color.RAISIN_BLACK,
-      //   drawerLabelStyle: {
-      //     // marginLeft: -15,
-      //     fontSize: fontSizes.regular,
-      //   },
-      //   drawerItemStyle: {
-      //     // padding: 0,
-      //     backgroundColor: 'red',
-      //     borderRadius: 0,
-      //   },
-      // }}
       screenOptions={{
         swipeEnabled: true,
         drawerType: "front",
 
-        drawerPosition: language == "he" ? "right" : "left",
+        drawerPosition: isRTL ? "right" : "left",
         // drawerHideStatusBarOnOpen: true,
         drawerStyle: {
           // backgroundColor: colors.msuGreen,
@@ -213,15 +198,6 @@ const LoggedInNavigator = () => {
       <Drawer.Screen
         name="MainStackNavigator"
         component={MainStackNavigator}
-        // options={{
-        //   drawerIcon: ({ color }) => (
-        //     <SvgXml
-        //       xml={homeIcon}
-        //       width={normalized.wp(6)}
-        //       height={normalized.hp(6)}
-        //     />
-        //   ),
-        // }}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>
@@ -232,6 +208,7 @@ const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const language = useSelector((state: any) => state.auth.language);
+  
   i18n.changeLanguage(language);
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>
