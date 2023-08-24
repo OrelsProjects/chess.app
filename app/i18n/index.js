@@ -108,7 +108,7 @@ const resources = {
       logout: "Logout",
 
       // Errors
-      somethingWereWrong: "Something were wrong.. We are on it",
+      somethingWentWrong: "Something were wrong.. We are on it",
     },
   },
   he: {
@@ -217,7 +217,7 @@ const resources = {
       logout: "התנתקות",
 
       // Errors
-      somethingWereWrong: "משהו השתבש.. אנחנו על זה",
+      somethingWentWrong: "משהו השתבש.. אנחנו על זה",
     },
   },
 };

@@ -134,15 +134,15 @@ const SignUpScreen: React.FC = () => {
       setLoading(false);
       DdLogs.error(`Signup error: ${error}`);
       Snackbar.show({
-        text: t("somethingWereWrong"),
+        text: t("somethingWentWrong"),
         duration: Snackbar.LENGTH_SHORT,
         textColor: "#fcfcfd",
         backgroundColor: "red",
       });
-    } 
+    }
   };
 
-  const Signup = async (data: SignupData) => {
+  const Signup = async (data: ISignupData) => {
     try {
       const {
         first_name,
@@ -184,11 +184,12 @@ const SignUpScreen: React.FC = () => {
         });
       }
     } catch (error) {
+      console.log(JSON.stringify(error));
       dispatch({ type: SIGNUP_FAILURE, payload: error });
       setLoading(false);
       DdLogs.error(`Signup error: ${error}`);
       Snackbar.show({
-        text: t("somethingWereWrong"),
+        text: t("somethingWentWrong"),
         textColor: "#fcfcfd",
         backgroundColor: "red",
       });

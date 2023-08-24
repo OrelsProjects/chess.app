@@ -57,10 +57,20 @@ const Login: React.FC = () => {
       dispatch(setUserInfo({ name, email }));
       onLogin();
       setLoading(false);
-    } catch (error) {
+    } catch (error: unknown) {
+      const typedError = error as CustomError;
+      if (typedError.code === "NotAuthorizedException") {
+        Snackbar.show({
+          text: t("incorrectUsernameOrPassword"),
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: "#fcfcfd",
+          backgroundColor: "#ff1a51",
+        });
+        return;
+      }
       DdLogs.error(`Login error: ${error}`);
       Snackbar.show({
-        text: t("somethingWereWrong"),
+        text: t("somethingWentWrong"),
         duration: Snackbar.LENGTH_SHORT,
         textColor: "#fcfcfd",
         backgroundColor: "#ff1a51",

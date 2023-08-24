@@ -37,7 +37,7 @@ const ForgotPassword: React.FC = () => {
     } catch (error) {
       DdLogs.error(`Forgot password error: ${error}`);
       Snackbar.show({
-        text: t("somethingWereWrong"),
+        text: t("somethingWentWrong"),
         duration: Snackbar.LENGTH_SHORT,
         textColor: "#fcfcfd",
         backgroundColor: "#ff1a51",

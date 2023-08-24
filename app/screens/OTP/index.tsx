@@ -83,9 +83,7 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
           {...props}
           value={value}
           rootStyle={{
-            marginVertical: hp(4),
-            flexDirection: `${lang == "he" ? "row-reveresed" : "row"}`,
-          }}
+            marginVertical: hp(4),          }}
           onChangeText={(value) => {
             setValue(value);
           }}
