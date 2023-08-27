@@ -2,7 +2,13 @@ import { Auth } from "aws-amplify";
 import moment from "moment";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Linking,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -198,6 +204,17 @@ const SignUpScreen: React.FC = () => {
     }
   };
 
+  const showTermsOfService = () => {
+    const url = "https://israchessapp.wixsite.com/israchess/terms";
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        DdLogs.warn("Don't know how to open URI: " + url);
+      }
+    });
+  };
+
   return (
     <View
       style={{ flexGrow: 1, backgroundColor: "#fff", paddingTop: insets.top }}
@@ -343,7 +360,7 @@ const SignUpScreen: React.FC = () => {
                 <Text style={styles.noAccount}>
                   {t("bySigningUpYoureAgreeToOur")}
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => showTermsOfService()}>
                   <Text style={styles.signUp}> {t("termsAndConditions")} </Text>
                 </TouchableOpacity>
               </View>

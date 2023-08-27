@@ -46,7 +46,7 @@ const CustomDrawer = (props) => {
   const navigateToCalculator = () => NavigationService.navigate("Home");
   const navigateToSettings = () => NavigationService.navigate("Home");
   const navigateToSupport = () => {
-    const url = "https://israchessapp.wixsite.com/israchess/terms";
+    const url = "https://israchessapp.wixsite.com/israchess";
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
         Linking.openURL(url);
