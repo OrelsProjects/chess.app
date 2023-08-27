@@ -1,12 +1,13 @@
-import { chessLogo } from '../assets/SVGs';
-import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import appIcon from "../assets/appIcon.png";
+import React from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
-import { SvgXml } from 'react-native-svg';
-import { useSelector } from 'react-redux';
+} from "react-native-responsive-screen";
+import { Image } from "react-native";
+import { SvgXml } from "react-native-svg";
+import { useSelector } from "react-redux";
 
 const CustomHeader = (props: any) => {
   const lang = useSelector((state: any) => state.auth.language);
@@ -28,15 +29,19 @@ const CustomHeader = (props: any) => {
 
       <View
         style={{
-          alignItems: 'center',
+          alignItems: "center",
           width: wp(70),
-          alignSelf: 'center',
-          justifyContent: 'center',
-        }}>
-        <SvgXml xml={chessLogo} width={wp(14)} height={wp(18)} />
+          alignSelf: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Image source={appIcon} style={{ height: 60, width: 60 }} />
       </View>
       {lang === "he" && props?.drawerIcon && (
-        <TouchableOpacity onPress={props?.drawerButtonPress} style={{transform: [{ scaleX: -1 }]}}>
+        <TouchableOpacity
+          onPress={props?.drawerButtonPress}
+          style={{ transform: [{ scaleX: -1 }] }}
+        >
           <SvgXml xml={props?.drawerIcon} height={20} width={20} />
         </TouchableOpacity>
       )}
@@ -48,13 +53,13 @@ export default CustomHeader;
 const styles = StyleSheet.create({
   topView: {
     width: wp(90),
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: hp(2),
-    alignSelf: 'center',
-    flexDirection: 'row',
+    alignSelf: "center",
+    flexDirection: "row",
     // backgroundColor:'red'
   },
   leftIcon: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
 });

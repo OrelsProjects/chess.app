@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import React, { useEffect } from "react";
 import {
   DrawerContentScrollView,
@@ -31,6 +37,7 @@ import { useStore } from "../store";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { Auth } from "aws-amplify";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 const CustomDrawer = (props) => {
   const { t } = useTranslation();
@@ -38,7 +45,16 @@ const CustomDrawer = (props) => {
   const navigateToHome = () => NavigationService.navigate("Home");
   const navigateToCalculator = () => NavigationService.navigate("Home");
   const navigateToSettings = () => NavigationService.navigate("Home");
-  const navigateToSupport = () => NavigationService.navigate("Home");
+  const navigateToSupport = () => {
+    const url = "https://israchessapp.wixsite.com/israchess/terms";
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        DdLogs.warn("Don't know how to open URI: " + url);
+      }
+    });
+  };
   const navigateToLanguages = () => NavigationService.navigate("Languages");
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -98,21 +114,21 @@ const CustomDrawer = (props) => {
         {...props}
         contentContainerStyle={styles.contentContainer}
       >
-        {lang === "he" ?
+        {lang === "he" ? (
           <View style={styles.drawerHeader}>
             <TouchableOpacity style={styles.xIcon} onPress={closeDrawer}>
               <SvgXml xml={xIcon} width={wp(8)} height={wp(8)} />
             </TouchableOpacity>
             <SvgXml xml={chessLogo} width={wp(10)} height={wp(14)} />
           </View>
-          :
+        ) : (
           <View style={styles.drawerHeader}>
             <SvgXml xml={chessLogo} width={wp(10)} height={wp(14)} />
             <TouchableOpacity style={styles.xIcon} onPress={closeDrawer}>
               <SvgXml xml={xIcon} width={wp(8)} height={wp(8)} />
             </TouchableOpacity>
           </View>
-        }
+        )}
         <View style={styles.userInfo}>
           <SvgXml
             xml={defaultPlayer}

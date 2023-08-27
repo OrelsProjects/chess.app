@@ -61,12 +61,13 @@ const resources = {
       signUp: "Sign Up",
 
       //OnBoarding
-      textHere: "Text Here",
-      interactAndEarnRewardsWithOurPointsProgramHelpClassmatesAndEarnPointsRedeemableForCashOrFutureCoursePurchasesStartBuildingYourRewardsNow:
-        "Interact and earn rewards with our points program! Help classmates and earn points redeemable for cash or future course purchases. Start building your rewards now.",
+      onboarding_2_body:
+        "One of them, for example, is a calendar for managing tournaments and games. Registration, management, and event creation in just a few clicks.\nShall we begin?",
+      onboarding_2_title: "Events",
+      onboarding_1_title: "Hi. Good to see you!",
+      onboarding_1_body:
+        "A new era for managing your chess life is on the horizon. Many features tailored just for you are on the way.",
       skip: "Skip",
-      takeYourInvestmentKnowledgeToTheNextLevelWithNmoAcademyExpertLedCourses:
-        "Take your investment knowledge to the next level with Nmo academy's expert-led courses.",
 
       //OTP
       enter: "Enter",
@@ -113,20 +114,20 @@ const resources = {
   },
   he: {
     translation: {
-      Hebrew: "עִברִית",
+      Hebrew: "עברית",
       language: "שפה",
 
       //Language screen
       chooseYourPreferredLanguage: "בחר את השפה המועדפת עליך",
       selectLanguage: "בחר שפה",
-      next: "הַבָּא",
+      next: "הבא",
 
       //AddOpponent
       pleaseFillAllFields: "נא למלא את כל השדות",
       note: "הערה",
       pleaseSelectUsers: "אנא בחר משתמשים",
-      search: "לחפש",
-      error: "שְׁגִיאָה",
+      search: "חיפוש",
+      error: "שגיאה",
       rating: "דירוג",
       submit: "שלח",
       add: "הוסף",
@@ -170,12 +171,13 @@ const resources = {
       signUp: "הרשמה",
 
       //OnBoarding
-      textHere: "הכנס טקסט כאן",
-      interactAndEarnRewardsWithOurPointsProgramHelpClassmatesAndEarnPointsRedeemableForCashOrFutureCoursePurchasesStartBuildingYourRewardsNow:
-        "תתקשר וצבור פרסים עם תוכנית הנקודות שלנו! עזור לזמינים וצבור נקודות המוחלפות במזומנים או ברכישת קורסים עתידיים. התחל לבנות את הפרסים שלך עכשיו.",
+      onboarding_2_body:
+        "אחד מהם, לדוגמא, זה יומן לניהול תחרויות ומשחקים.\nהרשמה, ניהול ויצירת אירועים בכמה לחיצות.\n שנתחיל?",
+      onboarding_2_title: "אירועים על הסף",
+      onboarding_1_title: "היי. טוב לראות אותך!",
+      onboarding_1_body:
+        "עידן חדש לניהול חיי השחמט שלך בפתח.\n הרבה פיצ'רים שתפורים בול בשבילך בדרך.",
       skip: "דלג",
-      takeYourInvestmentKnowledgeToTheNextLevelWithNmoAcademyExpertLedCourses:
-        "קח את הידע ההשקעותי שלך לרמה הבאה עם קורסים מובילים של Nmo Academy.",
 
       //OTP
       enter: "הזן",
@@ -201,9 +203,9 @@ const resources = {
       and: "ו",
       privacyPolicy: "מדיניות פרטיות",
       phoneNumber: "מספר טלפון",
-      gender: "מִין",
-      male: "זָכָר",
-      female: "נְקֵבָה",
+      gender: "מין",
+      male: "זכר",
+      female: "נקבה",
       playerNumber: "מספר שחקן",
       haveAnAccount: "יש לך חשבון?",
 

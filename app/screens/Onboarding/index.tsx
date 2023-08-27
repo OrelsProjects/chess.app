@@ -34,11 +34,11 @@ const OnBordingScreen: React.FC = () => {
         <View style={styles.textView}>
           <View style={styles.mainView}>
             <View style={styles.heading}>
-              <Text style={styles.headingText}>{t('textHere')}</Text>
+              <Text style={styles.headingText}>{t('onboarding_2_title')}</Text>
             </View>
             <View style={styles.textDetail}>
               <Text style={styles.text}>
-                {t('interactAndEarnRewardsWithOurPointsProgramHelpClassmatesAndEarnPointsRedeemableForCashOrFutureCoursePurchasesStartBuildingYourRewardsNow')}
+                {t('onboarding_2_body')}
               </Text>
               <SvgXml xml={sliderTwo} width={wp(8)} height={wp(12)} />
             </View>
@@ -75,19 +75,13 @@ const OnBordingScreen: React.FC = () => {
         <View style={styles.textView}>
           <View style={styles.mainView}>
             <View style={styles.heading}>
-              <Text style={styles.headingText}>{t('textHere')}</Text>
+              <Text style={styles.headingText}>{t('onboarding_1_title')}</Text>
             </View>
             <View style={styles.textDetail}>
               <Text style={styles.text}>
-                {t('takeYourInvestmentKnowledgeToTheNextLevelWithNmoAcademyExpertLedCourses')}
+                {t('onboarding_1_body')}
               </Text>
-
               <SvgXml xml={sliderOne} width={wp(8)} height={wp(12)} />
-              {/* <SvgUri
-              uri={require('../../images/handWaveIcon.svg')}
-              width={20}
-              height={20}
-            /> */}
             </View>
             <View style={styles.buttons}>
               <View style={[styles.buttonDirection, {flexDirection: lang === "he" ? 'row-reverse' : 'row'}]}>
