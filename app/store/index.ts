@@ -18,12 +18,11 @@ export const useStore = create<IStore>()(
     }),
     {
       name: 'app-storage',
-      getStorage: () => AsyncStorage,
-      // storage: {
-      //   getItem: (name: string) => AsyncStorage.getItem(name),
-      //   setItem: (name: string, value: any) => AsyncStorage.setItem(name, JSON.stringify(value) ),
-      //   removeItem: (name: string) => AsyncStorage.removeItem(name),
-      // },
+      storage: {
+        getItem: (name: string) => AsyncStorage.getItem(name),
+        setItem: (name: string, value: any) => AsyncStorage.setItem(name, JSON.stringify(value) ),
+        removeItem: (name: string) => AsyncStorage.removeItem(name),
+      },
     },
   ),
 );

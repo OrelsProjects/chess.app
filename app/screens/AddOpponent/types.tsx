@@ -10,6 +10,8 @@ A type of:
       }))
 */
 
+import { CancelToken } from "axios";
+
 export interface ISearchOpponentProps {
   svg: string;
   first_name: string;
@@ -26,7 +28,8 @@ export interface IGameProps {
 }
 
 export interface IUseRefProps {
-  open: () => void;
-  close: () => void;
-  cancel: () => void;
+  open: (message?: string) => void;
+  close: (message?: string) => void;
+  cancel: (message?: string) => void;
+  token?: CancelToken;
 }

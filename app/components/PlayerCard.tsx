@@ -2,19 +2,21 @@ import { starGoldIcon, xIcon } from "../assets/SVGs";
 import { normalized, radius } from "../config/metrics";
 import React from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
-import AppStyles from "../config/styles";
+import win from "../assets/win.png";
+import lose from "../assets/lose.png";
+import draw from "../assets/draw.png";
+import { useTranslation } from "react-i18next";
 
 interface Parameters {
   playerName: string;
   playerImage: string;
   rating: string;
-  centerText: string;
+  gameStatus: string;
   badge: string;
   disabled: boolean;
   onPress: () => void;
@@ -25,12 +27,26 @@ const PlayerCard: React.FC<Parameters> = ({
   playerName,
   playerImage,
   rating,
-  centerText,
+  gameStatus,
   badge,
   disabled,
   onPress,
   onCancel,
 }) => {
+  const { t } = useTranslation();
+
+  const getGameStateIcon = () => {
+    switch (t(gameStatus)) {
+      case t("statusWin"):
+        return win;
+      case t("statusLose"):
+        return lose;
+      case t("statusDraw"):
+        return draw;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Pressable
@@ -49,14 +65,17 @@ const PlayerCard: React.FC<Parameters> = ({
           />
           <Text style={styles.nameText}>{playerName}</Text>
         </View>
-        {centerText ? (
+        {gameStatus ? (
           <View style={styles.innerCenterView}>
-            <Text style={styles.centerText}>{centerText}</Text>
+            <Image
+              source={getGameStateIcon()}
+              style={{ height: 50, width: 50 }}
+            />
           </View>
         ) : null}
 
         <View style={styles.innerSecondView}>
-          {badge ? <Text style={styles.badgeText}>WGM</Text> : null}
+          {badge ? <Text style={styles.badgeText}>{badge}</Text> : null}
         </View>
 
         <View style={styles.ratingView}>
@@ -99,15 +118,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   innerCenterView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    // marginLeft: normalized.wp(5),
-    // borderWidth: 1,
-    // borderRadius: radius.regularRadius,
-    // borderColor: AppStyles.color.COLOR_PRIMARY,
-    // paddingVertical: normalized.hp(0.5),
-    // paddingHorizontal: normalized.hp(1.3)
+    position: "absolute",
+    right: 0,
   },
   photoStyle: {
     margin: normalized.wp(2),
@@ -151,7 +163,7 @@ const styles = StyleSheet.create({
   touchable: {
     backgroundColor: "white",
   },
-  centerText: {
+  gameStatus: {
     color: "#222222",
     fontSize: normalized.hp(2),
   },

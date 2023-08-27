@@ -24,7 +24,7 @@ import { useSelector, useDispatch } from "react-redux";
 import i18n from "../i18n";
 import datadogConfig from "../../datadog.config";
 import mixpanelConfig from "../../mixpanel.config";
-import { DdSdkReactNative } from "@datadog/mobile-react-native";
+import { DdLogs, DdRum, DdSdkReactNative } from "@datadog/mobile-react-native";
 import { useEffect } from "react";
 import { Mixpanel } from "mixpanel-react-native";
 
@@ -208,7 +208,7 @@ const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const language = useSelector((state: any) => state.auth.language);
-  
+
   i18n.changeLanguage(language);
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>

@@ -202,7 +202,7 @@ const Home: React.FC = () => {
           <PlayerCard
             playerImage={item.svg}
             playerName={item.text}
-            centerText={item.status}
+            gameStatus={item.status}
             rating={item.starText}
             disabled={true}
             onCancel={() => handleRemoveResult(index)}

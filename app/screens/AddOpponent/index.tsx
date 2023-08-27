@@ -9,6 +9,7 @@ import {
 
 import {
   enterIcon,
+  enterIconFlipped,
   leftArrowIcon,
   defaultPlayer,
   starIconTwo,
@@ -22,7 +23,7 @@ import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { normalized } from "../../config/metrics";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addOpponents } from "../../redux/actions/action";
 import { BaseURL } from "../../constants";
 import { useTranslation } from "react-i18next";
@@ -33,7 +34,6 @@ import CustomInputNonRtl from "../../components/CustomInoutNonRtl";
 import { IGameProps, ISearchOpponentProps, IUseRefProps } from "./types";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { DdLogs } from "@datadog/mobile-react-native";
-
 
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
@@ -68,7 +68,10 @@ const AddOpponent: React.FC = () => {
   }, [searchResults]);
 
   const goBack = () => NavigationService.goBack();
+  const language = useSelector((state: any) => state.auth.language);
   const navigateToHome = () => NavigationService.navigate("Home");
+
+  const isRTL = language === "he" || language === "ar";
 
   const submitOpponents = (gameType: string) => {
     if (selectedOpponents.length == 0) {
@@ -159,7 +162,7 @@ const AddOpponent: React.FC = () => {
       const response = await BaseURL.get(
         `/search/users/${text.toLowerCase()}/1/5`,
         {
-          cancelToken: source.current.token,
+          cancelToken: source?.current?.token,
         }
       );
       setSearchResults(response.data);
@@ -253,7 +256,7 @@ const AddOpponent: React.FC = () => {
                   playerImage={user?.image}
                   playerName={user?.opponentName}
                   rating={user?.opponentRating}
-                  centerText={user?.opponentStatus}
+                  gameStatus={user?.opponentStatus}
                   badge={user?.badge}
                   onCancel={() => handleRemoveItem(i)}
                 />
@@ -337,15 +340,19 @@ const AddOpponent: React.FC = () => {
           </View>
           {searchResults.length == 0 && (
             <>
-              <CustomInputNonRtl
+              <CustomInput
                 editable={opponentName == "" ? true : false}
                 containerStyle={{ zIndex: 1 }}
                 placeholder={t("rating")}
                 value={ratingNumber.toString()}
                 iconName={starIconTwo}
-                onRightIconPress={() => showGameStateSheet()}
+                onRightIconPress={() => {
+                  if (ratingNumber) {
+                    showGameStateSheet();
+                  }
+                }}
                 onChangeText={(e) => setRatingNumber(e)}
-                rightIcon={enterIcon}
+                rightIcon={isRTL ? enterIconFlipped : enterIcon}
                 keyboardType="number-pad"
               />
               {renderUsers()}

@@ -135,6 +135,24 @@ export const mailIcon = `<svg width="16" height="10" viewBox="0 0 16 10" fill="n
 <path fill-rule="evenodd" clip-rule="evenodd" d="M15.1217 0L8.67943 5.845C8.29886 6.19167 7.70114 6.19167 7.32 5.845L0.878286 0H15.1217ZM0 0.722778L4.51771 4.82222L0 9.21444V0.722778ZM11.4823 4.82222L16 9.21444V0.722778L11.4823 4.82222ZM9.45943 6.65722L10.6463 5.58056L15.192 10H0.808L5.35257 5.58056L6.53943 6.65722C6.94914 7.02889 7.47429 7.21444 7.99943 7.21444C8.52457 7.21444 9.04971 7.02889 9.45943 6.65722Z" fill="#C8C7CC"/>
 </svg>`;
 
+export const drawIcon = `<svg version="1.1" viewBox="0.0 0.0 960.0 540.0" fill="none" stroke="none" stroke-linecap="square"
+stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns="http://www.w3.org/2000/svg">
+<clipPath id="p.0">
+    <path d="m0 0l960.0 0l0 540.0l-960.0 0l0 -540.0z" clip-rule="nonzero" />
+</clipPath>
+<g clip-path="url(#p.0)">
+    <path fill="#000000" fill-opacity="0.0" d="m0 0l960.0 0l0 540.0l-960.0 0z"
+        fill-rule="evenodd" />
+    <path fill="#dadada"
+        d="m456.56693 255.87941l0 0c0 -3.899414 3.1611023 -7.0605164 7.0605164 -7.0605164l32.745117 0c1.8725586 0 3.6684265 0.7438812 4.992523 2.067978c1.3241272 1.3240967 2.0679932 3.1199646 2.0679932 4.9925385l0 28.241196c0 3.899414 -3.1611023 7.060486 -7.0605164 7.060486l-32.745117 0c-3.899414 0 -7.0605164 -3.1610718 -7.0605164 -7.060486z"
+        fill-rule="evenodd" />
+    <path fill="#2c2b2b"
+        d="m469.0633 264.1663l21.873413 0l0 4.6669617l-21.873413 0zm0 7.000458l21.873413 0l0 4.6669617l-21.873413 0z"
+        fill-rule="evenodd" />
+</g>
+</svg>`;
+
 export const chessLogo = `<svg width="57" height="70" viewBox="0 0 57 70" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <rect width="57" height="69.7599" fill="url(#pattern0)"/>
 <defs>
@@ -280,6 +298,23 @@ export const starIconTwo = `<svg width="19" height="19" viewBox="0 0 19 19" fill
 export const enterIcon = `<svg width="24" height="27" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M22.4743 12.4259L6.9344 13.1411" stroke="#007AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M22.4742 12.4261L3.8251 22.4865L6.9343 13.1413L2.97988 4.12116L22.4742 12.4261Z" stroke="#007AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+export const enterIconFlipped = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1000" height="1000" viewBox="0 0 1000 1000" xml:space="preserve">
+<desc>Created with Fabric.js 3.5.0</desc>
+<defs>
+</defs>
+<rect x="0" y="0" width="100%" height="100%" fill="#ffffff"/>
+<g transform="matrix(-33.67 0 0 -33.67 500.0004 500.0005)" id="417324">
+<g style="" vector-effect="non-scaling-stroke">
+		<g transform="matrix(1 0 0 1 2.7043 -0.7165)">
+<path style="stroke: rgb(0,122,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: none; fill-rule: nonzero; opacity: 1;" transform=" translate(-14.7043, -12.7835)" d="M 22.4743 12.4259 L 6.9344 13.1411" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1 0 0 1 0.7271 -0.1961)">
+<path style="stroke: rgb(0,122,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: none; fill-rule: nonzero; opacity: 1;" transform=" translate(-12.727, -13.3038)" d="M 22.4742 12.4261 L 3.8251 22.4865 L 6.9343 13.1413 L 2.97988 4.12116 L 22.4742 12.4261 Z" stroke-linecap="round"/>
+</g>
+</g>
+</g>
 </svg>`;
 
 export const starGoldIcon = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
