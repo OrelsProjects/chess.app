@@ -76,26 +76,26 @@ const CustomDrawer = (props) => {
       name: t("home"),
       route: navigateToHome,
     },
-    {
-      icon: calculatorIcon,
-      name: t("calculator"),
-      route: navigateToCalculator,
-    },
-    {
-      icon: settingsIcon,
-      name: t("settings"),
-      route: navigateToSettings,
-    },
+    // {
+    //   icon: calculatorIcon,
+    //   name: t("calculator"),
+    //   route: navigateToCalculator,
+    // },
+    // {
+    //   icon: settingsIcon,
+    //   name: t("settings"),
+    //   route: navigateToSettings,
+    // },
     {
       icon: languageIcon,
       name: t("languages"),
       route: navigateToLanguages,
     },
-    {
-      icon: infoIcon,
-      name: t("support"),
-      route: navigateToSupport,
-    },
+    // {
+    //   icon: infoIcon,
+    //   name: t("support"),
+    //   route: navigateToSupport,
+    // },
     {
       icon: externalLinkIcon,
       name: t("visitOurWebsite"),
