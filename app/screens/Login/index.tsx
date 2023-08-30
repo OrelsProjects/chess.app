@@ -21,6 +21,7 @@ import {
   setOnBoarding,
   setToken,
   setUserInfo,
+  validateUserAuthentication,
 } from "../../redux/actions/action";
 import { useTranslation } from "react-i18next";
 import Snackbar from "react-native-snackbar";
@@ -35,9 +36,11 @@ const Login: React.FC = () => {
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
-  const onLogin = () => {
-    setIsLoggedIn(true);
+
+  const onLogin = (isLoggedIn: boolean) => {
+    setIsLoggedIn(isLoggedIn);
   };
+
   const onForgot = () => NavigationService.navigate("ForgotPassword");
   const navigateToSignUp = () => NavigationService.navigate("SignUpScreen");
   const dispatch = useDispatch();
@@ -52,14 +55,17 @@ const Login: React.FC = () => {
       const username = email;
       const password = userPassword;
       const user = await Auth.signIn(username, password);
-      const { name } = { name: user?.username };
-      dispatch(setToken(user?.attributes?.sub));
-      dispatch(setUserInfo({ name, email }));
-      onLogin();
+      if (user) {
+        const { username } = user;
+        dispatch(setToken(user?.attributes?.sub));
+        dispatch(setUserInfo({ name: username, email }));
+      }
+      onLogin(user != null);
       setLoading(false);
     } catch (error: unknown) {
+      DdLogs.error(`Login error: ${error}`);
       const typedError = error as CustomError;
-      console.log(JSON.stringify(typedError));
+      onLogin(false);
       if (typedError.code === "NotAuthorizedException") {
         Snackbar.show({
           text: t("incorrectUsernameOrPassword"),
@@ -70,9 +76,6 @@ const Login: React.FC = () => {
         return;
       }
 
-      
-
-      DdLogs.error(`Login error: ${error}`);
       Snackbar.show({
         text: t("somethingWentWrong"),
         duration: Snackbar.LENGTH_SHORT,

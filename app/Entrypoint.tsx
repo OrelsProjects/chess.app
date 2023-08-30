@@ -9,7 +9,7 @@ import {
 } from "../app/config/theme-config";
 import Navigator from "../app/navigation";
 import { useStore } from "./store";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store/store";
 import { RNQueryClient } from "./services/react-query/query-client";
@@ -17,7 +17,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Amplify } from "aws-amplify";
 import awsconfig from "../aws-exports";
 import { LogBox } from "react-native";
-import { Mixpanel } from "mixpanel-react-native";
 
 LogBox.ignoreAllLogs();
 

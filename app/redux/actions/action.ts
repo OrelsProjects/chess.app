@@ -1,9 +1,9 @@
-import { Alert } from 'react-native';
-import { BaseURL, endPoints } from '../../constants';
+import { BaseURL, endPoints } from "../../constants";
 import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
+  CLEAR_USER,
   SIGNIN_REQUEST,
   SIGNIN_SUCCESS,
   SIGNIN_FAILURE,
@@ -16,21 +16,42 @@ import {
   SET_ONBOARDING,
   SET_USERINFO,
   REMOVE_USERINFO,
-  SET_TOKEN
-} from './actionType';
-import NavigationService from '../../navigation/NavigationService';
-import { store } from '../store/store';
-import { DdLogs } from '@datadog/mobile-react-native';
+  SET_TOKEN,
+} from "./actionType";
+import NavigationService from "../../navigation/NavigationService";
+import { Auth } from "aws-amplify";
+import { store } from "../store/store";
+import { DdLogs } from "@datadog/mobile-react-native";
 
 interface SignupData {
   first_name: string;
-  last_name: 'testing';
-  gender: 'male';
+  last_name: string;
+  gender: "male" | "female" | "other";
   email: string;
-  phone_number: '0543442286';
-  player_number: 201222;
+  phone_number: string;
+  player_number: string;
   date_of_birth: number;
 }
+
+// Should be used before app loads
+export const validateUserAuthentication = () => {
+  return async (dispatch: any) => {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+
+      if (user) {
+        const { username, email } = user;
+        dispatch(setToken(user?.attributes?.sub));
+        dispatch(setUserInfo({ name: username, email }));
+      } else {
+        dispatch({ type: CLEAR_USER, payload: "User not found" });
+      }
+    } catch (error) {
+      DdLogs.error(`isAuthenticated redux error: ${error}`);
+      console.error("isAuthenticated error:", error);
+    }
+  };
+};
 
 export const Signup = (data: SignupData) => {
   return async (dispatch: any) => {
@@ -59,13 +80,13 @@ export const Signup = (data: SignupData) => {
         phone_number,
         player_number,
         date_of_birth,
-      }
+      };
 
       const response = await BaseURL.post(endPoints.signUp, apiParams);
 
       if (response) {
         dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
-        NavigationService.navigate('EnterOTP', {
+        NavigationService.navigate("EnterOTP", {
           username: apiParams.first_name,
           email: apiParams.email,
         });
@@ -83,7 +104,6 @@ export const signin = (email: string, password: string) => {
 
     try {
       if (!email || !password) {
-        Alert.alert('Please provide email and password');
         return;
       }
 
@@ -95,27 +115,22 @@ export const signin = (email: string, password: string) => {
       if (response && response.data) {
         dispatch({ type: SIGNIN_SUCCESS, payload: response });
       } else {
-        throw new Error('Invalid response format');
+        throw new Error("Invalid response format");
       }
     } catch (error: any) {
       const errorMessage = error.response?.data || error.message;
       DdLogs.error(`Sign in redux error: ${error}`);
       dispatch({ type: SIGNIN_FAILURE, payload: errorMessage });
-      Alert.alert('Failed', errorMessage);
     }
   };
 };
 
 export const addOpponents = (opponents: any) => {
-
-  let tempArray: any = []
+  let tempArray: any = [];
   if (store.getState().auth.searchResults == undefined) {
-    tempArray = opponents
+    tempArray = opponents;
   } else {
-    tempArray = [
-      ...store.getState().auth.searchResults,
-      ...opponents
-    ]
+    tempArray = [...store.getState().auth.searchResults, ...opponents];
   }
   return async (dispatch: any) => {
     dispatch({ type: SEARCH_USER, payload: tempArray });
@@ -138,7 +153,7 @@ export const userSignupInfo = (userObject: any) => {
       });
     } catch (error) {
       DdLogs.error(`fetch data user redux error: ${error}`);
-      console.error('Signup error:', error);
+      console.error("Signup error:", error);
     }
   };
 };

@@ -8,7 +8,10 @@ import { navigationRef } from "./NavigationService";
 import Login from "../screens/Login";
 import Home from "../screens/Home";
 import ForgotPassword from "../screens/ForgotPassword";
-import { setLanguage } from "../redux/actions/action";
+import {
+  setLanguage,
+  validateUserAuthentication,
+} from "../redux/actions/action";
 import ThemeController from "../components/ThemeController";
 import { StatusBar, Platform, NativeModules } from "react-native";
 import { useStore } from "../store";
@@ -60,7 +63,6 @@ const AuthNavigator = () => {
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const onboarding = useSelector((state: any) => state.auth.Onboarding);
   const language = useSelector((state: any) => state.auth.language);
-
   const dispatch = useDispatch();
 
   if (language === "") {
@@ -80,6 +82,7 @@ const AuthNavigator = () => {
   useEffect(() => {
     initializeDatadog();
     initializeMixpanel();
+    dispatch(validateUserAuthentication());
   }, []);
 
   return (
@@ -206,33 +209,47 @@ const LoggedInNavigator = () => {
 
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
-  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const dispatch = useDispatch();
   const language = useSelector((state: any) => state.auth.language);
+  const user = useSelector((state: any) => state.auth.userInfo);
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
 
-  i18n.changeLanguage(language);
+  useEffect(() => {
+    setIsLoggedIn(user != null);
+    setIsLoading(false);
+  }, [user]);
+
+  useEffect(() => {
+    dispatch(validateUserAuthentication());
+    i18n.changeLanguage(language);
+  }, []);
+
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>
       <StatusBar
         barStyle={theme.dark ? "light-content" : "dark-content"}
         backgroundColor={theme.dark ? "black" : "white"}
       />
-
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isLoggedIn ? (
-          <Stack.Screen name="HomeStack" component={LoggedInNavigator} />
-        ) : (
-          <Stack.Screen
-            name="LoginStack"
-            component={AuthNavigator}
-            options={{
-              // When logging out, a pop animation feels intuitive
-              // You can remove this if you want the default 'push' animation
-              animationTypeForReplace: isLoggedIn ? "push" : "pop",
-              headerRight: () => <ThemeController />,
-            }}
-          />
-        )}
-      </Stack.Navigator>
+      {!isLoading && (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isLoggedIn ? (
+            <Stack.Screen name="HomeStack" component={LoggedInNavigator} />
+          ) : (
+            <Stack.Screen
+              name="LoginStack"
+              component={AuthNavigator}
+              options={{
+                // When logging out, a pop animation feels intuitive
+                // You can remove this if you want the default 'push' animation
+                animationTypeForReplace: isLoggedIn ? "push" : "pop",
+                headerRight: () => <ThemeController />,
+              }}
+            />
+          )}
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 };

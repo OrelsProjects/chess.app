@@ -5,6 +5,7 @@ import {
   SIGNIN_REQUEST,
   SIGNIN_SUCCESS,
   SIGNIN_FAILURE,
+  CLEAR_USER,
   //USER_SEARCH,
   SEARCH_USER,
   REMOVE_SEARCH_RESULT,
@@ -16,18 +17,18 @@ import {
   SET_USERINFO,
   REMOVE_USERINFO,
   SET_TOKEN,
-} from '../actions/actionType';
+} from "../actions/actionType";
 
 interface AuthState {
   user: any;
   loading: boolean;
   error: any;
   searchResults: any;
-  expectRating:any
-  signupInfo:any;
+  expectRating: any;
+  signupInfo: any;
   language: string;
-  Onboarding: boolean,  
-  userInfo: any
+  Onboarding: boolean;
+  userInfo: any;
 }
 
 const initialState = {
@@ -36,11 +37,11 @@ const initialState = {
   loading: false,
   error: null,
   searchResults: null,
-  expectRating:null,
+  expectRating: null,
   signupInfo: {},
-  language: '',
+  language: "",
   Onboarding: true,
-  userInfo: {}
+  userInfo: {},
 };
 
 const authReducer = (state = initialState, action: any) => {
@@ -82,83 +83,89 @@ const authReducer = (state = initialState, action: any) => {
         loading: false,
         error: action.payload,
       };
-      case SEARCH_USER:
-        return {
-          ...state,
-          loading: false,
-          error: null,
-          searchResults: action.payload,
-        };
-        case REMOVE_SEARCH_RESULT:
-          const updatedSearchResults = state.searchResults.filter(
-            (result, index) => index !== action.payload
-          );
-          return {
-            ...state,
-            searchResults: updatedSearchResults,
-          };  
+    case CLEAR_USER:
+      return {
+        ...state,
+        user: null,
+        loading: false,
+        error: null,
+      };
+    case SEARCH_USER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        searchResults: action.payload,
+      };
+    case REMOVE_SEARCH_RESULT:
+      const updatedSearchResults = state.searchResults.filter(
+        (result, index) => index !== action.payload
+      );
+      return {
+        ...state,
+        searchResults: updatedSearchResults,
+      };
     case HEADER_ID:
       return {
         user: action.payload,
         loading: false,
         error: null,
       };
-      case SIGNUP_INFO:
+    case SIGNUP_INFO:
       return {
         ...state,
         signupInfo: action.payload,
       };
-      case EXPECTED_RATING:
-        
-        return {
-          ...state,
-          loading: false,
-          error: null,
-          expectRating: action.payload,
-        };
-      case SET_LANGUAGE:
-        return {
-          ...state,
-          loading: false,
-          error: null,
-          language: action.payload,
-        };
-      case SET_ONBOARDING:
-        return {
-          ...state,
-          loading: false,
-          error: null,
-          Onboarding: action.payload,
-        };
-      case SET_USERINFO:
-        return {
-          ...state,
-          loading: false,
-          error: null,
-          userInfo: action.payload,
-        };
+    case EXPECTED_RATING:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        expectRating: action.payload,
+      };
+    case SET_LANGUAGE:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        language: action.payload,
+      };
+    case SET_ONBOARDING:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        Onboarding: action.payload,
+      };
+    case SET_USERINFO:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        userInfo: action.payload,
+      };
 
-      case SET_TOKEN:
-        return {
-          ...state,
-          token: action.payload,
-          loading: false,
-          error: null,
-        };  
-      case REMOVE_USERINFO:
-        return {
-          token: null,
-          user: null,
-          loading: false,
-          error: null,
-          searchResults: null,
-          expectRating:null,
-          signupInfo: {},
-          language: '',
-          Onboarding: false,
-          userInfo: {}
-        };
-    
+    case SET_TOKEN:
+      return {
+        ...state,
+        token: action.payload,
+        loading: false,
+        error: null,
+      };
+    case REMOVE_USERINFO:
+      return {
+        token: null,
+        user: null,
+        loading: false,
+        error: null,
+        searchResults: null,
+        expectRating: null,
+        signupInfo: {},
+        language: "",
+        Onboarding: false,
+        userInfo: {},
+      };
+
     default:
       return state;
   }
