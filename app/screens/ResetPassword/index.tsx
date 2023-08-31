@@ -57,7 +57,7 @@ const ResetPassword: React.FC = ({ route }) => {
     setLoading(true);
     if (newPassword !== confirmPassword) {
       Snackbar.show({
-        text: "Passwords do not match",
+        text: t("passwordsMismatch"),
         textColor: "#fcfcfd",
         backgroundColor: "red",
       });
@@ -69,7 +69,7 @@ const ResetPassword: React.FC = ({ route }) => {
       navigateToLogin();
       setLoading(false);
       Snackbar.show({
-        text: "Password has been updated successfully",
+        text: t("passwordResetSuccessfully"),
         duration: Snackbar.LENGTH_SHORT,
         textColor: "#fcfcfd",
         backgroundColor: "#007AFF",
@@ -79,7 +79,7 @@ const ResetPassword: React.FC = ({ route }) => {
 
       if (err.code === "CodeMismatchException") {
         Snackbar.show({
-          text: "Code mismatch",
+          text: t("otpCodeMismatch"),
           duration: Snackbar.LENGTH_LONG,
           textColor: "#fcfcfd",
           backgroundColor: "red",
@@ -87,7 +87,7 @@ const ResetPassword: React.FC = ({ route }) => {
       } else {
         DdLogs.error(`Forgot password submit error: ${err}`);
         Snackbar.show({
-          text: "Something went wrong",
+          text: t("somethingWentWrong"),
           duration: Snackbar.LENGTH_LONG,
           textColor: "#fcfcfd",
           backgroundColor: "red",
@@ -98,17 +98,7 @@ const ResetPassword: React.FC = ({ route }) => {
     }
   }
 
-  const confirmOtp = (): boolean => {
-    if (code.length < 6) {
-      Snackbar.show({
-        text: "Please enter 6 digit code",
-        textColor: "#fcfcfd",
-        backgroundColor: "red",
-      });
-      return false;
-    }
-    return true;
-  };
+  const confirmOtp = (): boolean => code.length === 6;
 
   return (
     <View
@@ -148,7 +138,7 @@ const ResetPassword: React.FC = ({ route }) => {
                 // onBlur={handleBlur('code')}
                 cellCount={CELL_COUNT}
                 // rootStyle={styles.codeFieldRoot}
-                rootStyle={{marginVertical:hp(4),flexDirection: 'row'}}
+                rootStyle={{ marginVertical: hp(4), flexDirection: "row" }}
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
                 renderCell={({ index, symbol, isFocused }) => (

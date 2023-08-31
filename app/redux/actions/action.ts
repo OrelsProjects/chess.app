@@ -22,7 +22,6 @@ import NavigationService from "../../navigation/NavigationService";
 import { Auth } from "aws-amplify";
 import { store } from "../store/store";
 import { DdLogs } from "@datadog/mobile-react-native";
-
 interface SignupData {
   first_name: string;
   last_name: string;
@@ -37,12 +36,14 @@ interface SignupData {
 export const validateUserAuthentication = () => {
   return async (dispatch: any) => {
     try {
+      console.log("Am I logged in?" + JSON.stringify(store.getState().auth));
       const user = await Auth.currentAuthenticatedUser();
 
-      if (user) {
+      if (user != null && Object.keys(user).length > 0) {
         const { username, email } = user;
         dispatch(setToken(user?.attributes?.sub));
         dispatch(setUserInfo({ name: username, email }));
+        // CALL IT HERE
       } else {
         dispatch({ type: CLEAR_USER, payload: "User not found" });
       }
@@ -86,6 +87,8 @@ export const Signup = (data: SignupData) => {
 
       if (response) {
         dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
+        console.log("Params");
+        console.log(JSON.stringify(apiParams));
         NavigationService.navigate("EnterOTP", {
           username: apiParams.first_name,
           email: apiParams.email,
@@ -93,6 +96,7 @@ export const Signup = (data: SignupData) => {
       }
     } catch (error) {
       DdLogs.error(`Signup redux error: ${error}`);
+      console.log(error);
       dispatch({ type: SIGNUP_FAILURE, payload: error });
     }
   };
@@ -170,10 +174,8 @@ export const expectedRating = (expectRating: string) => {
   };
 };
 
-export const setUserInfo = (infoData: any) => {
-  return async (dispatch: any) => {
-    dispatch({ type: SET_USERINFO, payload: infoData });
-  };
+export const setUserInfo = (name: string, email: string) => {
+  return { type: SET_USERINFO, payload: { name, email } };
 };
 
 export const setLanguage = (lang: string) => {
@@ -189,9 +191,7 @@ export const setOnBoarding = (onBoarding: boolean) => {
 };
 
 export const setToken = (token: string) => {
-  return async (dispatch: any) => {
-    dispatch({ type: SET_TOKEN, payload: token });
-  };
+  return { type: SET_TOKEN, payload: token };
 };
 
 export const removeUserInfo = () => {

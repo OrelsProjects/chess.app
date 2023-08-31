@@ -18,10 +18,10 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
-import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../store/index";
 import { DdLogs } from "@datadog/mobile-react-native";
+import Snackbar from "react-native-snackbar";
 
 interface OtpProps {
   route: {
@@ -33,38 +33,53 @@ interface OtpProps {
 }
 
 const EnterOTP: React.FC<OtpProps> = ({ route }) => {
-  const lang = useSelector((state: any) => state.auth.language);
   const { t } = useTranslation();
-  const userName = route.params.username || "test";
-  const userEmail = route.params.email || "test@gmail.com";
+  const userName = route.params.username;
+  const userEmail = route.params.email;
+  const CELL_COUNT = 6;
+  const [code, setCode] = useState("");
+  const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: code,
+    setValue: setCode,
+  });
 
   const insets = useSafeAreaInsets();
   const goBack = () => NavigationService.goBack();
   const [loading, setLoading] = useState(false);
 
-  const navigateToResetPass = async () => {
-    if (userName) {
-      setLoading(true);
-      try {
-        await Auth.confirmSignUp(userName, value);
-        setLoading(false);
-        useStore.getState().setIsLoggedIn(true);
-      } catch (error) {
-        DdLogs.error(`Confirm sign up error: ${error}`);
-        setLoading(false);
+  const verifyOTP = async () => {
+    if (code.length < 6) {
+      return;
+    }
+    setLoading(true);
+    try {
+      await Auth.confirmSignUp(userName, code);
+      setLoading(false);
+      useStore.getState().setIsLoggedIn(true);
+    } catch (error: any) {
+      DdLogs.error(`Confirm sign up error: ${error}`);
+      console.log(error);
+      if (error.code === "CodeMismatchException") {
+        Snackbar.show({
+          text: t("otpCodeMismatch"),
+          duration: Snackbar.LENGTH_LONG,
+          textColor: "#fcfcfd",
+          backgroundColor: "red",
+        });
+      } else {
+        DdLogs.error(`Forgot password submit error: ${error}`);
+        Snackbar.show({
+          text: t("somethingWentWrong"),
+          duration: Snackbar.LENGTH_LONG,
+          textColor: "#fcfcfd",
+          backgroundColor: "red",
+        });
       }
-    } else {
-      NavigationService.navigate("ResetPassword");
+    } finally {
+      setLoading(false);
     }
   };
-
-  const CELL_COUNT = 6;
-  const [value, setValue] = useState("");
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -81,11 +96,12 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
         <CodeField
           ref={ref}
           {...props}
-          value={value}
+          value={code}
           rootStyle={{
-            marginVertical: hp(4),          }}
+            marginVertical: hp(4),
+          }}
           onChangeText={(value) => {
-            setValue(value);
+            setCode(value);
           }}
           cellCount={CELL_COUNT}
           keyboardType="phone-pad"
@@ -107,7 +123,7 @@ const EnterOTP: React.FC<OtpProps> = ({ route }) => {
           customStyle={{ width: wp(90) }}
           buttonText={t("verify")}
           onPress={() => {
-            navigateToResetPass();
+            verifyOTP();
           }}
           disabled={loading}
           loading={loading}

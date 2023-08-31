@@ -81,6 +81,16 @@ const styles = StyleSheet.create({
     margin: normalized.hp(8),
     fontWeight: "400",
   },
+  dropdownContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: hp(7),
+    marginBottom: 16,
+    color: "#333",
+  },
   datePickerContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -96,7 +106,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     marginHorizontal: wp(2),
-    color: "#222",
   },
 
   placeholder: {

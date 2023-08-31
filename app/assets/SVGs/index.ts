@@ -295,6 +295,9 @@ export const starIconTwo = `<svg width="19" height="19" viewBox="0 0 19 19" fill
 </defs>
 </svg>`;
 
+export const mobileIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M80 0C44.7 0 16 28.7 16 64V448c0 35.3 28.7 64 64 64H304c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H80zm80 432h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H160c-8.8 0-16-7.2-16-16s7.2-16 16-16z"
+fill="#C8C7CC"/></svg>`;
+
 export const enterIcon = `<svg width="24" height="27" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M22.4743 12.4259L6.9344 13.1411" stroke="#007AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M22.4742 12.4261L3.8251 22.4865L6.9343 13.1413L2.97988 4.12116L22.4742 12.4261Z" stroke="#007AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

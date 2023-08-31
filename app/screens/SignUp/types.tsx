@@ -1,6 +1,5 @@
 interface ISignupData {
-  first_name: string;
-  last_name: string;
+  username: string;
   gender: string;
   email: string;
   phone_number: string;

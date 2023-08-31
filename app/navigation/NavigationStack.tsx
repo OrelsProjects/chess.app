@@ -79,12 +79,6 @@ const AuthNavigator = () => {
     }
   }
 
-  useEffect(() => {
-    initializeDatadog();
-    initializeMixpanel();
-    dispatch(validateUserAuthentication());
-  }, []);
-
   return (
     <AuthStack.Navigator initialRouteName="OnBordingScreen">
       {onboarding ? (
@@ -161,11 +155,6 @@ const AuthNavigator = () => {
 };
 
 const MainStackNavigator = () => {
-  useEffect(() => {
-    initializeDatadog();
-    initializeMixpanel();
-  }, []);
-
   return (
     <HomeStack.Navigator
       screenOptions={{ headerShown: false }}
@@ -209,17 +198,14 @@ const LoggedInNavigator = () => {
 
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
-  const [isLoading, setIsLoading] = React.useState(true);
   const dispatch = useDispatch();
   const language = useSelector((state: any) => state.auth.language);
-  const user = useSelector((state: any) => state.auth.userInfo);
   const isLoggedIn = useStore((state) => state.isLoggedIn);
-  const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
 
   useEffect(() => {
-    setIsLoggedIn(user != null);
-    setIsLoading(false);
-  }, [user]);
+    initializeDatadog();
+    initializeMixpanel();
+  }, []);
 
   useEffect(() => {
     dispatch(validateUserAuthentication());
@@ -232,7 +218,7 @@ const App: React.FC<IProps> = (props: IProps) => {
         barStyle={theme.dark ? "light-content" : "dark-content"}
         backgroundColor={theme.dark ? "black" : "white"}
       />
-      {!isLoading && (
+      {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {isLoggedIn ? (
             <Stack.Screen name="HomeStack" component={LoggedInNavigator} />
@@ -249,7 +235,7 @@ const App: React.FC<IProps> = (props: IProps) => {
             />
           )}
         </Stack.Navigator>
-      )}
+      }
     </NavigationContainer>
   );
 };

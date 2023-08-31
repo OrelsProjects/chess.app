@@ -21,7 +21,9 @@ import {
   mailIcon,
   userIcon,
   starIcon,
+  mobileIcon,
 } from "../../assets/SVGs/index";
+import { formatPhoneNumber } from "../../utils/phoneNumberUtils";
 import ButtonCTA from "../../components/ButtonCTA";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
@@ -30,26 +32,69 @@ import NavigationService from "../../navigation/NavigationService";
 import { setToken, setUserInfo } from "../../redux/actions/action";
 import { SIGNUP_FAILURE, SIGNUP_SUCCESS } from "../../redux/actions/actionType";
 import styles from "./style";
-import { endPoints } from "../../constants";
+import { BaseURL, endPoints } from "../../constants";
 import Snackbar from "react-native-snackbar";
 import axios from "axios";
 import { DdLogs } from "@datadog/mobile-react-native";
+
+// type of input, value and isError
+interface IInputData {
+  placeholder: string;
+  value: string;
+  isError?: boolean;
+}
+
+interface IValidatePlayerNumberData {
+  isValidated: boolean;
+}
 
 const SignUpScreen: React.FC = () => {
   const { t } = useTranslation();
   const language = useSelector((state: any) => state.auth.language);
   const isRTL = language === "he";
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [birth, setBirth] = useState("");
-  const [israel, setIsrael] = useState("");
+  const [email, setEmail] = useState<IInputData>({
+    placeholder: t("email"),
+    value: "",
+    isError: false,
+  });
+
+  const [phoneNumber, setPhoneNumber] = useState<IInputData>({
+    placeholder: t("phoneNumber"),
+    value: "",
+    isError: false,
+  });
+
+  const [password, setPassword] = useState<IInputData>({
+    placeholder: t("password"),
+    value: "",
+    isError: false,
+  });
+
+  const [username, setUsername] = useState<IInputData>({
+    placeholder: t("username"),
+    value: "",
+    isError: false,
+  });
+  const [genderValue, setGenderValue] = useState("");
+  const [genderError, setGenderError] = useState(false);
+
+  const [dateOfBirth, setDateOfBirth] = useState<IInputData>({
+    placeholder: t("dateOfBirth"),
+    value: "",
+    isError: false,
+  });
+
+  const [playerNumber, setPlayerNumber] = useState<IInputData>({
+    placeholder: t("playerNumber"),
+    value: "",
+    isError: false,
+  });
+
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const [gender, setGender] = useState(null);
-  const [items, setItems] = useState([
+  const [genderItems, setGenderItems] = useState([
     { label: `${t("male")}`, value: "male", labelStyle: { color: "#8A8A8F" } },
     {
       label: `${t("female")}`,
@@ -62,85 +107,172 @@ const SignUpScreen: React.FC = () => {
 
   const insets = useSafeAreaInsets();
 
-  const handleLogin = () => NavigationService.navigate("Login");
-  const authSignup = () =>
-    fetchData(name, password, email, phoneNumber, gender, birth, israel);
+  const validateFields = async (): Promise<boolean> => {
+    try {
+      setLoading(true);
+      const usernameError = !validateUsername(username.value);
+      const emailError = !validateEmail(email.value);
+      const phoneNumberError = !validatePhoneNumber(phoneNumber.value);
+      const passwordError = !password.value;
+      const genderError = !genderValue;
+      const dateOfBirthError = !dateOfBirth.value;
+      const playerNumberError = !playerNumber.value;
 
-  const [isEmailValid, setIsEmailValid] = useState(true);
+      setUsername({ ...username, isError: usernameError });
+      setEmail({ ...email, isError: emailError });
+      setPhoneNumber({ ...phoneNumber, isError: phoneNumberError });
+      setPassword({ ...password, isError: passwordError });
+      setGenderError(genderError);
+      setDateOfBirth({ ...dateOfBirth, isError: dateOfBirthError });
+      setPlayerNumber({ ...playerNumber, isError: playerNumberError });
+      if (
+        usernameError ||
+        emailError ||
+        phoneNumberError ||
+        passwordError ||
+        genderError ||
+        dateOfBirthError ||
+        playerNumberError
+      ) {
+        Snackbar.show({
+          text: t("signUpFieldsIncorrectDataError"),
+          textColor: "#fcfcfd",
+          backgroundColor: "red",
+        });
 
-  const validateEmail = (email: string) => {
+        return false;
+      } else {
+        const result = await BaseURL.get<IValidatePlayerNumberData>(
+          endPoints.validatePlayerNumber(playerNumber.value)
+        );
+        if (result && result.data && !result.data.isValidated) {
+          Snackbar.show({
+            text: t("playerNumberIncorrect"),
+            textColor: "#fcfcfd",
+            backgroundColor: "red",
+          });
+          setPlayerNumber({ ...playerNumber, isError: true });
+          return false;
+        }
+      }
+      return true;
+    } catch (error) {
+      setLoading(false);
+      DdLogs.error(
+        `Fields validation on signup error: ${JSON.stringify(error)}`
+      );
+      return false;
+    }
+  };
+
+  const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-    setIsEmailValid(validateEmail(text));
+  const validateUsername = (username: string): boolean => {
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    return usernameRegex.test(username);
   };
 
-  const fetchData = async (
-    name: string,
-    password: string,
-    email: string,
-    phoneNumber: string,
-    gender: string,
-    birth: string,
-    israel: string
-  ) => {
-    let errorText = null;
-    if (!name) {
-      errorText = "Name is missing";
-    } else if (!email) {
-      errorText = "Email is missing";
-    } else if (!phoneNumber) {
-      errorText = "Phone number is missing";
-    } else if (!password) {
-      errorText = "Password is missing";
-    }
+  // Israeli phone number validation
+  const validatePhoneNumber = (phoneNumber: string): boolean => {
+    const phoneNumberRegex = /^05\d{8}$/;
+    return phoneNumberRegex.test(phoneNumber);
+  };
 
-    if (errorText) {
-      Snackbar.show({
-        text: errorText,
-        textColor: "#fcfcfd",
-        backgroundColor: "red",
-      });
-      setLoading(false);
-      return;
-    }
+  const handleEmailChange = (text: string) => {
+    setEmail({
+      ...email,
+      value: text ? text.toLowerCase() : "",
+      isError: !validateEmail(text),
+    });
+  };
 
+  const handlePhoneNumberChange = (text: string) => {
+    setPhoneNumber({
+      ...phoneNumber,
+      value: text,
+      isError: !validatePhoneNumber(text),
+    });
+  };
+
+  const handleUsernameChange = (text: string) => {
+    setUsername({
+      ...username,
+      value: text ? text.toLowerCase() : "",
+      isError: !validateUsername(text),
+    });
+  };
+
+  const handlePasswordChange = (text: string) => {
+    setPassword({
+      ...password,
+      value: text,
+      isError: !text,
+    });
+  };
+
+  const handleDateOfBirthChange = (text: string) => {
+    setDateOfBirth({
+      ...dateOfBirth,
+      value: text,
+      isError: !text,
+    });
+  };
+
+  const handlePlayerNumberChange = (text: string) => {
+    setPlayerNumber({
+      ...playerNumber,
+      value: text,
+      isError: !text,
+    });
+  };
+
+  const signUp = async () => {
     try {
       setLoading(true);
+      const formattedPhoneNumber = formatPhoneNumber(phoneNumber.value);
       const user = await Auth.signUp({
-        username: name,
-        password: password,
+        username: username.value,
+        password: password.value,
         attributes: {
-          email: email?.toLowerCase(),
-          phone_number: "+" + phoneNumber,
+          email: email?.value.toLowerCase(),
+          phone_number: formattedPhoneNumber,
         },
         autoSignIn: {
-          enabled: false,
+          enabled: true,
         },
       });
-      dispatch(setToken(user?.userSub));
 
-      const interval = setInterval(() => {
-        dispatch(setUserInfo({ name, email }));
-        let objParam = {
-          first_name: name,
-          last_name: "testing",
-          gender: gender,
-          email: email,
-          phone_number: "+" + phoneNumber,
-          player_number: Number(israel),
-          date_of_birth: birth,
-          token: user?.userSub,
-        };
-        Signup(objParam);
-        clearInterval(interval);
-      }, 1000);
-    } catch (error) {
+      dispatch(setToken(user?.userSub));
+      dispatch(setUserInfo(username.value, username.value));
+
+      let objParam = {
+        username: username.value,
+        gender: genderValue,
+        email: email.value,
+        phone_number: formattedPhoneNumber,
+        player_number: Number(playerNumber.value),
+        date_of_birth: dateOfBirth.value,
+        token: user?.userSub,
+      };
+      console.log("objParam ", objParam);
+      saveUserApi(objParam);
+    } catch (error: any) {
       setLoading(false);
       DdLogs.error(`Signup error: ${error}`);
+      console.error(error);
+      if (error.code === "UsernameExistsException") {
+        Snackbar.show({
+          text: t("usernameExists"),
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: "#fcfcfd",
+          backgroundColor: "red",
+        });
+        setUsername({ ...username, isError: true });
+        return;
+      }
       Snackbar.show({
         text: t("somethingWentWrong"),
         duration: Snackbar.LENGTH_SHORT,
@@ -150,11 +282,10 @@ const SignUpScreen: React.FC = () => {
     }
   };
 
-  const Signup = async (data: ISignupData) => {
+  const saveUserApi = async (data: ISignupData) => {
     try {
       const {
-        first_name,
-        last_name,
+        username,
         gender,
         email,
         phone_number,
@@ -172,8 +303,7 @@ const SignUpScreen: React.FC = () => {
       });
 
       let apiParams = {
-        first_name,
-        last_name,
+        username,
         gender,
         email,
         phone_number,
@@ -181,13 +311,14 @@ const SignUpScreen: React.FC = () => {
         date_of_birth,
       };
       const response = await SignUpAPI.post(endPoints.signUp, apiParams);
+      console.log("response ", JSON.stringify(response?.config?.data));
 
       setLoading(false);
       if (response) {
         dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
-
+        console.log("apiParams ", JSON.stringify(apiParams));
         NavigationService.navigate("EnterOTP", {
-          username: apiParams.first_name,
+          username: apiParams.username,
           email: apiParams.email,
         });
       }
@@ -238,37 +369,42 @@ const SignUpScreen: React.FC = () => {
             </View>
             <CustomInput
               placeholder={t("username")}
-              value={name}
+              value={username.value}
               iconName={userIcon}
-              onChangeText={(e) => setName(e)}
+              onChangeText={handleUsernameChange}
+              isError={username.isError}
             />
             <CustomInput
               placeholder={t("email")}
-              value={email}
+              value={email.value}
               iconName={mailIcon}
               onChangeText={handleEmailChange}
-              isEmailValid={isEmailValid}
+              isError={email.isError}
               keyboardType={"email-address"}
             />
 
             <CustomInput
               placeholder={`${t("phoneNumber")}`}
-              value={phoneNumber}
-              iconName={starIcon}
+              value={phoneNumber.value}
+              iconName={mobileIcon}
               maxLength={10}
-              onChangeText={(e) => setPhoneNumber(e)}
+              onChangeText={handlePhoneNumberChange}
+              isError={phoneNumber.isError}
               keyboardType={"phone-pad"}
             />
 
             <DropDownPicker
               open={isDropDownOpen}
-              value={gender}
-              items={items}
+              value={genderValue}
+              items={genderItems}
               setOpen={() => setIsDropDownOpen(!isDropDownOpen)}
-              setValue={setGender}
-              setItems={setItems}
+              setValue={setGenderValue}
+              setItems={setGenderItems}
               placeholder={t("gender")}
-              style={styles.datePickerContainer}
+              style={[
+                styles.dropdownContainer,
+                { borderColor: genderError ? "red" : "#ccc" },
+              ]}
               placeholderStyle={{
                 color: "#8A8A8F",
                 fontSize: 16,
@@ -285,14 +421,18 @@ const SignUpScreen: React.FC = () => {
 
             <CustomInput
               placeholder={t("password")}
-              value={password}
+              value={password.value}
               iconName={lockIcon}
-              onChangeText={(e) => setPassword(e)}
+              onChangeText={(e) => handlePasswordChange(e)}
+              isError={password.isError}
               secureTextEntry={true}
             />
 
             <TouchableOpacity
-              style={styles.datePickerContainer}
+              style={[
+                styles.datePickerContainer,
+                { borderColor: dateOfBirth.isError ? "red" : "#ccc" },
+              ]}
               onPress={() => setOpen(true)}
             >
               {lang === "he" ? (
@@ -300,11 +440,13 @@ const SignUpScreen: React.FC = () => {
                   <Text
                     style={[
                       styles.datePickerText,
-                      { textAlign: lang === "he" ? "right" : "left" },
-                      birth ? {} : { color: "#8A8A8F" },
+                      styles.placeholder,
+                      {
+                        textAlign: lang === "he" ? "right" : "left",
+                      },
                     ]}
                   >
-                    {birth ? birth : t("dateOfBirth")}
+                    {dateOfBirth.value ? dateOfBirth.value : t("dateOfBirth")}
                   </Text>
                   <SvgXml xml={calenderIcon} height={"20"} width={"20"} />
                 </>
@@ -315,10 +457,10 @@ const SignUpScreen: React.FC = () => {
                     style={[
                       styles.datePickerText,
                       { textAlign: lang === "he" ? "right" : "left" },
-                      birth ? {} : { color: "#8A8A8F" },
+                      dateOfBirth ? {} : { color: "#8A8A8F" },
                     ]}
                   >
-                    {birth ? birth : t("dateOfBirth")}
+                    {dateOfBirth.value ? dateOfBirth.value : t("dateOfBirth")}
                   </Text>
                 </>
               )}
@@ -331,7 +473,7 @@ const SignUpScreen: React.FC = () => {
               date={new Date()}
               onConfirm={(date) => {
                 setOpen(false);
-                setBirth(moment(date).format("DD-MM-YYYY"));
+                handleDateOfBirthChange(moment(date).format("DD-MM-YYYY"));
               }}
               onCancel={() => {
                 setOpen(false);
@@ -340,10 +482,11 @@ const SignUpScreen: React.FC = () => {
 
             <CustomInput
               placeholder={`${t("playerNumber")}`}
-              value={israel}
+              value={playerNumber.value}
               iconName={starIcon}
               maxLength={6}
-              onChangeText={(e) => setIsrael(e)}
+              onChangeText={(e) => handlePlayerNumberChange(e)}
+              isError={playerNumber.isError}
               keyboardType="phone-pad"
             />
 
@@ -370,7 +513,13 @@ const SignUpScreen: React.FC = () => {
               customStyle={{ width: wp(90), top: normalized.hp(1) }}
               buttonText={t("signUp")}
               onPress={() => {
-                authSignup();
+                validateFields().then((isValidated) => {
+                  if (isValidated) {
+                    signUp();
+                  } else {
+                    setLoading(false);
+                  }
+                });
               }}
               disabled={loading}
               loading={loading}

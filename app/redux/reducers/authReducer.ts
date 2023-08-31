@@ -23,12 +23,14 @@ interface AuthState {
   user: any;
   loading: boolean;
   error: any;
-  searchResults: any;
+  token: string | null;
+  searchResults: any[] | null;
   expectRating: any;
   signupInfo: any;
   language: string;
   Onboarding: boolean;
   userInfo: any;
+  isLoggedIn: boolean;
 }
 
 const initialState = {
@@ -41,10 +43,11 @@ const initialState = {
   signupInfo: {},
   language: "",
   Onboarding: true,
+  isLoggedIn: false,
   userInfo: {},
 };
 
-const authReducer = (state = initialState, action: any) => {
+const authReducer = (state = initialState, action: any): AuthState => {
   switch (action.type) {
     case SIGNUP_REQUEST:
       return {
@@ -62,7 +65,8 @@ const authReducer = (state = initialState, action: any) => {
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        isLoggedIn: true,
+        user: action.payload,
       };
     case SIGNIN_REQUEST:
       return {
@@ -74,6 +78,7 @@ const authReducer = (state = initialState, action: any) => {
       return {
         ...state,
         user: action.payload,
+        isLoggedIn: true,
         loading: false,
         error: null,
       };
@@ -81,6 +86,7 @@ const authReducer = (state = initialState, action: any) => {
       return {
         ...state,
         loading: false,
+        isLoggedIn: false,
         error: action.payload,
       };
     case CLEAR_USER:
@@ -98,15 +104,19 @@ const authReducer = (state = initialState, action: any) => {
         searchResults: action.payload,
       };
     case REMOVE_SEARCH_RESULT:
-      const updatedSearchResults = state.searchResults.filter(
-        (result, index) => index !== action.payload
-      );
+      let updatedSearchResults = [];
+      if (state.searchResults !== null && Array.isArray(state.searchResults)) {
+        updatedSearchResults = state.searchResults.filter(
+          (_, index) => index !== action.payload
+        );
+      }
       return {
         ...state,
         searchResults: updatedSearchResults,
       };
     case HEADER_ID:
       return {
+        ...state,
         user: action.payload,
         loading: false,
         error: null,
@@ -142,7 +152,7 @@ const authReducer = (state = initialState, action: any) => {
         ...state,
         loading: false,
         error: null,
-        userInfo: action.payload,
+        userInfo: action.payload.userInfo,
       };
 
     case SET_TOKEN:
@@ -164,6 +174,7 @@ const authReducer = (state = initialState, action: any) => {
         language: "",
         Onboarding: false,
         userInfo: {},
+        isLoggedIn: false,
       };
 
     default:

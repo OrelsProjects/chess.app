@@ -81,6 +81,7 @@ const resources = {
       confirm: "Confirm",
       dontNeedToReset: "Don't need to reset?",
       continue: "Continue",
+      passwordResetSuccessfully: "Password reset successfully",
 
       //SignUp
       signUpForRegistration: "Sign up for registration",
@@ -110,6 +111,11 @@ const resources = {
 
       // Errors
       somethingWentWrong: "Something were wrong.. We are on it",
+      signUpFieldsIncorrectDataError: "Something in your data is not right..",
+      usernameExists: "Oops.. Username already exists",
+      playerNumberIncorrect: "We didn't find your player number..",
+      otpCodeMismatch: "The code is incorrect.. try again",
+      passwordsMismatch: "Passwords do not match.. try again",
     },
   },
   he: {
@@ -190,7 +196,8 @@ const resources = {
       new: "חדש",
       confirm: "אשר",
       dontNeedToReset: "אין צורך לאפס?",
-      continue: "לְהַמשִׁיך",
+      continue: "המשך",
+      passwordResetSuccessfully: "הסיסמה אופסה בהצלחה",
 
       //SignUp
       signUpForRegistration: "הרשמה להרשמה",
@@ -220,6 +227,11 @@ const resources = {
 
       // Errors
       somethingWentWrong: "משהו השתבש.. אנחנו על זה",
+      signUpFieldsIncorrectDataError: "משהו במידע שלך לא מסתדר..",
+      usernameExists: "אופס.. השם משתמש כבר תפוס",
+      playerNumberIncorrect: "לא מצאנו את המספר שחקן שלך..",
+      otpCodeMismatch: "הקוד לא תקין.. נסה שוב",
+      passwordsMismatch: "הסיסמאות לא תואמות.. נסה שוב",
     },
   },
 };

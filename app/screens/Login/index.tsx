@@ -18,10 +18,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { Auth } from "aws-amplify";
 import {
+  removeUserInfo,
   setOnBoarding,
   setToken,
   setUserInfo,
-  validateUserAuthentication,
 } from "../../redux/actions/action";
 import { useTranslation } from "react-i18next";
 import Snackbar from "react-native-snackbar";
@@ -36,10 +36,6 @@ const Login: React.FC = () => {
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
-
-  const onLogin = (isLoggedIn: boolean) => {
-    setIsLoggedIn(isLoggedIn);
-  };
 
   const onForgot = () => NavigationService.navigate("ForgotPassword");
   const navigateToSignUp = () => NavigationService.navigate("SignUpScreen");
@@ -58,14 +54,17 @@ const Login: React.FC = () => {
       if (user) {
         const { username } = user;
         dispatch(setToken(user?.attributes?.sub));
-        dispatch(setUserInfo({ name: username, email }));
+        dispatch(
+          setUserInfo({ userInfo: { name: username, email }, isLoggedIn: true })
+        );
+        setIsLoggedIn(true);
       }
-      onLogin(user != null);
       setLoading(false);
     } catch (error: unknown) {
       DdLogs.error(`Login error: ${error}`);
       const typedError = error as CustomError;
-      onLogin(false);
+      dispatch(removeUserInfo());
+      setIsLoggedIn(false, "isLoggedIn");
       if (typedError.code === "NotAuthorizedException") {
         Snackbar.show({
           text: t("incorrectUsernameOrPassword"),

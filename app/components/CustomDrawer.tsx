@@ -5,15 +5,12 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   DrawerContentScrollView,
-  DrawerItemList,
-  DrawerContentComponentProps,
 } from "@react-navigation/drawer";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import AppStyles from "../config/styles";
 import { SvgXml } from "react-native-svg";
@@ -22,10 +19,7 @@ import {
   externalLinkIcon,
   defaultPlayer,
   xIcon,
-  calculatorIcon,
   homeIcon,
-  infoIcon,
-  settingsIcon,
   languageIcon,
   logout,
 } from "../assets/SVGs";
@@ -64,10 +58,11 @@ const CustomDrawer = (props) => {
   const lang = useSelector((state: any) => state.auth.language);
 
   const setIsLoggedIn = useStore((state) => state.setIsLoggedIn);
+  
   const onLogOut = () => {
     dispatch(removeUserInfo());
     Auth.signOut();
-    setIsLoggedIn(false);
+    setIsLoggedIn(false, "onLogout");
   };
 
   const drawerItemRoutes = [
