@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import { QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../app/config/theme-config";
 import Navigator from "../app/navigation";
 import { useStore } from "./store";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store/store";
 import { RNQueryClient } from "./services/react-query/query-client";

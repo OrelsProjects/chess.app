@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View, Alert } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  Alert,
+  KeyboardAvoidingView,
+  Keyboard,
+} from "react-native";
 
 import NavigationService from "../../navigation/NavigationService";
 import {
@@ -30,18 +38,19 @@ import { useTranslation } from "react-i18next";
 import images from "../../config/images";
 import axios from "axios";
 import PlayerCard from "../../components/PlayerCard";
-import CustomInputNonRtl from "../../components/CustomInoutNonRtl";
 import { IGameProps, ISearchOpponentProps, IUseRefProps } from "./types";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { DdLogs } from "@datadog/mobile-react-native";
+import { ActivityIndicator } from "react-native-paper";
 
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
   const [opponentName, setOpponentName] = useState("");
   const [ratingNumber, setRatingNumber] = useState("");
   const [badge, setBadge] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
   const [selectedOpponents, setSelectedOptionArray] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [searchData, setSearchData] = useState<ISearchOpponentProps[]>([]);
   const insets = useSafeAreaInsets();
   const [, setName] = useState("");
@@ -140,6 +149,7 @@ const AddOpponent: React.FC = () => {
       source?.current?.cancel("Component unmounted");
     };
   }, []);
+
   const handleRemoveItem = (index: number) => {
     var list = [...selectedOpponents];
     list.splice(index, 1);
@@ -158,13 +168,20 @@ const AddOpponent: React.FC = () => {
       source.current.cancel("Previous request cancelled");
     }
     try {
+      if (text.length === 0) {
+        setSearchResults([]);
+        return;
+      }
+      setIsSearching(true);
       source.current = axios.CancelToken.source();
-      const response = await BaseURL.get(
-        `/search/users/${text.toLowerCase()}/1/5`,
-        {
-          cancelToken: source?.current?.token,
-        }
-      );
+      const response = await BaseURL.get(`/users/search`, {
+        cancelToken: source?.current?.token,
+        params: {
+          search: text.toLowerCase(),
+          page: 1,
+          limit: 5,
+        },
+      });
       setSearchResults(response.data);
 
       return response.data;
@@ -172,6 +189,8 @@ const AddOpponent: React.FC = () => {
       DdLogs.error(`Search error: ${error}`);
       setSearchResults([]);
       throw error;
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -304,9 +323,11 @@ const AddOpponent: React.FC = () => {
               value={opponentName}
               iconName={userIcon}
               onChangeText={(value) => searchUsers(value)}
-              placeholder={t("search")}
+              placeholder={t("searchInputPlaceholder")}
               rightIcon={opponentName ? xIcon : ""}
               onRightIconPress={() => clearSearchResults()}
+              rightIconSize={20}
+              isLoading={isSearching}
             />
             {searchResults.length > 0 ? (
               <View>
@@ -343,7 +364,7 @@ const AddOpponent: React.FC = () => {
               <CustomInput
                 editable={opponentName == "" ? true : false}
                 containerStyle={{ zIndex: 1 }}
-                placeholder={t("rating")}
+                placeholder={t("ratingInputPlaceholder")}
                 value={ratingNumber.toString()}
                 iconName={starIconTwo}
                 onRightIconPress={() => {
@@ -353,7 +374,9 @@ const AddOpponent: React.FC = () => {
                 }}
                 onChangeText={(e) => setRatingNumber(e)}
                 rightIcon={isRTL ? enterIconFlipped : enterIcon}
+                rightIconDisabled={!ratingNumber}
                 keyboardType="number-pad"
+                rightIconSize={32}
               />
               {renderUsers()}
             </>
@@ -365,6 +388,7 @@ const AddOpponent: React.FC = () => {
           customStyle={{ width: wp(90) }}
           buttonText={t("submit")}
           onPress={() => gameTypeSheet?.current?.open()}
+          disabled={selectedOpponents.length == 0 || !!ratingNumber}
         />
       </View>
       {renderGameStatesSheet()}

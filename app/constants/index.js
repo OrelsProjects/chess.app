@@ -12,7 +12,7 @@ export const BaseURL = axios.create({
 
 export const endPoints = {
   signUp: "/users",
-  searchUser: "/search/users/saif/1/10",
+  searchUser: "/users/search/saif/1/10",
   validatePlayerNumber: (playerNumber) =>
     `/users/validatePlayerNumber/${playerNumber}`,
   signIn: `/users/${store.getState().auth.token}`,

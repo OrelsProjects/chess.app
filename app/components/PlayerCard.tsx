@@ -69,7 +69,7 @@ const PlayerCard: React.FC<Parameters> = ({
           <View style={styles.innerCenterView}>
             <Image
               source={getGameStateIcon()}
-              style={{ height: 50, width: 50 }}
+              style={{ height: 70, width: 70}}
             />
           </View>
         ) : null}

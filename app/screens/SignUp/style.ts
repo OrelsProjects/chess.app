@@ -15,13 +15,14 @@ const styles = StyleSheet.create({
   childContainer: {
     flex: 1,
     alignItems: "center",
+    height: "100%",
     width: wp(92),
   },
   headerContainer: {
     justifyContent: "center",
     alignItems: "flex-start",
     width: wp(90),
-    height: hp(6),
+    marginBottom: hp(1),
   },
   signupTitle: {
     width: "100%",

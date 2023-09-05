@@ -1,4 +1,7 @@
 {
   "name": "Israchess",
-  "displayName": "Israchess"
+  "displayName": "Israchess",
+  "android": {
+    "softwareKeyboardLayoutMode": "pan"
+  }
 }

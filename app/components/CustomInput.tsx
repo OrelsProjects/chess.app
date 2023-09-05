@@ -5,6 +5,7 @@ import {
   StyleSheet,
   KeyboardTypeOptions,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import {
@@ -13,6 +14,7 @@ import {
 } from "react-native-responsive-screen";
 import { useSelector } from "react-redux";
 import { eyeClosed, eyeOpen } from "../assets/SVGs/index";
+import { filterConfig } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
 
 interface CustomInputProps {
   placeholder: string;
@@ -26,15 +28,23 @@ interface CustomInputProps {
   leftIcon?: string;
   onRightIconPress?: (() => void) | null;
   onLeftIconPress?: (() => void) | null;
+  rightIconDisabled?: boolean;
+  leftIconDisabled?: boolean;
   maxLength?: number;
   containerStyle?: object;
   editable?: boolean;
   isError?: boolean;
+  rightIconSize?: number;
+  leftIconSize?: number;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  isLoading?: boolean;
 }
 
 type IconProps = {
   xml: string;
   onPress: (() => void) | null;
+  disabled?: boolean;
+  size?: number;
 };
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -47,12 +57,18 @@ const CustomInput: React.FC<CustomInputProps> = ({
   iconName,
   rightIcon,
   leftIcon,
+  containerStyle,
+  rightIconSize = 24,
+  leftIconSize = 24,
   onRightIconPress = null,
   onLeftIconPress = null,
+  leftIconDisabled = false,
+  rightIconDisabled = false,
+  autoCapitalize = "none",
   maxLength = 500,
-  containerStyle,
   editable = true,
   isError = false,
+  isLoading = false,
 }) => {
   const lang = useSelector((state: any) => state.auth.language);
 
@@ -67,13 +83,20 @@ const CustomInput: React.FC<CustomInputProps> = ({
   const isRTL = lang === "he";
   const borderColor = isError ? "red" : isFocused ? "#007AFF" : "#ccc";
 
-  const Icon: React.FC<IconProps> = ({ xml, onPress }) =>
-    onPress ? (
-      <TouchableOpacity onPress={onPress}>
-        <SvgXml xml={xml} height={"24"} width={"24"} />
+  const Icon: React.FC<IconProps> = ({
+    xml,
+    onPress,
+    disabled = false,
+    size = 24,
+  }) =>
+    disabled ? (
+      ""
+    ) : onPress ? (
+      <TouchableOpacity onPress={onPress} disabled={disabled}>
+        <SvgXml xml={xml} height={size} width={size} />
       </TouchableOpacity>
     ) : (
-      <SvgXml xml={xml} height={"24"} width={"24"} />
+      <SvgXml xml={xml} height={size} width={size} />
     );
 
   return (
@@ -84,9 +107,25 @@ const CustomInput: React.FC<CustomInputProps> = ({
         { borderColor, flexDirection: isRTL ? "row-reverse" : "row" },
       ]}
     >
-      {leftIcon && <Icon xml={leftIcon} onPress={onLeftIconPress} />}
+      {leftIcon && (
+        <Icon
+          xml={leftIcon}
+          onPress={() => {
+            onLeftIconPress && onLeftIconPress();
+          }}
+          disabled={leftIconDisabled}
+          size={leftIconSize}
+        />
+      )}
 
-      {iconName && <Icon xml={iconName} onPress={onRightIconPress} />}
+      {iconName && (
+        <Icon
+          xml={iconName}
+          onPress={() => {
+            onRightIconPress && onRightIconPress();
+          }}
+        />
+      )}
 
       <TextInput
         editable={editable}
@@ -104,6 +143,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         ]}
         value={value}
         maxLength={maxLength}
+        autoCapitalize={autoCapitalize}
       />
 
       {secureTextEntry && (
@@ -113,7 +153,18 @@ const CustomInput: React.FC<CustomInputProps> = ({
         />
       )}
 
-      {rightIcon && <Icon xml={rightIcon} onPress={onRightIconPress} />}
+      {isLoading ? (
+        <ActivityIndicator size="small" color="#007AFF" />
+      ) : (
+        rightIcon && (
+          <Icon
+            xml={rightIcon}
+            onPress={onRightIconPress}
+            disabled={rightIconDisabled}
+            size={rightIconSize}
+          />
+        )
+      )}
     </View>
   );
 };

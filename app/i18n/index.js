@@ -32,6 +32,8 @@ const resources = {
       classical: "Classical",
       sheetTitleGameState: "What was the score?",
       sheetTitleGameType: "Which game did you play?",
+      searchInputPlaceholder: "You can search a player",
+      ratingInputPlaceholder:"Or enter their rating",
 
       //ForgotPassword
       forgotPassword: "Forgot Password",
@@ -148,6 +150,8 @@ const resources = {
       classical: "איטי",
       sheetTitleGameState: "מה עשית?",
       sheetTitleGameType: "מה שיחקת?",
+      searchInputPlaceholder: "אפשר לחפש שחקן",
+      ratingInputPlaceholder:"או להזין דירוג",
 
       //ForgotPassword
       forgotPassword: "שכחת סיסמה",

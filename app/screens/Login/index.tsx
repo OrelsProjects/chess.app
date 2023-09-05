@@ -61,7 +61,6 @@ const Login: React.FC = () => {
       }
       setLoading(false);
     } catch (error: unknown) {
-      DdLogs.error(`Login error: ${error}`);
       const typedError = error as CustomError;
       dispatch(removeUserInfo());
       setIsLoggedIn(false, "isLoggedIn");
@@ -74,7 +73,8 @@ const Login: React.FC = () => {
         });
         return;
       }
-
+      console.log(error);
+      DdLogs.error(`Login error: ${error}`);
       Snackbar.show({
         text: t("somethingWentWrong"),
         duration: Snackbar.LENGTH_SHORT,

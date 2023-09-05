@@ -200,7 +200,7 @@ const SignUpScreen: React.FC = () => {
   const handleUsernameChange = (text: string) => {
     setUsername({
       ...username,
-      value: text ? text.toLowerCase() : "",
+      value: text,
       isError: !validateUsername(text),
     });
   };
