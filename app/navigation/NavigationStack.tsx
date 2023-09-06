@@ -2,6 +2,7 @@ import * as React from "react";
 import { NavigationContainer, Theme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createLoginSlice } from "../store/createLoginSlice";
 
 import { navigationRef } from "./NavigationService";
 
@@ -208,6 +209,7 @@ const App: React.FC<IProps> = (props: IProps) => {
   }, []);
 
   useEffect(() => {
+    useStore.getState().initializeAsync();
     dispatch(validateUserAuthentication());
     i18n.changeLanguage(language);
   }, []);

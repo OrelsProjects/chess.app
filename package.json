@@ -12,7 +12,7 @@
   "dependencies": {
     "@datadog/mobile-react-native": "^1.8.2",
     "@datadog/mobile-react-navigation": "^1.8.2",
-    "@react-native-async-storage/async-storage": "^1.19.0",
+    "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-community/netinfo": "^9.4.1",
     "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "^6.0.14",
@@ -58,6 +58,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^26.0.23",
+    "@types/lodash.debounce": "^4.0.7",
     "@types/react": "^18.0.21",
     "@types/react-native": "^0.70.6",
     "@types/react-test-renderer": "^18.0.0",

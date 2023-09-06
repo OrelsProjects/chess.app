@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.medium,
   },
   sheetContainer: {
-    height: normalized.hp(22),
+    height: normalized.hp(30),
     width: "100%",
     display: "flex",
     gap: 24,

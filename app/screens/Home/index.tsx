@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -7,46 +7,34 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { useStore } from "../../store";
 import styles from "./styles";
-import { GetUserDetails } from "../../services/react-query/queries/user";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomHeader from "../../components/CustomHeader";
-import RBSheet from "react-native-raw-bottom-sheet";
-import {
-  addFilter,
-  drawerIcon,
-  defaultPlayer,
-  plusIcon,
-  undo,
-  xIcon,
-} from "../../assets/SVGs";
+import { drawerIcon, defaultPlayer, plusIcon, undo } from "../../assets/SVGs";
 import images from "../../config/images";
 import { SvgXml } from "react-native-svg";
 import { normalized } from "../../config/metrics";
 import NavigationService from "../../navigation/NavigationService";
 import { useNavigation } from "@react-navigation/native";
 import ButtonCTA from "../../components/ButtonCTA";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import { expectedRating, removeSearchResult } from "../../redux/actions/action";
+import { setExpectedRating, removeOpponent } from "../../redux/actions/action";
 import { BaseURL, endPoints } from "../../constants";
 import { useTranslation } from "react-i18next";
 import PlayerCard from "../../components/PlayerCard";
 import { DdLogs } from "@datadog/mobile-react-native";
+import { IOpponent, IOpponentDTO } from "../../redux/reducers/authReducer";
 
 const Home: React.FC = () => {
-  const [isClickedBtn, setIsClickedBtn] = useState("rapid");
   const { t } = useTranslation();
-  const user = useSelector((state: any) => state.auth);
-  const [calRating, setCalRating] = useState(0);
-  const [itemListArray, setItemListArray] = useState([]);
+  const userId = useSelector((state: any) => {
+    return state.auth.token;
+  });
+  const [currentRating, setCurrentRating] = useState(0);
+  const [opponentsList, setOpponentsList] = useState<IOpponent[]>([]);
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
-  const lang = useSelector((state: any) => state.auth.language);
 
   const navigateToAddOpponent = () => NavigationService.navigate("AddOpponent");
 
@@ -58,20 +46,18 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleRemoveResult = (index: number) => {
-    dispatch(removeSearchResult(index));
+    dispatch(removeOpponent(index));
   };
 
-  const { searchResults, expectRating } = useSelector(
-    (state: any) => state.auth
-  );
+  const { opponents, expectedRating } = useSelector((state: any) => state.auth);
 
   const content =
-    searchResults?.length > 0
-      ? searchResults.map((result: any) => ({
+    opponents?.length > 0
+      ? opponents.map((result: any) => ({
           svg: defaultPlayer,
-          text: result?.opponentName,
+          opponentName: result?.opponentName,
           points: result?.opponentPoints,
-          status: result?.opponentStatus,
+          status: result?.gameStatus,
           starText: result?.opponentRating,
           image: images.icons.players,
           starImage: images.icons.star,
@@ -81,25 +67,36 @@ const Home: React.FC = () => {
 
   const getCurrentRatingApi = async () => {
     try {
-      const response = await BaseURL.get(endPoints.getUserApi);
-      setCalRating(response.data.rating_israel);
+      const response = await BaseURL.get(`${endPoints.getUserApi}/${userId}`);
+      setCurrentRating(response.data.rating_israel);
+      dispatch(setExpectedRating(response.data.rating_expected));
       return response.data;
     } catch (error) {
       DdLogs.error(`Get current api error: ${error}`);
+      console.log(error);
       throw error;
     }
   };
 
-  const sendDataToAPI = async () => {
+  const calculateRatingCore = async () => {
     setLoading(true);
-    const payload = {
-      games: itemListArray,
-    };
+    const payload: IOpponentDTO[] = opponentsList.map((item: IOpponent) => {
+      return {
+        opponent_rating: item.opponentRating,
+        opponent_points: item.opponentPoints,
+        time_control: item.gameType,
+      };
+    });
 
     try {
-      const response = await BaseURL.post(endPoints.calculateRating, payload);
-      dispatch(expectedRating(response.data));
+      const response = await BaseURL.post(endPoints.calculateRating, payload, {
+        headers: {
+          UserId: userId,
+        },
+      });
+      dispatch(setExpectedRating(response.data));
     } catch (error) {
+      console.log("error", error);
       DdLogs.error(`Forgot password error: ${error}`);
     } finally {
       setLoading(false);
@@ -108,28 +105,29 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     getListObjects();
-  }, [searchResults]);
+  }, [opponents]);
 
   const getListObjects = () => {
-    let tempArray: any = [];
-    searchResults?.map((item: any) => {
-      let obj = {
+    let newOpponents: IOpponent[] = [];
+    opponents?.map((item: any) => {
+      newOpponents.push({
+        opponentName: item.opponentName,
         opponentRating: item.opponentRating,
         opponentPoints: item.opponentPoints,
-      };
-
-      tempArray.push(obj);
+        gameType: item.gameType,
+        gameStatus: item.gameStatus,
+      });
     });
 
-    setItemListArray(tempArray);
+    setOpponentsList(newOpponents);
   };
 
   useEffect(() => {
     getCurrentRatingApi();
-  }, []);
+  }, [userId]);
 
-  const calRatingButton = () => {
-    sendDataToAPI();
+  const calculateNewRating = () => {
+    calculateRatingCore();
   };
 
   const handleReset = async () => {
@@ -139,7 +137,7 @@ const Home: React.FC = () => {
         // Request payload
       });
       const response = resetRating?.data;
-      dispatch(expectedRating(response));
+      dispatch(setExpectedRating(response));
       setLoading(false);
     } catch (error) {
       DdLogs.error(`Reset rating error: ${error}`);
@@ -150,8 +148,8 @@ const Home: React.FC = () => {
   const handleUndo = async () => {
     setLoading(true);
     try {
-      const resetUndo = await BaseURL.put(endPoints.undo);
-      dispatch(expectedRating(resetUndo.data));
+      const result = await BaseURL.put(endPoints.undo);
+      dispatch(setExpectedRating(result.data));
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -184,12 +182,13 @@ const Home: React.FC = () => {
               { fontWeight: "600", fontSize: normalized.wp(4) },
             ]}
           >
-            {t("currentRating")} ({calRating})
+            {t("currentRating")} ({currentRating})
           </Text>
         </View>
         <View style={styles.ratingView}>
           <Text style={styles.ratingText}>
-            {t("expectedRating")} ({expectRating ? expectRating : calRating})
+            {t("expectedRating")} (
+            {expectedRating ? expectedRating : currentRating})
           </Text>
         </View>
       </View>
@@ -201,7 +200,7 @@ const Home: React.FC = () => {
         {content?.map((item: any, index: any) => (
           <PlayerCard
             playerImage={item.svg}
-            playerName={item.text}
+            playerName={item.opponentName}
             gameStatus={item.status}
             rating={item.starText}
             disabled={true}
@@ -210,12 +209,7 @@ const Home: React.FC = () => {
         ))}
       </ScrollView>
 
-      <TouchableOpacity
-        style={[
-          styles.view2,
-        ]}
-        onPress={navigateToAddOpponent}
-      >
+      <TouchableOpacity style={[styles.view2]} onPress={navigateToAddOpponent}>
         <View style={styles.button}>
           <SvgXml xml={plusIcon} width={20} height={20} />
         </View>
@@ -240,7 +234,7 @@ const Home: React.FC = () => {
         <ButtonCTA
           customStyle={{ width: wp(90) }}
           buttonText={t("calculate") + " " + t("rating")}
-          onPress={calRatingButton}
+          onPress={calculateNewRating}
         />
       </View>
     </View>

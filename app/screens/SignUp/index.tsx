@@ -181,51 +181,60 @@ const SignUpScreen: React.FC = () => {
     return phoneNumberRegex.test(phoneNumber);
   };
 
+  const removeSpaces = (text: string): string => text.replace(/\s/g, "");
+
   const handleEmailChange = (text: string) => {
+    const formattedText = text ? removeSpaces(text.toLowerCase()) : "";
     setEmail({
       ...email,
-      value: text ? text.toLowerCase() : "",
-      isError: !validateEmail(text),
+      value: formattedText,
+      isError: !validateEmail(formattedText),
     });
   };
 
   const handlePhoneNumberChange = (text: string) => {
+    const formattedText = text ? removeSpaces(text) : "";
     setPhoneNumber({
       ...phoneNumber,
-      value: text,
-      isError: !validatePhoneNumber(text),
+      value: formattedText,
+      isError: !validatePhoneNumber(formattedText),
     });
   };
 
   const handleUsernameChange = (text: string) => {
+    const formattedText = text ? removeSpaces(text) : "";
     setUsername({
       ...username,
-      value: text,
-      isError: !validateUsername(text),
+      value: formattedText,
+      isError: !validateUsername(formattedText),
     });
   };
 
   const handlePasswordChange = (text: string) => {
+    const formattedText = text ? removeSpaces(text) : "";
     setPassword({
       ...password,
-      value: text,
-      isError: !text,
+      value: formattedText,
+      isError: !formattedText,
     });
   };
 
   const handleDateOfBirthChange = (text: string) => {
+    const formattedText = text ? removeSpaces(text) : "";
+    console.log(new Date(dateOfBirth.value).getTime());
     setDateOfBirth({
       ...dateOfBirth,
-      value: text,
-      isError: !text,
+      value: formattedText,
+      isError: !formattedText,
     });
   };
 
   const handlePlayerNumberChange = (text: string) => {
+    const formattedText = text ? removeSpaces(text) : "";
     setPlayerNumber({
       ...playerNumber,
-      value: text,
-      isError: !text,
+      value: formattedText,
+      isError: !formattedText,
     });
   };
 
@@ -254,10 +263,12 @@ const SignUpScreen: React.FC = () => {
         email: email.value,
         phone_number: formattedPhoneNumber,
         player_number: Number(playerNumber.value),
-        date_of_birth: dateOfBirth.value,
+        date_of_birth: moment(dateOfBirth.value, "DD-MM-YYYY")
+          .toDate()
+          .getTime(),
         token: user?.userSub,
       };
-      console.log("objParam ", objParam);
+      console.log("objParam", objParam);
       saveUserApi(objParam);
     } catch (error: any) {
       setLoading(false);
@@ -311,19 +322,16 @@ const SignUpScreen: React.FC = () => {
         date_of_birth,
       };
       const response = await SignUpAPI.post(endPoints.signUp, apiParams);
-      console.log("response ", JSON.stringify(response?.config?.data));
 
       setLoading(false);
       if (response) {
         dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
-        console.log("apiParams ", JSON.stringify(apiParams));
         NavigationService.navigate("EnterOTP", {
           username: apiParams.username,
           email: apiParams.email,
         });
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
       dispatch({ type: SIGNUP_FAILURE, payload: error });
       setLoading(false);
       DdLogs.error(`Signup error: ${error}`);
@@ -470,7 +478,9 @@ const SignUpScreen: React.FC = () => {
               mode="date"
               open={open}
               locale={lang}
-              date={new Date()}
+              date={
+                moment(dateOfBirth.value, "DD-MM-YYYY").toDate() ?? new Date()
+              }
               onConfirm={(date) => {
                 setOpen(false);
                 handleDateOfBirthChange(moment(date).format("DD-MM-YYYY"));
@@ -481,7 +491,7 @@ const SignUpScreen: React.FC = () => {
             />
 
             <CustomInput
-              placeholder={`${t("playerNumber")}`}
+              placeholder={`${t("playerNumberPlaceholder")}`}
               value={playerNumber.value}
               iconName={starIcon}
               maxLength={6}

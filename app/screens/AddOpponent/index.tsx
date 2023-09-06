@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  Alert,
-  KeyboardAvoidingView,
-  Keyboard,
-} from "react-native";
-
+import { ScrollView, Text, TouchableOpacity, View, Alert } from "react-native";
 import NavigationService from "../../navigation/NavigationService";
 import {
   widthPercentageToDP as wp,
@@ -34,14 +25,17 @@ import { normalized } from "../../config/metrics";
 import { useDispatch, useSelector } from "react-redux";
 import { addOpponents } from "../../redux/actions/action";
 import { BaseURL } from "../../constants";
+import { normalizeRating } from "../../utils/ratingUtils";
 import { useTranslation } from "react-i18next";
 import images from "../../config/images";
 import axios from "axios";
 import PlayerCard from "../../components/PlayerCard";
 import { IGameProps, ISearchOpponentProps, IUseRefProps } from "./types";
 import RBSheet from "react-native-raw-bottom-sheet";
+import debounce from "lodash.debounce";
 import { DdLogs } from "@datadog/mobile-react-native";
-import { ActivityIndicator } from "react-native-paper";
+import { Snackbar } from "react-native-paper";
+import { IOpponent } from "../../redux/reducers/authReducer";
 
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
@@ -84,12 +78,26 @@ const AddOpponent: React.FC = () => {
 
   const submitOpponents = (gameType: string) => {
     if (selectedOpponents.length == 0) {
-      Alert.alert(`${t("note")}:`, t("pleaseSelectUsers"));
+      Snackbar.show({
+        text: t("noOpponentsError"),
+        duration: Snackbar.DURATION_LONG,
+        textColor: "#fcfcfd",
+        backgroundColor: "#ff1a51",
+      });
     } else {
       selectedOpponents?.map((item: any) => {
         item.gameType = gameType;
       });
-      dispatch(addOpponents(selectedOpponents));
+      console.log("ITEMs: ", selectedOpponents);
+      const opponents: IOpponent[] = selectedOpponents.map((item: any) => ({
+        opponentName: item.opponentName,
+        opponentRating: item.opponentRating,
+        opponentPoints: item.opponentPoints,
+        gameType: item.gameType,
+        gameStatus: item.opponentStatus,
+      }));
+
+      dispatch(addOpponents(opponents));
       navigateToHome();
     }
   };
@@ -139,8 +147,8 @@ const AddOpponent: React.FC = () => {
       value: "rapid",
     },
     {
-      name: t("classical"),
-      value: "classical",
+      name: t("50+10"),
+      value: "50+10",
     },
   ];
 
@@ -161,9 +169,7 @@ const AddOpponent: React.FC = () => {
     setSearchResults([]);
   };
 
-  const searchUsers = async (text: any) => {
-    setOpponentName(text);
-    setRatingNumber("");
+  const debouncedSearch = debounce(async (text: any) => {
     if (source.current) {
       source.current.cancel("Previous request cancelled");
     }
@@ -172,7 +178,6 @@ const AddOpponent: React.FC = () => {
         setSearchResults([]);
         return;
       }
-      setIsSearching(true);
       source.current = axios.CancelToken.source();
       const response = await BaseURL.get(`/users/search`, {
         cancelToken: source?.current?.token,
@@ -182,16 +187,34 @@ const AddOpponent: React.FC = () => {
           limit: 5,
         },
       });
+
       setSearchResults(response.data);
+      setIsSearching(false);
 
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.code === "ERR_CANCELED") {
+        return;
+      }
       DdLogs.error(`Search error: ${error}`);
       setSearchResults([]);
-      throw error;
-    } finally {
       setIsSearching(false);
     }
+  }, 300);
+
+  const searchUsers = async (text: any) => {
+    setOpponentName(text);
+    setRatingNumber("");
+    if (source.current) {
+      source.current.cancel("Previous request cancelled");
+    }
+    if (text.length === 0) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+    setIsSearching(true);
+    debouncedSearch(text);
   };
 
   const renderGameTypesSheet = () => (
@@ -372,7 +395,16 @@ const AddOpponent: React.FC = () => {
                     showGameStateSheet();
                   }
                 }}
-                onChangeText={(e) => setRatingNumber(e)}
+                onChangeText={(e) => {
+                  if (e && isNaN(parseInt(e))) {
+                    return;
+                  }
+                  if (!e) {
+                    setRatingNumber("");
+                    return;
+                  }
+                  setRatingNumber(normalizeRating(parseInt(e)).toString());
+                }}
                 rightIcon={isRTL ? enterIconFlipped : enterIcon}
                 rightIconDisabled={!ratingNumber}
                 keyboardType="number-pad"

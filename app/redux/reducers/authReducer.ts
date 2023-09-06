@@ -8,7 +8,7 @@ import {
   CLEAR_USER,
   //USER_SEARCH,
   SEARCH_USER,
-  REMOVE_SEARCH_RESULT,
+  REMOVE_OPPONENT,
   SIGNUP_INFO,
   HEADER_ID,
   EXPECTED_RATING,
@@ -17,7 +17,22 @@ import {
   SET_USERINFO,
   REMOVE_USERINFO,
   SET_TOKEN,
+  ADD_OPPONENTS,
 } from "../actions/actionType";
+
+export interface IOpponent {
+  opponentName: string;
+  opponentRating: number;
+  opponentPoints: number;
+  gameType: string;
+  gameStatus: string;
+}
+
+export interface IOpponentDTO {
+  opponent_rating: number;
+  opponent_points: number;
+  time_control: string;
+}
 
 interface AuthState {
   user: any;
@@ -25,7 +40,8 @@ interface AuthState {
   error: any;
   token: string | null;
   searchResults: any[] | null;
-  expectRating: any;
+  opponents: IOpponent[];
+  expectedRating: any;
   signupInfo: any;
   language: string;
   Onboarding: boolean;
@@ -39,7 +55,8 @@ const initialState = {
   loading: false,
   error: null,
   searchResults: null,
-  expectRating: null,
+  opponents: [],
+  expectedRating: null,
   signupInfo: {},
   language: "",
   Onboarding: true,
@@ -103,17 +120,26 @@ const authReducer = (state = initialState, action: any): AuthState => {
         error: null,
         searchResults: action.payload,
       };
-    case REMOVE_SEARCH_RESULT:
-      let updatedSearchResults = [];
-      if (state.searchResults !== null && Array.isArray(state.searchResults)) {
-        updatedSearchResults = state.searchResults.filter(
+
+    case REMOVE_OPPONENT:
+      let updatedOpponents: IOpponent[] = [];
+      if (state.opponents !== null && Array.isArray(state.opponents)) {
+        updatedOpponents = state.opponents.filter(
           (_, index) => index !== action.payload
         );
       }
       return {
         ...state,
-        searchResults: updatedSearchResults,
+        opponents: updatedOpponents,
       };
+
+    case ADD_OPPONENTS:
+      const newOpponents = [...state.opponents, ...action.payload];
+      return {
+        ...state,
+        opponents: newOpponents,
+      };
+
     case HEADER_ID:
       return {
         ...state,
@@ -131,7 +157,7 @@ const authReducer = (state = initialState, action: any): AuthState => {
         ...state,
         loading: false,
         error: null,
-        expectRating: action.payload,
+        expectedRating: action.payload,
       };
     case SET_LANGUAGE:
       return {
@@ -169,7 +195,8 @@ const authReducer = (state = initialState, action: any): AuthState => {
         loading: false,
         error: null,
         searchResults: null,
-        expectRating: null,
+        opponents: [],
+        expectedRating: null,
         signupInfo: {},
         language: "",
         Onboarding: false,

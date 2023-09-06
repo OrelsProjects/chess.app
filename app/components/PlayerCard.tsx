@@ -13,14 +13,14 @@ import draw from "../assets/draw.png";
 import { useTranslation } from "react-i18next";
 
 interface Parameters {
-  playerName: string;
-  playerImage: string;
-  rating: string;
-  gameStatus: string;
-  badge: string;
-  disabled: boolean;
-  onPress: () => void;
-  onCancel: () => void;
+  playerName?: string;
+  playerImage?: string;
+  rating?: string;
+  gameStatus?: string;
+  badge?: string;
+  disabled?: boolean;
+  onPress?: () => void;
+  onCancel?: () => void;
 }
 
 const PlayerCard: React.FC<Parameters> = ({
@@ -69,7 +69,7 @@ const PlayerCard: React.FC<Parameters> = ({
           <View style={styles.innerCenterView}>
             <Image
               source={getGameStateIcon()}
-              style={{ height: 70, width: 70}}
+              style={{ height: 70, width: 70 }}
             />
           </View>
         ) : null}

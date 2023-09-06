@@ -4,7 +4,9 @@ import { persist } from 'zustand/middleware';
 import { createLoginSlice, ILoginSlice } from './createLoginSlice';
 import { createThemeSlice, IThemeSlice } from './createThemeSlice';
 
-interface IStore extends ILoginSlice, IThemeSlice {}
+interface IStore extends ILoginSlice, IThemeSlice {
+  initializeAsync(): unknown;
+}
 
 /**
  * Make sure to enforce type for each slice

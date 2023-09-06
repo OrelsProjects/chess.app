@@ -7,8 +7,7 @@ import {
   SIGNIN_REQUEST,
   SIGNIN_SUCCESS,
   SIGNIN_FAILURE,
-  SEARCH_USER,
-  REMOVE_SEARCH_RESULT,
+  REMOVE_OPPONENT,
   HEADER_ID,
   SIGNUP_INFO,
   EXPECTED_RATING,
@@ -17,11 +16,14 @@ import {
   SET_USERINFO,
   REMOVE_USERINFO,
   SET_TOKEN,
+  ADD_OPPONENTS,
 } from "./actionType";
+import { IOpponent } from "../reducers/authReducer";
 import NavigationService from "../../navigation/NavigationService";
 import { Auth } from "aws-amplify";
 import { store } from "../store/store";
 import { DdLogs } from "@datadog/mobile-react-native";
+import axios from "axios";
 interface SignupData {
   first_name: string;
   last_name: string;
@@ -36,19 +38,15 @@ interface SignupData {
 export const validateUserAuthentication = () => {
   return async (dispatch: any) => {
     try {
-      console.log("Am I logged in?" + JSON.stringify(store.getState().auth));
       const user = await Auth.currentAuthenticatedUser();
-
       if (user != null && Object.keys(user).length > 0) {
         const { username, email } = user;
         dispatch(setToken(user?.attributes?.sub));
-        dispatch(setUserInfo({ name: username, email }));
-        // CALL IT HERE
+        dispatch(setUserInfo(username, email));
       } else {
         dispatch({ type: CLEAR_USER, payload: "User not found" });
       }
     } catch (error) {
-      DdLogs.error(`isAuthenticated redux error: ${error}`);
       console.error("isAuthenticated error:", error);
     }
   };
@@ -87,8 +85,6 @@ export const Signup = (data: SignupData) => {
 
       if (response) {
         dispatch({ type: SIGNUP_SUCCESS, payload: response.config.data });
-        console.log("Params");
-        console.log(JSON.stringify(apiParams));
         NavigationService.navigate("EnterOTP", {
           username: apiParams.first_name,
           email: apiParams.email,
@@ -96,7 +92,6 @@ export const Signup = (data: SignupData) => {
       }
     } catch (error) {
       DdLogs.error(`Signup redux error: ${error}`);
-      console.log(error);
       dispatch({ type: SIGNUP_FAILURE, payload: error });
     }
   };
@@ -129,21 +124,19 @@ export const signin = (email: string, password: string) => {
   };
 };
 
-export const addOpponents = (opponents: any) => {
-  let tempArray: any = [];
-  if (store.getState().auth.searchResults == undefined) {
-    tempArray = opponents;
+export const addOpponents = (opponents: IOpponent[]) => (dispatch: any) => {
+  let newOpponents: IOpponent[];
+  if (store.getState().auth.opponents == undefined) {
+    newOpponents = opponents;
   } else {
-    tempArray = [...store.getState().auth.searchResults, ...opponents];
+    newOpponents = [...store.getState().auth.opponents, ...opponents];
   }
-  return async (dispatch: any) => {
-    dispatch({ type: SEARCH_USER, payload: tempArray });
-  };
+  dispatch({ type: ADD_OPPONENTS, payload: newOpponents });
 };
 
-export const removeSearchResult = (index: number) => {
+export const removeOpponent = (index: number) => {
   return {
-    type: REMOVE_SEARCH_RESULT,
+    type: REMOVE_OPPONENT,
     payload: index,
   };
 };
@@ -168,9 +161,9 @@ export const setHeader = (headerID: string) => {
   };
 };
 
-export const expectedRating = (expectRating: string) => {
+export const setExpectedRating = (expectedRating: string) => {
   return async (dispatch: any) => {
-    dispatch({ type: EXPECTED_RATING, payload: expectRating });
+    dispatch({ type: EXPECTED_RATING, payload: expectedRating });
   };
 };
 
@@ -191,7 +184,8 @@ export const setOnBoarding = (onBoarding: boolean) => {
 };
 
 export const setToken = (token: string) => {
-  return { type: SET_TOKEN, payload: token };
+  axios.defaults.headers.common["UserId"] = token;
+  return async (dispatch: any) => dispatch({ type: SET_TOKEN, payload: token });
 };
 
 export const removeUserInfo = () => {

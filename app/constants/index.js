@@ -17,7 +17,7 @@ export const endPoints = {
     `/users/validatePlayerNumber/${playerNumber}`,
   signIn: `/users/${store.getState().auth.token}`,
   calculateRating: `/expectedRating/new`,
-  getUserApi: `/users/${store.getState().auth.token}`,
+  getUserApi: `/user`,
   forgotPassword: "/user-management/forgot-password",
   recoverPassword: "/user-management/recover-password",
   reset: "/calculation/reset",

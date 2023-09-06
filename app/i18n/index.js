@@ -15,7 +15,7 @@ const resources = {
       //AddOpponent
       pleaseFillAllFields: "Please fill all the fields",
       note: "Note",
-      pleaseSelectUsers: "Please select users",
+      noOpponentsError: "Need opponents to calculate",
       search: "Search",
       error: "Error",
       rating: "Rating",
@@ -29,11 +29,11 @@ const resources = {
       statusDraw: "Draw",
       blitz: "Blitz",
       rapid: "Rapid",
-      classical: "Classical",
+      "50+10": "50+10",
       sheetTitleGameState: "What was the score?",
       sheetTitleGameType: "Which game did you play?",
       searchInputPlaceholder: "You can search a player",
-      ratingInputPlaceholder:"Or enter their rating",
+      ratingInputPlaceholder: "Or enter their rating",
 
       //ForgotPassword
       forgotPassword: "Forgot Password",
@@ -100,6 +100,7 @@ const resources = {
       male: "Male",
       female: "Female",
       playerNumber: "Player Number",
+      playerNumberPlaceholder: "Enter your player number or search for it..",
       haveAnAccount: "Have an account?",
 
       //Drawer
@@ -133,7 +134,7 @@ const resources = {
       //AddOpponent
       pleaseFillAllFields: "נא למלא את כל השדות",
       note: "הערה",
-      pleaseSelectUsers: "אנא בחר משתמשים",
+      noOpponentsError: "צריך שחקנים כדי לחשב",
       search: "חיפוש",
       error: "שגיאה",
       rating: "דירוג",
@@ -147,11 +148,11 @@ const resources = {
       statusDraw: "תיקו",
       blitz: "בליץ",
       rapid: "מהיר",
-      classical: "איטי",
+      "50+10": "50+10",
       sheetTitleGameState: "מה עשית?",
       sheetTitleGameType: "מה שיחקת?",
       searchInputPlaceholder: "אפשר לחפש שחקן",
-      ratingInputPlaceholder:"או להזין דירוג",
+      ratingInputPlaceholder: "או להזין דירוג",
 
       //ForgotPassword
       forgotPassword: "שכחת סיסמה",
@@ -218,6 +219,7 @@ const resources = {
       male: "זכר",
       female: "נקבה",
       playerNumber: "מספר שחקן",
+      playerNumberPlaceholder: "מספר שחקן",
       haveAnAccount: "יש לך חשבון?",
 
       //Drawer

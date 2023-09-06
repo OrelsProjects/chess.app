@@ -13,8 +13,11 @@ export const SIGNIN_FAILURE: string = "SIGNIN_FAILURE";
 //export const USER_SEARCH: string = 'USER_SEARCH';
 export const SEARCH_USER: string = "SEARCH_USER";
 export const SEARCH_USER1: string = "SEARCH_USER1";
-export const REMOVE_SEARCH_RESULT = "REMOVE_SEARCH_RESULT";
 export const EXPECTED_RATING = "EXPECTED_RATING";
+
+// ADD OPPONENTS
+export const ADD_OPPONENTS: string = "ADD_OPPONENTS";
+export const REMOVE_OPPONENT = "REMOVE_OPPONENT";
 
 //USER?_SIGNUP_INFO
 export const SIGNUP_INFO: string = "SIGNUP_INFO";

@@ -4,6 +4,6 @@ interface ISignupData {
   email: string;
   phone_number: string;
   player_number: number;
-  date_of_birth: string;
+  date_of_birth: number;
   token: string;
 }
