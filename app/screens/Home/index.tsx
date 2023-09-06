@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import PlayerCard from "../../components/PlayerCard";
 import { DdLogs } from "@datadog/mobile-react-native";
 import { IOpponent, IOpponentDTO } from "../../redux/reducers/authReducer";
+import eventsLogger from "../../utils/eventUtils";
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -133,9 +134,8 @@ const Home: React.FC = () => {
   const handleReset = async () => {
     setLoading(true);
     try {
-      const resetRating = await BaseURL.put(endPoints.reset, {
-        // Request payload
-      });
+      eventsLogger.track("Reset used");
+      const resetRating = await BaseURL.put(endPoints.reset);
       const response = resetRating?.data;
       dispatch(setExpectedRating(response));
       setLoading(false);
@@ -148,6 +148,7 @@ const Home: React.FC = () => {
   const handleUndo = async () => {
     setLoading(true);
     try {
+      eventsLogger.track("Undo used");
       const result = await BaseURL.put(endPoints.undo);
       dispatch(setExpectedRating(result.data));
       setLoading(false);

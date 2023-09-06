@@ -152,20 +152,6 @@ const Login: React.FC = () => {
             disabled={loading}
             loading={loading}
           />
-          <Text style={styles.orText}>{t("or")}</Text>
-          <TouchableOpacity style={styles.googleSignInContainer}>
-            {lang === "he" ? (
-              <>
-                <Text style={styles.googleText}>{t("continueWithGoogle")}</Text>
-                <SvgXml xml={googleIcon} width={"44"} height={"44"} />
-              </>
-            ) : (
-              <>
-                <SvgXml xml={googleIcon} width={"44"} height={"44"} />
-                <Text style={styles.googleText}>{t("continueWithGoogle")}</Text>
-              </>
-            )}
-          </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={styles.secondaryButtonContainer}>

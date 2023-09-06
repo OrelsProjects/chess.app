@@ -268,7 +268,6 @@ const SignUpScreen: React.FC = () => {
           .getTime(),
         token: user?.userSub,
       };
-      console.log("objParam", objParam);
       saveUserApi(objParam);
     } catch (error: any) {
       setLoading(false);
@@ -479,7 +478,9 @@ const SignUpScreen: React.FC = () => {
               open={open}
               locale={lang}
               date={
-                moment(dateOfBirth.value, "DD-MM-YYYY").toDate() ?? new Date()
+                dateOfBirth.value
+                  ? moment(dateOfBirth.value, "DD-MM-YYYY").toDate()
+                  : new Date()
               }
               onConfirm={(date) => {
                 setOpen(false);

@@ -27,17 +27,20 @@ import ChooseLanguage from "../screens/ChooseLanguage";
 import { useSelector, useDispatch } from "react-redux";
 import i18n from "../i18n";
 import datadogConfig from "../../datadog.config";
-import mixpanelConfig from "../../mixpanel.config";
-import { DdLogs, DdRum, DdSdkReactNative } from "@datadog/mobile-react-native";
+import { DdSdkReactNative } from "@datadog/mobile-react-native";
+import { init as initMixpanel } from "../utils/eventUtils";
 import { useEffect } from "react";
-import { Mixpanel } from "mixpanel-react-native";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 
-let isMixpanelInit = false;
+
+interface IProps {
+  theme: Theme;
+}
+
 let isDatadogInit = false;
 
 const initializeDatadog = async () => {
@@ -47,18 +50,6 @@ const initializeDatadog = async () => {
   await DdSdkReactNative.initialize(datadogConfig);
   isDatadogInit = true;
 };
-
-const initializeMixpanel = () => {
-  if (isMixpanelInit) {
-    return;
-  }
-  new Mixpanel(mixpanelConfig.key, true).init();
-  isMixpanelInit = true;
-};
-
-interface IProps {
-  theme: Theme;
-}
 
 const AuthNavigator = () => {
   const isLoggedIn = useStore((state) => state.isLoggedIn);
@@ -205,7 +196,7 @@ const App: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     initializeDatadog();
-    initializeMixpanel();
+    initMixpanel();
   }, []);
 
   useEffect(() => {

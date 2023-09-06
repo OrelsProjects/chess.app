@@ -36,6 +36,7 @@ import debounce from "lodash.debounce";
 import { DdLogs } from "@datadog/mobile-react-native";
 import { Snackbar } from "react-native-paper";
 import { IOpponent } from "../../redux/reducers/authReducer";
+import eventsLogger from "../../utils/eventUtils";
 
 const AddOpponent: React.FC = () => {
   const { t } = useTranslation();
@@ -179,6 +180,7 @@ const AddOpponent: React.FC = () => {
         return;
       }
       source.current = axios.CancelToken.source();
+      eventsLogger.track("Search opponent", { text });
       const response = await BaseURL.get(`/users/search`, {
         cancelToken: source?.current?.token,
         params: {
@@ -311,6 +313,7 @@ const AddOpponent: React.FC = () => {
   };
 
   const onUserSelected = (item: any) => {
+    eventsLogger.track("Opponent selected from search");
     setSearchResults([]);
     setOpponentName(item.first_name);
     setRatingNumber(item.rating_israel);
