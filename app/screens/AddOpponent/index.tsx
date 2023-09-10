@@ -89,7 +89,6 @@ const AddOpponent: React.FC = () => {
       selectedOpponents?.map((item: any) => {
         item.gameType = gameType;
       });
-      console.log("ITEMs: ", selectedOpponents);
       const opponents: IOpponent[] = selectedOpponents.map((item: any) => ({
         opponentName: item.opponentName,
         opponentRating: item.opponentRating,
@@ -97,7 +96,6 @@ const AddOpponent: React.FC = () => {
         gameType: item.gameType,
         gameStatus: item.opponentStatus,
       }));
-
       dispatch(addOpponents(opponents));
       navigateToHome();
     }
@@ -421,7 +419,7 @@ const AddOpponent: React.FC = () => {
       <View style={[styles.secondaryButtonContainer, { zIndex: 1 }]}>
         <ButtonCTA
           customStyle={{ width: wp(90) }}
-          buttonText={t("submit")}
+          buttonText={t("imDone")}
           onPress={() => gameTypeSheet?.current?.open()}
           disabled={selectedOpponents.length == 0 || !!ratingNumber}
         />

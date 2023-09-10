@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { fontSizes, normalized, radius } from '../../config/metrics';
-import AppStyles from '../../config/styles';
+import { StyleSheet } from "react-native";
+import { fontSizes, normalized, radius } from "../../config/metrics";
+import AppStyles from "../../config/styles";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+} from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,41 +14,43 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   allPlayerView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: normalized.wp(90),
     marginVertical: normalized.hp(1),
   },
-  content: { flexDirection: 'row', justifyContent: 'space-between' },
+  content: { flexDirection: "row", justifyContent: "space-between" },
   ratingDirection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     width: normalized.wp(95),
-    marginVertical: normalized.hp(1)
+    marginVertical: normalized.hp(1),
   },
   ratingView: {
     width: normalized.wp(45),
     backgroundColor: AppStyles.color.COLOR_WHITE,
-    alignItems: 'center', justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   ratingText: {
     fontSize: fontSizes.regular,
     padding: 3,
-    color: '#222222',
+    color: "#222222",
   },
 
   scrollViewContent: {
     flexGrow: 1,
-    width: normalized.wp('100'),
-    backgroundColor: '#e5e5e5',
+    height: "auto",
+    width: normalized.wp("100"),
+    backgroundColor: "#e5e5e5",
   },
   middleView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "flex-start",
     marginBottom: normalized.hp(10),
     marginLeft: normalized.hp(-3),
     width: normalized.wp(20),
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: radius.regularRadius,
     backgroundColor: AppStyles.color.COLOR_GREY_WHITE,
-    borderColor: 'gold',
+    borderColor: "gold",
     paddingHorizontal: normalized.wp(3),
   },
   starImage: {
@@ -64,15 +66,15 @@ const styles = StyleSheet.create({
     height: normalized.hp(3),
   },
   starText: {
-    color: '#222222',
+    color: "#222222",
     fontSize: fontSizes.small,
   },
   xIcon: {
     backgroundColor: AppStyles.color.COLOR_WHITE,
     width: normalized.wp(6),
     height: normalized.wp(6),
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: normalized.hp(10),
     elevation: 2.5,
     shadowColor: AppStyles.color.COLOR_BLACK,
@@ -91,27 +93,27 @@ const styles = StyleSheet.create({
     color: AppStyles.color.COLOR_WHITE,
   },
   firstView: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: normalized.wp(95),
     marginTop: normalized.hp(5),
   },
   secondView: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
     height: normalized.hp(10),
     borderRadius: radius.regularRadius,
-    backgroundColor: '#F3F7FF',
+    backgroundColor: "#F3F7FF",
   },
   thirdView: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     width: normalized.wp(60),
   },
   neil: {
-    alignSelf: 'center',
+    alignSelf: "center",
     width: normalized.wp(12),
     height: normalized.hp(6),
   },
@@ -119,8 +121,8 @@ const styles = StyleSheet.create({
     width: normalized.wp(30),
   },
   neilText: {
-    color: '#222222',
-    alignSelf: 'flex-start',
+    color: "#222222",
+    alignSelf: "flex-start",
     marginHorizontal: normalized.wp(3),
     fontSize: fontSizes.large,
   },
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     height: normalized.hp(3),
   },
   players: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     width: normalized.wp(25),
     height: normalized.hp(6),
   },
@@ -144,38 +146,38 @@ const styles = StyleSheet.create({
     height: normalized.hp(5),
   },
   view2: {
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: "center",
+    alignItems: "flex-end",
     width: normalized.wp(90),
-    alignSelf: 'center',
-    position: 'absolute',
+    alignSelf: "center",
+    position: "absolute",
     bottom: normalized.hp(20),
   },
   button: {
     width: hp(8),
     height: hp(8),
     borderRadius: 90,
-    backgroundColor: '#1E90FF',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#1E90FF",
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     fontSize: hp(3.5),
-    fontWeight: '700',
-    color: '#ffffff'
+    fontWeight: "700",
+    color: "#ffffff",
   },
-  sixView: {
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    flexDirection: 'row',
-    position: 'absolute',
+  undoButtonContainer: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    flexDirection: "row",
+    position: "absolute",
     bottom: normalized.hp(5),
     width: normalized.wp(45),
     height: normalized.hp(8),
     borderRadius: radius.xxlargeRadius,
     backgroundColor: AppStyles.color.COLOR_GREY_WHITE,
-    alignSelf: 'center',
-    elevation: 4
+    alignSelf: "center",
+    elevation: 4,
   },
   seperator: {
     borderWidth: 0.5,
@@ -185,8 +187,8 @@ const styles = StyleSheet.create({
   middleLine: {
     height: normalized.hp(6),
   },
-  sevenView: {
-    justifyContent: 'space-around',
+  undoButton: {
+    justifyContent: "space-around",
   },
   undo: {
     width: normalized.wp(8),
@@ -194,10 +196,10 @@ const styles = StyleSheet.create({
   },
   undoText: {
     fontSize: fontSizes.small,
-    color: '#222222',
+    color: "#222222",
   },
-  eightView: {
-    justifyContent: 'space-around',
+  resetButtonContainer: {
+    justifyContent: "space-around",
   },
   reset: {
     width: normalized.wp(8),
@@ -205,78 +207,77 @@ const styles = StyleSheet.create({
   },
   resetText: {
     fontSize: fontSizes.small,
-    color: '#222222',
+    color: "#222222",
   },
   nineView: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   nineText: {
     fontSize: fontSizes.medium,
-    position: 'absolute',
-    textAlign: 'center',
-    alignSelf: 'center',
+    position: "absolute",
+    textAlign: "center",
+    alignSelf: "center",
     bottom: normalized.hp(1),
     width: normalized.wp(70),
-    color: '#222222',
+    color: "#222222",
   },
-  lastView: {
-    position: 'absolute',
+  undoAndRestContainer: {
+    position: "absolute",
     width: normalized.wp(60),
     bottom: normalized.hp(8),
   },
   buttonView: {
     bottom: normalized.hp(5),
-    position: 'absolute'
   },
   userImagesView: {
     width: normalized.wp(10),
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center",
   },
   buttonLoader: {
     flex: 1,
     zIndex: 1,
-    position: 'absolute',
-    alignSelf: 'center',
+    position: "absolute",
+    alignSelf: "center",
     top: hp(38),
   },
   userImagesWidth: {
     width: normalized.wp(4.5),
-    marginVertical: normalized.hp(1)
+    marginVertical: normalized.hp(1),
   },
   plusUserView: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     width: normalized.wp(7),
     height: normalized.hp(3.3),
     borderRadius: 90,
-    position: 'absolute',
+    position: "absolute",
     bottom: normalized.hp(-1.65),
     right: normalized.wp(2),
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   plusUserText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   bottomStyle: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   bottomXIcon: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginHorizontal: normalized.wp(3),
   },
   allPlayerText: {
-    color: '#212121',
+    color: "#212121",
   },
 
   bottomButtonView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: normalized.hp(3),
     width: normalized.wp(80),
   },

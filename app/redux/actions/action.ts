@@ -125,13 +125,7 @@ export const signin = (email: string, password: string) => {
 };
 
 export const addOpponents = (opponents: IOpponent[]) => (dispatch: any) => {
-  let newOpponents: IOpponent[];
-  if (store.getState().auth.opponents == undefined) {
-    newOpponents = opponents;
-  } else {
-    newOpponents = [...store.getState().auth.opponents, ...opponents];
-  }
-  dispatch({ type: ADD_OPPONENTS, payload: newOpponents });
+  dispatch({ type: ADD_OPPONENTS, payload: opponents });
 };
 
 export const removeOpponent = (index: number) => {

@@ -2,7 +2,8 @@ import { store } from "../redux/store/store";
 import axios from "axios";
 
 export const BaseURL = axios.create({
-  baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
+  // baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
+  baseURL: "https://aqhj4if8tb.execute-api.us-east-1.amazonaws.com",
   headers: {
     accept: "application/json",
     "content-type": "text/plain; charset=utf-8",

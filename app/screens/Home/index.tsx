@@ -166,6 +166,8 @@ const Home: React.FC = () => {
         paddingTop: insets.top,
         justifyContent: "space-evenly",
         alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       {loading && (
@@ -215,9 +217,9 @@ const Home: React.FC = () => {
           <SvgXml xml={plusIcon} width={20} height={20} />
         </View>
       </TouchableOpacity>
-      <View style={styles.lastView}>
-        <View style={styles.sixView}>
-          <TouchableOpacity onPress={handleUndo} style={styles.sevenView}>
+      <View style={styles.undoAndRestContainer}>
+        <View style={styles.undoButtonContainer}>
+          <TouchableOpacity onPress={handleUndo} style={styles.undoButton}>
             <SvgXml xml={undo} width={20} height={20} />
 
             <Text style={styles.undoText}>{t("undo")}</Text>
@@ -225,7 +227,7 @@ const Home: React.FC = () => {
 
           <View style={styles.seperator} />
 
-          <TouchableOpacity onPress={handleReset} style={styles.eightView}>
+          <TouchableOpacity onPress={handleReset} style={styles.resetButtonContainer}>
             <Image source={images.icons.reset} style={styles.reset} />
             <Text style={styles.resetText}>{t("reset")}</Text>
           </TouchableOpacity>

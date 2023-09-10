@@ -36,7 +36,7 @@ import { BaseURL, endPoints } from "../../constants";
 import Snackbar from "react-native-snackbar";
 import axios from "axios";
 import { DdLogs } from "@datadog/mobile-react-native";
-
+import config from "../../../config";
 // type of input, value and isError
 interface IInputData {
   placeholder: string;
@@ -49,6 +49,8 @@ interface IValidatePlayerNumberData {
 }
 
 const SignUpScreen: React.FC = () => {
+  console.log("CONFIG LOL: " + JSON.stringify(config));
+  
   const { t } = useTranslation();
   const language = useSelector((state: any) => state.auth.language);
   const isRTL = language === "he";
@@ -305,7 +307,8 @@ const SignUpScreen: React.FC = () => {
       } = data;
 
       const SignUpAPI = axios.create({
-        baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
+        // baseURL: "https://0j3kvj5lpl.execute-api.us-east-1.amazonaws.com",
+        baseURL: "https://aqhj4if8tb.execute-api.us-east-1.amazonaws.com",
         headers: {
           "content-type": "text/plain; charset=utf-8",
           UserId: token,
