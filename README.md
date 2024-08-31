@@ -1,6 +1,6 @@
 <h3 align="center"><img width="80" alt="Puter.com, The Personal Cloud Computer: All your files, apps, and games in one place accessible from anywhere at any time." src="https://assets.puter.site/puter-logo.png"></h3>
 
-<h3 align="center">The Internet OS!<br/> חינמי, קוד פתוח וניתן לאחסון עצמאי.</h3>
+<h3 align="center" dir="rtl">מערכת ההפעלה של האינטרנט! חינמי, קוד פתוח וניתן לאחסון עצמאי.</h3>
 
 <p align="center">
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/HeyPuter/puter"> <img alt="GitHub Release" src="https://img.shields.io/github/v/release/HeyPuter/puter?label=latest%20version"> <img alt="GitHub License" src="https://img.shields.io/github/license/HeyPuter/puter">
@@ -29,15 +29,18 @@
 <br/>
 
 ## Puter
-
+<div dir="rtl">
+<p>
 Puter הינה מערכת הפעלה מתקדמת, קוד פתוח המיועדת להיות עשירה בתכנים, מהירה במיוחד וניתנת להרחבה.
-אפשר להישתמש ב Puter כ:
-- ענן אישי עם מקסימום פרטיות, לשמירת הקבצים, האפליקציות והמשחקים שלך במקום מאובטח אחד, נגיש מכל מקום ובכל זמן.
-- פלטפורמה לבניית ופרסום אתרים, אפליקציות ומשחקים.
-- אלטרנטיבה ל-Dropbox, Google Drive, OneDrive וכו' עם ממשק מרענן ותכנים חזקים.
-- סביבה לעבודה מרחוק לשרתים ותחנות עבודה.
-- פרוייקט ידידותי, קוד פתוח וקהילה ללמידה על פיתוח אינטרנט, פיתוח בענן, מערכות מבוזרות ועוד הרבה!
-
+אפשר להישתמש ב Puter כ:</p>
+<ul>
+<li>ענן אישי עם מקסימום פרטיות, לשמירת הקבצים, האפליקציות והמשחקים שלך במקום מאובטח אחד, נגיש מכל מקום ובכל זמן.</li>
+<li>פלטפורמה לבניית ופרסום אתרים, אפליקציות ומשחקים.</li>
+<li>אלטרנטיבה ל-Dropbox, Google Drive, OneDrive וכו' עם ממשק מרענן ותכנים חזקים.</li>
+<li>סביבה לעבודה מרחוק לשרתים ותחנות עבודה.</li>
+<li>פרוייקט ידידותי, קוד פתוח וקהילה ללמידה על פיתוח אינטרנט, פיתוח בענן, מערכות מבוזרות ועוד הרבה!</li>
+<ul>
+</div>
 
 <br/>
 
@@ -92,6 +95,7 @@ docker compose up
 
 ### ☁️ Puter.com
 
+Puter זמין כשירות אחסון ב- [**puter.com**](https://puter.com).
 Puter is available as a hosted service at [**puter.com**](https://puter.com).
 
 <br/>
